@@ -146,10 +146,23 @@
   function syncReservedBlocks() {
     document.querySelectorAll('[data-rsv-en]').forEach(function (el) {
       var k = el.getAttribute('data-rsv-key') || keyOf(el);
+      // The headline keeps its markup in an inner [data-i18n-html] span: the ghost takes the plain text.
+      var html = isHtml(el) || !!el.querySelector('[data-i18n-html]');
       LANGS.forEach(function (l) {
         var v = I18N[l] && I18N[l][k];
-        if (typeof v === 'string') el.setAttribute('data-rsv-' + l, isHtml(el) ? plain(v) : norm(v));
+        if (typeof v === 'string') el.setAttribute('data-rsv-' + l, html ? plain(v) : norm(v));
       });
+    });
+    // Width ghosts outside the label stacks (the footer note): one line per language. Stacks get theirs, with
+    // the state texts, in makeHost().
+    document.querySelectorAll('[data-rsv][data-i18n]').forEach(function (el) {
+      if (el.matches(STACK_SEL)) return;
+      var k = keyOf(el), vars = [];
+      LANGS.forEach(function (l) {
+        var v = I18N[l] && I18N[l][k];
+        if (typeof v === 'string' && vars.indexOf(norm(v)) < 0) vars.push(norm(v));
+      });
+      if (vars.length) el.setAttribute('data-rsv', vars.join('\n'));
     });
   }
   function matchVariant(h) {
