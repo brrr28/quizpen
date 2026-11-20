@@ -72,8 +72,11 @@
   text-align: left;
 }
 @media (min-width: 1100px) { .chip { padding: 0; line-height: 32px; } }
+/* A short line box for the small caps: with baseline alignment a full 32px box would sit lower than the topic's
+   and stretch the row past 32px. */
 .chip-subj {
   align-items: flex-start;
+  line-height: 16px;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -102,7 +105,7 @@
   place-items: center;
   width: 22px;
   height: 22px;
-  margin-left: 8px;
+  margin: -4px 0 -4px 8px; /* the negative block margins keep the circle from growing the 24px line box */
   vertical-align: 1px;
   border: 1.25px solid currentColor;
   border-radius: 50%;
@@ -158,17 +161,21 @@
 .ea {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  align-content: start;
+  align-content: center;
   gap: 12px;
-  padding: 20px 18px;
+  padding: 24px 18px;
   border: 1.5px dashed var(--ink-3);
 }
-@media (min-width: 640px) { .ea { align-content: center; min-height: 370px; padding: 28px 32px; } }
+@media (min-width: 640px) { .ea { min-height: 370px; padding: 28px 32px; } }
 .ea-title { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; line-height: 1.3; }
 .ea-text { color: var(--ink-2); }
 .ea .join-row { height: auto; padding-top: 0; }
-@media (min-width: 520px) { .ea .join-row { flex-wrap: wrap; row-gap: 16px; } }
-.ea .join-row input { flex: 1 1 200px; }
+/* In a row the address takes the free width and the button wraps under it when they do not fit; below 520px
+   the row is a column, where a 200px basis would become the input's height. */
+@media (min-width: 520px) {
+  .ea .join-row { flex-wrap: wrap; row-gap: 16px; }
+  .ea .join-row input { flex: 1 1 200px; }
+}
 .ea .join-btn { --btn-h: 48px; }
 .ea-form .field-msg:not(:empty) { margin-top: 8px; }
 .ea-done {
