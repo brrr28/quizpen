@@ -203,6 +203,8 @@ await themeOnLoad('landing, saved light over system dark', BASE + '?lang=en', { 
   const err0 = s.errors.length;
   await media('light');
   await load(BASE + '?lang=en', { saved: 'dark' });
+  // The sample chips come from data/samples.json after load: wait for the one we click.
+  await page.waitFor(`document.querySelector('.chip[data-sample="magi"]')`, 15000);
   await page.click('.chip[data-sample="magi"]');
   await page.waitFor(`document.getElementById('lesson').value.length > 200`);
   await page.click('#gen-btn');
