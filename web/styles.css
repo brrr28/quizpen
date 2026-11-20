@@ -874,6 +874,28 @@ html.theme-fade .tt * { transition: transform 280ms var(--ease-out), opacity 200
 .sl-v.sl-off { opacity: 0; visibility: hidden; transition: opacity 180ms var(--ease-out), visibility 0s linear 180ms; }
 .sl-mid > .sl-v { justify-self: center; text-align: center; }
 
+/* ===== Loading bar: from the first paint until app.js marks html.is-ready ===== */
+/* Fixed and outside the layout, so it moves nothing. It fades in only after 500 ms, so a fast load never shows
+   it; without JS there is no 'js' class and no bar. If the scripts never arrive, it stops after about a minute. */
+@media screen {
+  html.js:not(.is-ready)::before {
+    content: "";
+    position: fixed; top: 0; left: 0;
+    width: 40%; height: 3px;
+    z-index: 50;
+    pointer-events: none;
+    background: var(--ink);
+    border-radius: 0 2px 2px 0;
+    transform: translateX(-100%);
+    animation: qp-bar-in 200ms var(--ease-out) 500ms both, qp-bar-slide 1400ms cubic-bezier(0.4, 0, 0.2, 1) 500ms 40;
+  }
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  html.js:not(.is-ready)::before { width: 100%; transform: none; background: var(--ink-3); animation: qp-bar-in 1ms linear 500ms both; }
+}
+@keyframes qp-bar-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes qp-bar-slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
 /* ===== Reserved space from the first paint, before app.js/ui.js arrive (slow network) ===== */
 /* Labels: a hidden zero-height ghost holds every variant (data-rsv, one per line), so the label already has the
    width of the longest one, the same width the ui.js stack gets later. */
