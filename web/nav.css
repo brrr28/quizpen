@@ -1,0 +1,147 @@
+/* Quizpen landing navigation (web/nav.js): header menu button, section rail, mobile drawer, reveal
+   motion and press states. Uses the theme tokens from styles.css, so both themes follow. */
+
+:root { --z-drawer: 30; }
+
+/* In-page targets: html keeps scroll-padding-top (header + 12px) under the sticky header. A section lands
+   flush under the header (its own padding is the air), so no strip of the previous section shows. */
+main > section[id] { scroll-margin-top: -12px; }
+[id^="src-"] { scroll-margin-top: 16px; }
+main h1[tabindex="-1"]:focus:not(:focus-visible),
+main h2[tabindex="-1"]:focus:not(:focus-visible),
+main li[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+
+/* Header: the active section link, the menu button; theme and language live in the drawer below 640 px */
+.site-header .nav a { position: relative; transition: color 160ms var(--ease-out); }
+.site-header .nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px;
+  background: var(--ink); transform: scaleX(0); transform-origin: left center;
+  transition: transform 220ms var(--ease-out);
+}
+.site-header .nav a[aria-current] { color: var(--ink); }
+.site-header .nav a[aria-current]::after { transform: scaleX(1); }
+
+.nav-burger {
+  display: inline-grid; place-items: center; flex: none;
+  width: 40px; height: 40px; padding: 0;
+  border: 0; border-radius: 999px;
+  background: var(--tint); color: var(--ink);
+  transition: box-shadow 160ms var(--ease-out), transform 120ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-burger path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.nav-burger:active { transform: scale(0.94); }
+html:not(.js) .nav-burger { display: none; }
+@media (min-width: 1024px) { .nav-burger { display: none; } }
+@media (max-width: 639.98px) {
+  .site-header .lang, .site-header [data-theme-toggle] { display: none; }
+}
+
+/* Section rail (desktop): dots on the right edge, labels on hover and keyboard focus */
+.nav-rail { display: none; }
+@media (min-width: 1024px) {
+  .nav-rail {
+    display: block; position: fixed; right: 4px; top: 50%; z-index: var(--z-sticky);
+    transform: translateY(-50%);
+  }
+}
+.nav-rail-links { list-style: none; margin: 0; padding: 6px 0; display: flex; flex-direction: column; gap: 2px; }
+.nav-rail-link {
+  position: relative; display: grid; place-items: center;
+  width: 24px; height: 28px; text-decoration: none; color: var(--ink); border-radius: 999px;
+}
+.nav-rail-link-dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--line-hover);
+  transition: transform 220ms var(--ease-out), background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+.nav-rail-link:hover .nav-rail-link-dot { box-shadow: inset 0 0 0 1.5px var(--ink); transform: scale(1.25); }
+.nav-rail-link[aria-current] .nav-rail-link-dot { background: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); transform: scale(1.35); }
+.nav-rail-link:active .nav-rail-link-dot { transform: scale(0.9); }
+.nav-rail-link-label {
+  position: absolute; right: calc(100% + 4px); top: 50%;
+  padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+  font-size: 0.82rem; font-weight: 600; line-height: 1.3;
+  background: var(--surface-raised); color: var(--ink); box-shadow: var(--shadow-1);
+  opacity: 0; transform: translate(6px, -50%); pointer-events: none;
+  transition: opacity 160ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.nav-rail-link:hover .nav-rail-link-label,
+.nav-rail-link:focus-visible .nav-rail-link-label { opacity: 1; transform: translate(0, -50%); }
+.nav-rail-link:focus-visible { outline-offset: 0; }
+
+/* Drawer (mobile and tablet) */
+.nav-drawer {
+  position: fixed; inset: 0; z-index: var(--z-drawer);
+  overflow: hidden; visibility: hidden; pointer-events: none;
+  transition: visibility 0s linear 300ms;
+}
+.nav-drawer.is-open { visibility: visible; pointer-events: auto; transition-delay: 0s; }
+@media (min-width: 1024px) { .nav-drawer { display: none; } }
+.nav-drawer-overlay {
+  position: absolute; inset: 0; background: var(--backdrop);
+  opacity: 0; transition: opacity 240ms var(--ease-out);
+}
+.nav-drawer.is-open .nav-drawer-overlay { opacity: 1; }
+.nav-drawer-panel {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: min(360px, calc(100% - 48px));
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 0 max(var(--gutter), env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) var(--gutter);
+  background: var(--paper); color: var(--ink);
+  box-shadow: -1px 0 0 var(--line), -16px 0 40px rgba(0, 0, 0, 0.18);
+  overflow-y: auto; overscroll-behavior: contain;
+  transform: translateX(100%);
+  transition: transform 300ms var(--ease-out);
+}
+.nav-drawer.is-open .nav-drawer-panel { transform: none; }
+.nav-drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: var(--header-h); border-bottom: 1px solid var(--line);
+}
+.nav-drawer-title { margin: 0; font-weight: 750; font-size: 1.1rem; letter-spacing: -0.01em; }
+.nav-drawer-close {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0;
+  border: 0; border-radius: 999px; background: var(--tint); color: var(--ink);
+  transition: box-shadow 160ms var(--ease-out), transform 120ms var(--ease-out);
+}
+.nav-drawer-close:active { transform: scale(0.94); }
+.nav-drawer-links { list-style: none; margin: 0; padding: 8px 0; display: flex; flex-direction: column; gap: 2px; }
+.nav-drawer-link {
+  display: flex; align-items: baseline; gap: 14px; min-height: 48px; padding: 12px 12px;
+  border-radius: var(--r); text-decoration: none; color: var(--ink-2);
+  font-size: 1.08rem; font-weight: 600;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 120ms var(--ease-out);
+}
+.nav-drawer-link-num { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.nav-drawer-link:active { transform: scale(0.98); }
+.nav-drawer-link[aria-current] { background: var(--tint); color: var(--ink); }
+.nav-drawer-link[aria-current] .nav-drawer-link-num { color: var(--ink); }
+.nav-drawer-settings { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 12px; }
+.nav-drawer-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+.nav-drawer-row-label { font-weight: 600; color: var(--ink-2); }
+html.nav-lock { overflow: hidden; }
+.nav-end { height: 1px; margin-top: -1px; pointer-events: none; }
+
+@media (hover: hover) {
+  .nav-burger:hover, .nav-drawer-close:hover { box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+  .nav-drawer-link:hover { background: var(--tint); color: var(--ink); }
+  .lang button:not([aria-pressed="true"]):hover { color: var(--ink); }
+}
+
+/* Press states for controls that had none */
+.lang button { transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 120ms var(--ease-out); }
+.lang button:active { transform: scale(0.94); }
+.share-btn { transition: border-color 160ms var(--ease-out), transform 120ms var(--ease-out); }
+.share-btn:active { transform: scale(0.97); }
+
+/* Reveal on scroll: transform and opacity only, so nothing shifts the layout */
+@media (prefers-reduced-motion: no-preference) {
+  .nav-reveal {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity 520ms var(--ease-out), transform 640ms var(--ease-out);
+    transition-delay: calc(var(--nav-reveal-i, 0) * 70ms);
+  }
+  .nav-reveal.is-in { opacity: 1; transform: none; }
+}
+@media print { .nav-reveal { opacity: 1 !important; transform: none !important; } .nav-rail, .nav-drawer { display: none !important; } }
