@@ -182,7 +182,7 @@
     cssReady = new Promise(function (ok) {
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = new URL('consent.css', BASE_URL).href;
+      link.href = new URL('consent.css?v=20261121b', BASE_URL).href;
       link.onload = link.onerror = function () { ok(); };
       document.head.appendChild(link);
     });
