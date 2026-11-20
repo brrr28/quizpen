@@ -1073,4 +1073,6 @@
   sendVisit();
   renderOffline();
   registerSw();
+  // Init done: ends the loading bar (styles.css, html.js:not(.is-ready)::before).
+  document.documentElement.classList.add('is-ready');
 })();
