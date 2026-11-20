@@ -175,7 +175,11 @@ async function landingFlow(page) {
   await page.click('#join-btn');
   await page.waitFor(`!document.getElementById('thanks').hidden`);
   await page.click('#copy-btn');
-  await page.click('.lang [data-lang="uk"]');
+  // Below 640 px the language switch lives in the menu drawer (web/nav.js), not in the header.
+  await page.click('.nav-burger');
+  await wait(350);
+  await page.click('.nav-drawer .lang [data-lang="uk"]');
+  await page.click('.nav-drawer-close');
   await wait(300);
   return playLink;
 }
