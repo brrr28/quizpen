@@ -1,5 +1,16 @@
 /* Quizpen waitlist page. Mobile-first, no framework. */
 
+/* Local fallbacks shown until the web fonts arrive (they load without blocking the first paint). Widths and
+   vertical metrics are matched to Onest / JetBrains Mono per weight (measured in Chrome against EN and UK texts:
+   size-adjust = advance ratio, overrides = Onest metric / size-adjust), so the swap does not move the layout. */
+@font-face { font-family: "Onest Fallback"; font-weight: 400; src: local("Arial"), local("ArialMT"); size-adjust: 104.5%; ascent-override: 92.82%; descent-override: 29.67%; line-gap-override: 0%; }
+@font-face { font-family: "Onest Fallback"; font-weight: 500; src: local("Arial"), local("ArialMT"); size-adjust: 105.8%; ascent-override: 91.68%; descent-override: 29.3%; line-gap-override: 0%; }
+@font-face { font-family: "Onest Fallback"; font-weight: 600; src: local("Arial Bold"), local("Arial-BoldMT"); size-adjust: 99.4%; ascent-override: 97.59%; descent-override: 31.19%; line-gap-override: 0%; }
+@font-face { font-family: "Onest Fallback"; font-weight: 700; src: local("Arial Bold"), local("Arial-BoldMT"); size-adjust: 100.6%; ascent-override: 96.42%; descent-override: 30.82%; line-gap-override: 0%; }
+@font-face { font-family: "Onest Fallback"; font-weight: 800; src: local("Arial Bold"), local("Arial-BoldMT"); size-adjust: 101.7%; ascent-override: 95.38%; descent-override: 30.48%; line-gap-override: 0%; }
+@font-face { font-family: "JetBrains Mono Fallback"; font-weight: 500; src: local("Courier New"), local("CourierNewPSMT"); size-adjust: 100%; ascent-override: 102%; descent-override: 30%; line-gap-override: 0%; }
+@font-face { font-family: "JetBrains Mono Fallback"; font-weight: 700; src: local("Courier New Bold"), local("CourierNewPS-BoldMT"); size-adjust: 100%; ascent-override: 102%; descent-override: 30%; line-gap-override: 0%; }
+
 :root {
   --paper: #F6F6F2;
   --surface: #FDFDFB;
@@ -22,8 +33,8 @@
   --night-text: #F1F1EC;
   --night-muted: #B9BDCD;
 
-  --font: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --font: "Onest", "Onest Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   --r-sm: 8px;
   --r: 12px;
