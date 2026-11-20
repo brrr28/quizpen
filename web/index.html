@@ -86,10 +86,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="nav.css">
   <script src="config.js"></script>
   <!-- Analytics (web/analytics.js): off until IDs are set in config.js; must stay before app.js -->
   <script src="analytics.js" data-surface="landing" defer></script>
   <!-- end of analytics -->
+  <script src="nav.js" defer></script>
   <script src="app.js" defer></script>
   <script src="ui.js" defer></script>
   <!-- Student play mode (web/play/): preview as student, share with class -->
@@ -136,6 +138,7 @@
       </div>
       <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark theme"></button>
       <button type="button" class="btn btn-ink btn-sm header-cta" data-scroll-join><span data-i18n="cta" data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span></button>
+      <button type="button" class="nav-burger" aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu" data-nav-i18n-attr="aria-label:menu"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </header>
 
@@ -338,7 +341,7 @@
       </div>
     </section>
 
-    <section class="final" aria-labelledby="final-title">
+    <section class="final" id="final" aria-labelledby="final-title">
       <div class="wrap final-inner">
         <h2 id="final-title" data-i18n="final.title">Get Quizpen before your next unit starts.</h2>
         <button type="button" class="btn btn-ink btn-lg" data-scroll-join><span data-i18n="cta" data-cta-final data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
