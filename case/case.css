@@ -1,0 +1,305 @@
+/* Case study page: a graded report sheet in the "teacher's worksheet" style (direction A).
+   Every block on the ruled area is a whole number of 32 px lines, so text keeps sitting on the
+   rules all the way down. Rules are an inline SVG data image (no gradients, no raster files).
+   Paper stays flat: no shadows, no stains. */
+
+:root {
+  color-scheme: light dark;
+  --paper: #FBF8F0;
+  --rule: #C9D9EC;
+  --margin: #E58A8A;
+  --ink: #1F2A44;
+  --pencil: #5E6470;
+  --red: #C8312B;
+  --green: #1D6B3A;
+  --hole: #EBE5D6;
+  --row: #8E9AAE;          /* table row separators, drawn over the rule */
+  --lh: 32px;              /* one ruled line */
+  --left: 184px;           /* text column start, right of the margin line */
+  --margin-x: 128px;       /* red margin line */
+  --right: 72px;
+  --serif: 'Literata', Georgia, 'Times New Roman', serif;
+  --sans: 'PT Sans', 'Segoe UI', Arial, sans-serif;
+  --hand: 'Caveat', 'Segoe Print', 'Comic Sans MS', cursive;
+  --mono: ui-monospace, Consolas, 'Courier New', monospace;
+  /* One rule per 32 px line, 1 px high, 25 px below the line top: text baselines sit on it. */
+  --rule-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='32'%3E%3Crect y='25' width='8' height='1' fill='%23C9D9EC'/%3E%3C/svg%3E");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #22252B;
+    --rule: #2E3A4D;
+    --margin: #7A3B3B;
+    --ink: #ECE6D8;
+    --pencil: #A9A79F;
+    --red: #FF7B6E;
+    --green: #6FD39A;
+    --hole: #1A1C21;
+    --row: #5D6A80;
+    --rule-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='32'%3E%3Crect y='25' width='8' height='1' fill='%232E3A4D'/%3E%3C/svg%3E");
+  }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--paper); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font: 400 18px/var(--lh) var(--serif);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+[id] { scroll-margin-top: var(--lh); }
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, .tw:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.url { overflow-wrap: anywhere; }
+code { font: 400 0.86em/1 var(--mono); }
+strong { font-weight: 600; }
+
+/* Shared pen strokes (symbols live in the hidden sprite at the top of the body) */
+.pen { fill: none; stroke: var(--red); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Flat paper: the red margin rule and punch holes */
+.page { position: relative; overflow-x: clip; min-height: 100vh; }
+.margin-line { position: absolute; top: 0; bottom: 0; left: var(--margin-x); border-left: 1.5px solid var(--margin); }
+.hole { position: absolute; left: 50px; width: 24px; height: 24px; border-radius: 50%; background: var(--hole); }
+.hole-1 { top: 132px; }
+.hole-2 { top: 438px; }
+.hole-3 { top: 744px; }
+
+/* Unruled head of the sheet */
+.top {
+  position: relative;
+  height: 96px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 0 var(--right) 0 var(--left);
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font: 600 23px/1 var(--serif); letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.brand .bubble {
+  display: inline-grid; place-items: center; width: 30px; height: 30px;
+  border: 1.5px solid var(--ink); border-radius: 50%;
+  font: 700 14px/1 var(--sans);
+}
+.top nav { display: flex; gap: 32px; font: 400 16px/1 var(--sans); }
+.top nav a { padding: 6px 0; }
+
+/* Ruled body */
+.sheet {
+  position: relative;
+  padding: 0 var(--right) calc(var(--lh) * 3) var(--left);
+  background-image: var(--rule-img);
+  background-size: 8px var(--lh);
+}
+
+/* "Name / Class / Date" strip of the report */
+.fields {
+  display: flex; flex-wrap: wrap; column-gap: 40px;
+  font: 400 15px/var(--lh) var(--sans);
+}
+.field { display: flex; align-items: flex-start; gap: 10px; height: var(--lh); white-space: nowrap; }
+.field .lbl { line-height: 25px; color: var(--pencil); }
+.field .val {
+  display: block; height: 25px; min-width: 64px; padding: 0 4px;
+  line-height: 25px; border-bottom: 1.5px solid var(--ink);
+  font: 400 16px/25px var(--serif);
+}
+.field .blank { width: 260px; }
+
+h1 {
+  margin-top: calc(var(--lh) * 2);
+  max-width: 24em;
+  font: 600 44px/64px var(--serif);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  position: relative; top: 4px;
+}
+
+/* Sections read like numbered test questions. Desktop: text column plus a margin for pen notes. */
+.q {
+  display: grid;
+  grid-template-columns: minmax(0, 72ch) 240px;
+  column-gap: 48px;
+  align-items: start;
+  margin-top: calc(var(--lh) * 2);
+}
+.q > * { grid-column: 1; }
+.q > * + * { margin-top: var(--lh); }
+.q > h2 + * { margin-top: var(--lh); }
+.q > h3 + *, .q > .lead-in + * { margin-top: 0; }
+.q > .wide { grid-column: 1 / -1; }
+.q > .note { grid-column: 2; }
+.q p { text-wrap: pretty; }
+
+h2 {
+  position: relative;
+  font: 600 28px/var(--lh) var(--serif);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+h2 .qn {
+  position: absolute; left: -46px; top: 0;
+  display: grid; place-items: center; width: 32px; height: var(--lh);
+  font: 600 20px/1 var(--serif);
+}
+h2 .qn .loop { position: absolute; left: -6px; top: -3px; width: 44px; height: 38px; }
+h2 .qt { position: relative; top: -1px; }
+
+h3 { font: 600 18px/var(--lh) var(--serif); }
+
+/* Plain lists: a small pencil ring, like an answer bubble */
+.dash li { position: relative; padding-left: 28px; }
+.dash li::before {
+  content: ''; position: absolute; left: 3px; top: 12px;
+  width: 8px; height: 8px; border: 1.5px solid var(--pencil); border-radius: 50%;
+}
+
+/* Five key findings: circled numbers, red ticks in the margin */
+.findings li { position: relative; padding-left: 48px; }
+.findings li + li { margin-top: var(--lh); }
+.findings .n {
+  position: absolute; left: 0; top: 3px;
+  display: grid; place-items: center; width: 28px; height: 28px;
+  border: 1.5px solid var(--ink); border-radius: 50%;
+  font: 700 14px/1 var(--sans);
+}
+.findings .tick { position: absolute; left: -50px; top: 0; width: 34px; height: 28px; stroke-width: 3; }
+
+/* Tables on the ruled paper: every row is whole lines, row separators sit on a rule */
+.tw { overflow-x: auto; overscroll-behavior-x: contain; }
+table { width: 100%; border-collapse: collapse; font: 400 16px/var(--lh) var(--serif); }
+th, td { position: relative; padding: 0 24px 0 0; text-align: left; vertical-align: top; }
+th:last-child, td:last-child { padding-right: 0; }
+th::after, td::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 5.5px; height: 1.5px;
+  background: var(--row);
+}
+th {
+  font: 700 12.5px/var(--lh) var(--sans); letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--pencil); white-space: nowrap;
+}
+thead th::after { background: var(--ink); }
+/* Long rows get one blank ruled line below, so the eye finds where each row starts */
+.t-spec td, .t-dec td, .t-metrics td, .t-tech td { padding-bottom: var(--lh); }
+td.where { font: 400 14.5px/var(--lh) var(--sans); color: var(--pencil); }
+td.where a { color: var(--ink); }
+td.lead { font-weight: 600; }
+td.ok { color: var(--green); font-weight: 600; white-space: nowrap; }
+td.no { color: var(--red); font-weight: 600; white-space: nowrap; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+th.num { text-align: right; }
+
+.t-spec col.c1 { width: 22%; } .t-spec col.c2 { width: 50%; } .t-spec col.c3 { width: 28%; }
+.t-metrics col.c1 { width: 30%; } .t-metrics col.c2 { width: 11%; } .t-metrics col.c3 { width: 12%; } .t-metrics col.c4 { width: 47%; }
+.t-tech col.c1 { width: 28%; } .t-tech col.c2 { width: 44%; } .t-tech col.c3 { width: 28%; }
+.t-checks col.c1 { width: 30%; } .t-checks col.c3 { width: 16%; }
+.t-tech td:last-child { color: var(--pencil); }
+
+/* The centrepiece: findings on the left, the decision in ink after a red arrow */
+.t-dec col.c1 { width: 36%; } .t-dec col.c2 { width: 42%; } .t-dec col.c3 { width: 22%; }
+.t-dec td:first-child { color: var(--pencil); font-size: 15.5px; }
+.t-dec th:nth-child(2), .t-dec td:nth-child(2) { padding-left: 4px; }
+.t-dec td:nth-child(2) { font-size: 16.5px; }
+.t-dec td:nth-child(2)::before {
+  content: '\2192'; position: absolute; left: -20px; top: 0;
+  font: 700 16px/var(--lh) var(--sans); color: var(--red);
+}
+.t-dec th:nth-child(2) { color: var(--red); }
+
+/* Handwritten margin notes */
+.note { position: relative; font: 600 28px/var(--lh) var(--hand); color: var(--red); }
+.note p { position: relative; top: 3px; text-wrap: balance; }
+.note p + p { margin-top: var(--lh); }
+.note .arrow { position: absolute; left: -46px; top: 8px; width: 40px; height: 22px; }
+
+.case-time { white-space: nowrap; }
+
+/* Medium widths: one column, pen notes turn into inline callouts */
+@media (max-width: 1179px) {
+  :root { --left: 144px; --margin-x: 88px; --right: 40px; }
+  .hole { left: 32px; }
+  .q { grid-template-columns: minmax(0, 1fr); }
+  .q > p, .q > h3, .q > ul, .q > ol, .q > .note { max-width: 72ch; }
+  .q > .note { grid-column: 1; padding-left: 18px; border-left: 2px solid var(--red); font-size: 27px; }
+  .note .arrow { display: none; }
+}
+
+/* Phones: margin line and holes stay simple, rules only in the report strip */
+@media (max-width: 640px) {
+  :root { --left: 44px; --margin-x: 28px; --right: 20px; }
+  body { font-size: 17px; line-height: 28px; }
+  .hole { display: none; }
+  .top { height: 72px; gap: 12px; }
+  .brand { font-size: 21px; }
+  .top nav { gap: 18px; font-size: 15px; }
+  .top nav .nav-page { display: none; }
+  .sheet { background-image: none; padding-bottom: 64px; }
+  .fields {
+    flex-direction: column;
+    background-image: var(--rule-img); background-size: 8px var(--lh);
+    margin-right: calc(-1 * var(--right)); margin-left: calc(-1 * var(--left)); padding-left: var(--left);
+  }
+  .field .blank { width: 150px; }
+  h1 { margin-top: 32px; font-size: 28px; line-height: 36px; top: 0; }
+  .q { margin-top: 48px; }
+  .q > * + *, .q > h2 + * { margin-top: 18px; }
+  .q > h3 + *, .q > .lead-in + * { margin-top: 8px; }
+  h2 { font-size: 24px; line-height: 30px; display: flex; align-items: flex-start; gap: 14px; }
+  h2 .qn { position: relative; left: auto; top: 0; flex: none; height: 30px; width: 28px; font-size: 18px; }
+  h2 .qn .loop { left: -7px; top: -4px; width: 42px; height: 37px; }
+  h2 .qt { top: 0; }
+  h3 { font-size: 17px; line-height: 28px; }
+  .dash li { padding-left: 24px; }
+  .dash li + li { margin-top: 6px; }
+  .dash li::before { top: 10px; }
+  .findings li { padding-left: 44px; }
+  .findings li + li { margin-top: 16px; }
+  .findings .n { top: 1px; }
+  .findings .tick { left: 16px; top: -12px; width: 24px; height: 20px; stroke-width: 2.6; }
+  table { font-size: 15px; line-height: 23px; }
+  th, td { padding: 8px 18px 9px 0; }
+  th { line-height: 18px; padding-top: 4px; }
+  .tw td { padding-bottom: 9px; }
+  th::after, td::after { bottom: 0; }
+  td.where { font-size: 14px; line-height: 21px; }
+  .t-dec td:first-child { font-size: 14.5px; }
+  .t-dec td:nth-child(2) { font-size: 15px; }
+  .t-dec td:nth-child(2)::before { line-height: 23px; top: 8px; }
+  .t-spec { min-width: 600px; }
+  .t-dec { min-width: 660px; }
+  .t-metrics { min-width: 620px; }
+  .t-tech { min-width: 680px; }
+  .t-checks code { white-space: nowrap; }
+  .q > .note { font-size: 25px; line-height: 28px; padding-left: 14px; }
+  .note p { top: 0; }
+  .note p + p { margin-top: 8px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+@media print {
+  .hole, .margin-line { display: none; }
+  .sheet { background-image: none; }
+}
