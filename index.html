@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quizpen: turn lesson text into a quiz in seconds</title>
-  <meta name="description" content="Quizpen turns your lesson text into a multiple-choice quiz in the same language, with a one-sentence reason for each answer. Try a ready example and join the waitlist for teachers.">
-  <meta name="theme-color" content="#F6F6F2" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0E1220" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="Quizpen turns your lesson text into a multiple-choice quiz in the same language, with a one-sentence reason for each correct answer. Try a ready example and join the waitlist for teachers.">
+  <meta name="theme-color" content="#FBF8F0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#22252B" media="(prefers-color-scheme: dark)">
   <script>
     /* Theme before first paint: saved choice (qp_theme), else the system setting. Sync on purpose. */
     (function (d) {
@@ -16,15 +16,15 @@
       d.setAttribute('data-theme', t);
       d.className += ' js';
       var m = document.querySelectorAll('meta[name="theme-color"]');
-      for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#0E1220' : '#F6F6F2');
+      for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#22252B' : '#FBF8F0');
       // Web fonts after the window load event, in one step: the stylesheet and every face (Latin and Cyrillic) load
       // first, then html.wf switches from the metric-matched fallbacks (styles.css). On a slow link their bytes stay
       // off the first paint and the scripts, and the text never reflows face by face as single files arrive.
       window.qpFontsCss = function () {
-        var f = document.fonts, all = [], w = ['400', '500', '600', '700', '800'];
+        var f = document.fonts, all = [];
+        var faces = ['400 1em Literata', '600 1em Literata', 'italic 400 1em Literata', '400 1em "PT Sans"', '700 1em "PT Sans"', '600 1em Caveat'];
         if (!f || !f.load || !window.Promise) { d.className += ' wf'; return; }
-        for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
-        all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
+        for (var j = 0; j < faces.length; j++) all.push(f.load(faces[j], 'aя'));
         Promise.all(all).then(function () {
           d.className += ' wf';
           // ui.js re-measures its reserved heights in the web fonts.
@@ -34,7 +34,7 @@
       var fonts = function () {
         var l = document.createElement('link');
         l.rel = 'stylesheet';
-        l.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap';
+        l.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap';
         l.onload = window.qpFontsCss;
         document.head.appendChild(l);
       };
@@ -42,7 +42,7 @@
     })(document.documentElement);
   </script>
   <!-- Without JS the browser loads the web fonts itself (display=swap); with JS the script above does it after load. -->
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap"></noscript>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap"></noscript>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <!-- Open Graph / Twitter. Replace og.png with an absolute URL after deploy for best scraper support. -->
