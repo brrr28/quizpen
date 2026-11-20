@@ -70,8 +70,8 @@ Errors:
 
 | Field | Rules |
 | --- | --- |
-| `text` | Required. Trimmed length 200 to 3000 characters. |
-| `lang` | `uk` or `en`; anything else becomes `en`. |
+| `text` | Required. Any language and script, including right-to-left. Trimmed length 200 to 3000 characters, counted as JavaScript `String.length` (the same unit as the page counter and the textarea `maxlength`): one per letter in Latin, Cyrillic, Arabic, Hebrew, CJK and other common scripts; an emoji counts as 2. |
+| `lang` | `uk` or `en`; anything else becomes `en`. The UI language: only a fallback for the quiz language (see below). |
 | `count` | Rounded and clamped to 3..7. Missing, null or not a number: 5. |
 | `cid` | Optional. A missing `cid` shares one `anon` bucket. |
 | `sample` | Optional, analytics only, does not change the answer. The page sends the sample chip id whose text was sent unchanged (`photosynthesis`, `printing`, `magi`) or `custom` for the visitor's own or edited text. Lowercased, `a-z0-9_-` only, max 32 chars; missing is stored as empty. |
@@ -90,8 +90,10 @@ Success:
 }
 ```
 
+Quiz language: the model detects the language of `text` and writes the title, questions, options and explanations in that language, whatever it is (Spanish, Polish, Ukrainian, Arabic, Japanese...). `lang` is used only when the language of the text is unclear, or the text mixes languages and none clearly dominates. So a Spanish text pasted on the English page gives a Spanish quiz.
+
 Each question has exactly 4 distinct options and `answer` is the 0-based index of the correct one. Options are shuffled on the server, so `answer` is already adjusted.
-Questions that fail validation (not 4 distinct non-empty options, bad `answer`, empty or too long fields) are dropped. If fewer than 3 valid questions remain, the response is `server`. At most `count` questions are returned.
+Questions that fail validation (not 4 distinct non-empty options, bad `answer`, empty or too long fields) are dropped. Validation checks shape and length only, never the script. If fewer than 3 valid questions remain, the response is `server`. At most `count` questions are returned.
 
 Errors:
 
@@ -104,7 +106,7 @@ Errors:
 | `server` | The model call failed, was refused, stopped early, returned bad JSON, or fewer than 3 valid questions remained. Details go to the Apps Script log only. |
 | `bad_request` | See POST above. |
 
-Model: `claude-haiku-5-5` via the Anthropic Messages API (`anthropic-version: 2026-10-21`), `max_tokens` 3000 (thinking counts toward it, and Ukrainian needs more tokens), structured JSON output. One retry on 429 or 5xx, only if the first attempt was fast.
+Model: `claude-haiku-5-5` via the Anthropic Messages API (`anthropic-version: 2026-10-21`), `max_tokens` 3000 (thinking counts toward it, and non-Latin scripts need more tokens), structured JSON output. One retry on 429 or 5xx, only if the first attempt was fast.
 Text length checks run before the key check, and the limits are counted only when the request is accepted.
 
 Every quiz request that reaches this action (ok or not) appends one row to the `demo_runs` tab: `created_at, cid, lang, sample, text_length, questions, ok, error, ms`. The pasted text is never stored, only its length. Logging is capped at 30 rows per `cid` per hour and 120 rows per minute in total; above that the request is still served, just not logged.
@@ -165,5 +167,6 @@ node backend/test-contract.mjs --target=gas  # runs Code.gs itself in a vm with 
 ```
 
 Mock env: `PORT` (default 8787), `MOCK_QUIZ_DELAY_MS` (default 1200), `MOCK_QUIZ_DISABLED=1` (quiz answers `disabled`). `MOCK_OK=1` is needed to start it from an interactive console. The mock has no 30-second stats cache.
+The mock cannot write in every language: it words its fill-in-the-blank quiz in Ukrainian for Cyrillic text, in English for Latin text, and by `lang` for any other or mixed text. Its title carries the script it detected in the text (ISO 15924, at least 60% of the letters), e.g. `Quiz [Jpan]: ...`, `Quiz [Arab]: ...`, or `[mixed]`.
 The mock keeps visits and demo runs in memory; `GET ?action=debug` (mock only, the real backend answers `bad_request`) shows the counters and the last row of each.
 `BASE_URL=<url>` points the test at an already running server.

@@ -31,6 +31,49 @@ const LONG_TEXT_UK =
   'Побічним продуктом є кисень, тому ліси такі важливі для повітря, яким ми дихаємо. ' +
   'Без сонячного світла фотосинтез зупиняється, і рослина живе за рахунок запасів крохмалю.';
 
+// Non-Latin lesson texts: no spaces (Japanese) and right-to-left (Arabic). Each is 250+ characters.
+const LONG_TEXT_JA =
+  '水の循環とは、地球上の水が形を変えながら海と空と陸のあいだを絶えず移動する仕組みのことです。' +
+  '太陽の熱で海や川の水があたためられると、水は水蒸気になって空へのぼっていきます。' +
+  '上空は気温が低いので、水蒸気は冷やされて小さな水や氷のつぶになり、それが集まって雲ができます。' +
+  '雲のつぶが大きく重くなると、雨や雪になって地上に降ってきます。' +
+  '降った水の一部は地面にしみこんで地下水になり、残りは川を流れてふたたび海へもどります。' +
+  '雨がたくさん降った年には川の水がふえ、晴れの日が続くと湖や池の水がへることもあります。' +
+  'こうして水は何度も同じ旅をくり返しています。';
+
+const LONG_TEXT_AR =
+  'دورة الماء هي الطريقة التي ينتقل بها الماء باستمرار بين البحار والسماء واليابسة. ' +
+  'عندما تسخن الشمس مياه البحار والأنهار، يتحول جزء منها إلى بخار يصعد إلى الأعلى. ' +
+  'وفي طبقات الجو العليا تكون الحرارة منخفضة، فيبرد البخار ويتكثف على شكل قطرات صغيرة تتجمع لتكوّن السحب. ' +
+  'وعندما تكبر هذه القطرات وتثقل، تسقط على الأرض مطرا أو ثلجا. ' +
+  'يتسرب بعض الماء إلى باطن الأرض فيصبح مياها جوفية، ويجري الباقي في الأنهار عائدا إلى البحر من جديد.';
+
+const LONG_TEXT_ES =
+  'La fotosíntesis es el proceso por el cual las plantas verdes fabrican su propio alimento. ' +
+  'Ocurre sobre todo en las hojas, dentro de los cloroplastos, que contienen un pigmento verde llamado clorofila. ' +
+  'Las plantas toman dióxido de carbono del aire y agua del suelo, y con la energía de la luz del sol los transforman en glucosa. ' +
+  'El oxígeno que respiramos es un subproducto de este proceso.';
+
+// Fake model replies written in the language of the text, as the prompt asks.
+const REPLY_ES = {
+  title: 'La fotosíntesis',
+  questions: [
+    { q: '¿Dónde ocurre sobre todo la fotosíntesis?', options: ['En las raíces', 'En las hojas', 'En el tallo', 'En las flores'], answer: 1, explain: 'El texto dice que ocurre sobre todo en las hojas.' },
+    { q: '¿Qué pigmento contienen los cloroplastos?', options: ['La clorofila', 'La melanina', 'La hemoglobina', 'El caroteno'], answer: 0, explain: 'Los cloroplastos contienen clorofila, un pigmento verde.' },
+    { q: '¿Qué gas toman las plantas del aire?', options: ['Oxígeno', 'Nitrógeno', 'Dióxido de carbono', 'Helio'], answer: 2, explain: 'Las plantas toman dióxido de carbono del aire.' },
+    { q: '¿En qué transforman las plantas el agua y el dióxido de carbono?', options: ['En almidón', 'En proteínas', 'En sal', 'En glucosa'], answer: 3, explain: 'Con la energía de la luz del sol los transforman en glucosa.' },
+  ],
+};
+
+const REPLY_AR = {
+  title: 'دورة الماء',
+  questions: [
+    { q: 'ما الذي يحول ماء البحر إلى بخار؟', options: ['حرارة الشمس', 'الرياح', 'ضوء القمر', 'الجبال'], answer: 0, explain: 'يقول النص إن الشمس تسخن الماء فيتحول جزء منه إلى بخار.' },
+    { q: 'مم تتكون السحب؟', options: ['من الغبار', 'من قطرات صغيرة', 'من الدخان', 'من الرمل'], answer: 1, explain: 'يتكثف البخار على شكل قطرات صغيرة تتجمع لتكوّن السحب.' },
+    { q: 'إلى أين يعود ماء الأنهار؟', options: ['إلى الجبال', 'إلى السحب', 'إلى البحر', 'إلى الصحراء'], answer: 2, explain: 'يجري الماء في الأنهار عائدا إلى البحر من جديد.' },
+  ],
+};
+
 /* ---------- Transports ---------- */
 
 async function httpTransport() {
@@ -165,12 +208,13 @@ function gasTransport() {
   const cache = new Map();
   const props = new Map([['ANTHROPIC_API_KEY', 'test-key-not-real']]);
   const fetchLog = [];
-  const claude = { mode: 'ok' };
+  const claude = { mode: 'ok', reply: null }; // reply: a quiz object returned as the model output instead of the default
 
   const fakeClaude = (payload) => {
     const count = Number(/Number of questions: (\d+)/.exec(payload.messages[0].content)[1]);
     if (claude.mode === 'refusal') return { stop_reason: 'refusal', stop_details: { category: 'general_harms' }, content: [] };
     if (claude.mode === 'garbage') return { stop_reason: 'end_turn', content: [{ type: 'text', text: '{"title":"x","questions":[]}' }] };
+    if (claude.reply) return { stop_reason: 'end_turn', content: [{ type: 'text', text: JSON.stringify(claude.reply) }] };
     const questions = Array.from({ length: count }, (_, i) => ({
       q: `Question ${i + 1}?`, options: ['alpha', 'beta', 'gamma', 'delta'], answer: i % 4, explain: 'Because the text says so.',
     }));
@@ -315,6 +359,27 @@ async function runContract(t) {
   return Date.now() - started;
 }
 
+/** Lesson texts in other languages and scripts pass the length checks: shared by every target. */
+async function runQuizLanguages(t) {
+  check('Japanese text is 250+ characters, one per letter', LONG_TEXT_JA.length >= 250 && LONG_TEXT_JA.length === [...LONG_TEXT_JA].length, LONG_TEXT_JA.length);
+  check('Arabic text is 250+ characters, one per letter', LONG_TEXT_AR.length >= 250 && LONG_TEXT_AR.length === [...LONG_TEXT_AR].length, LONG_TEXT_AR.length);
+  const ja = (await t.post({ action: 'quiz', text: LONG_TEXT_JA, lang: 'en', count: 3, cid: cid('ja') })).json;
+  checkQuizShape('quiz Japanese text', ja, 3);
+  const ar = (await t.post({ action: 'quiz', text: LONG_TEXT_AR, lang: 'uk', count: 3, cid: cid('ar') })).json;
+  checkQuizShape('quiz Arabic text (right-to-left)', ar, 3);
+  const es = (await t.post({ action: 'quiz', text: LONG_TEXT_ES, lang: 'uk', count: 3, cid: cid('es') })).json;
+  checkQuizShape('quiz Spanish text', es, 3);
+  return { ja, ar, es };
+}
+
+/** Mock only: the title carries the script the mock detected in the text, and the wording follows the text, not `lang`. */
+function checkMockLanguageMarkers(results) {
+  const title = (r) => (r.quiz && r.quiz.title) || '';
+  check('mock: Japanese text detected', title(results.ja).includes('[Jpan]'), title(results.ja));
+  check('mock: Arabic text detected', title(results.ar).includes('[Arab]'), title(results.ar));
+  check('mock: Spanish text with lang uk -> Latin wording', title(results.es).startsWith('Quiz [Latn]: '), title(results.es));
+}
+
 /** Visit beacon and the optional quiz `sample` field: shared by every target. */
 async function runAnalytics(t) {
   const visit = (extra) => t.post({ action: 'visit', lang: 'uk', utm: { source: 'tg', medium: 'post', campaign: 'launch' }, ref: 'k7xq-2ma', ...extra });
@@ -447,7 +512,40 @@ async function runGasOnly(t) {
   check('claude: no prefill', call.payload.messages.at(-1).role === 'user', call.payload.messages);
   check('claude: max_tokens set', isInt(call.payload.max_tokens) && call.payload.max_tokens >= 2000, call.payload.max_tokens);
   check('claude: system prompt', typeof call.payload.system === 'string' && call.payload.system.length > 200);
-  check('claude: asks for Ukrainian', call.payload.messages[0].content.includes('Ukrainian'));
+  const system = call.payload.system || '';
+  const content = call.payload.messages[0].content;
+  check('claude: system prompt detects the language of the text', system.includes('Detect the language of the source text from the text itself, in any language and script') && system.includes('write the title, questions, options and explanations in that same language and script'), system);
+  check('claude: system prompt uses lang only as a fallback', system.includes('Use the fallback language given in the request only when the language of the source text is unclear, or the text mixes languages'), system);
+  check('claude: old "language you are asked for" rule is gone', !system.includes('in the language you are asked for'));
+  check('claude: request asks for the language of the text', content.includes('Language of the quiz: the language of the source text.'), content);
+  check('claude: request names lang uk as the fallback', content.includes('Fallback language, only if the language of the source text is unclear or mixed: Ukrainian.'), content);
+
+  const sentWith = (text) => t.fetchLog.find((c) => c.payload.messages[0].content.includes(text));
+  const jaCall = sentWith(LONG_TEXT_JA);
+  check('claude: Japanese text sent unchanged, fallback English', !!jaCall && jaCall.payload.messages[0].content.includes('mixed: English.'));
+  const arCall = sentWith(LONG_TEXT_AR);
+  check('claude: Arabic text sent unchanged, fallback Ukrainian', !!arCall && arCall.payload.messages[0].content.includes('mixed: Ukrainian.'));
+  const rowJa = (t.sheet('demo_runs') || { data: [] }).data.find((row) => row[1] === cid('ja')) || [];
+  check('demo run: Japanese text_length counts characters', rowJa[4] === [...LONG_TEXT_JA].length, rowJa);
+
+  // Model replies in the language of the text pass validation unchanged, with the answer kept on the right option.
+  const checkReply = (name, reply, r) => {
+    check(`${name}: ok`, r.ok === true, r);
+    const quiz = r.quiz || { questions: [] };
+    check(`${name}: title kept`, quiz.title === reply.title, quiz.title);
+    check(`${name}: every question kept`, quiz.questions.length === reply.questions.length, quiz.questions.length);
+    quiz.questions.forEach((q, i) => {
+      const src = reply.questions.find((s) => s.q === q.q);
+      const same = !!src && q.explain === src.explain && [...q.options].sort().join('|') === [...src.options].sort().join('|');
+      check(`${name}: q${i} text, options, explain kept`, same, q);
+      check(`${name}: q${i} answer still correct after shuffle`, !!src && q.options[q.answer] === src.options[src.answer], q);
+    });
+  };
+  t.claude.reply = REPLY_ES;
+  checkReply('Spanish model reply', REPLY_ES, (await t.post({ action: 'quiz', text: LONG_TEXT_ES, lang: 'en', count: 4, cid: cid('es-reply') })).json);
+  t.claude.reply = REPLY_AR;
+  checkReply('Arabic model reply', REPLY_AR, (await t.post({ action: 'quiz', text: LONG_TEXT_AR, lang: 'en', count: 3, cid: cid('ar-reply') })).json);
+  t.claude.reply = null;
 
   const sheet = t.sheets[0];
   check('sheet renamed to waitlist', sheet.name === 'waitlist', sheet.name);
@@ -493,11 +591,13 @@ t.post = (body) => {
 let quizMs = 0;
 try {
   quizMs = await runContract(t);
+  const languages = await runQuizLanguages(t);
   await runAnalytics(t);
   if (target === 'gas') {
     await runGasOnly(t);
     await runGasAnalytics(t, quizPosts);
   } else if (t.name === 'mock-server.mjs') {
+    checkMockLanguageMarkers(languages);
     await runMockCounters(t, quizPosts);
   }
 } catch (err) {

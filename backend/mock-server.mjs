@@ -124,11 +124,50 @@ function reserveQuiz(cid) {
   return true;
 }
 
-/** Deterministic sample quiz: fill-in-the-blank questions built from the first sentences of the text. */
+const SCRIPTS = [
+  ['Latn', /\p{Script=Latin}/u],
+  ['Cyrl', /\p{Script=Cyrillic}/u],
+  ['Arab', /\p{Script=Arabic}/u],
+  ['Hebr', /\p{Script=Hebrew}/u],
+  ['Grek', /\p{Script=Greek}/u],
+  ['Deva', /\p{Script=Devanagari}/u],
+  ['Thai', /\p{Script=Thai}/u],
+  ['Hang', /\p{Script=Hangul}/u],
+  ['Jpan', /[\p{Script=Hiragana}\p{Script=Katakana}]/u],
+  ['Hani', /\p{Script=Han}/u],
+];
+
+/**
+ * Mock stand-in for the model's language detection: the ISO 15924 code of the script that has at least
+ * 60% of the letters, or 'mixed' when none does. Kanji next to kana counts as Japanese.
+ */
+function textScript(text) {
+  const counts = {};
+  let letters = 0;
+  for (const ch of text) {
+    if (!/\p{L}/u.test(ch)) continue;
+    letters++;
+    const hit = SCRIPTS.find(([, re]) => re.test(ch));
+    if (hit) counts[hit[0]] = (counts[hit[0]] || 0) + 1;
+  }
+  if (counts.Jpan) {
+    counts.Jpan += counts.Hani || 0;
+    delete counts.Hani;
+  }
+  const [code, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0] || ['mixed', 0];
+  return letters && n / letters >= 0.6 ? code : 'mixed';
+}
+
+/**
+ * Deterministic sample quiz: fill-in-the-blank questions built from the first sentences of the text.
+ * Like Code.gs, the text decides the language: Cyrillic text gets Ukrainian wording, Latin text English,
+ * any other or mixed text falls back to `lang`. The title carries the detected script, e.g. "Quiz [Jpan]: ...".
+ */
 function buildSampleQuiz(text, lang, count) {
-  const uk = lang === 'uk';
+  const script = textScript(text);
+  const uk = script === 'Cyrl' || (script !== 'Latn' && lang === 'uk');
   const wordRe = /[\p{L}\p{N}'’-]{5,}/gu;
-  let sentences = text.split(/(?<=[.!?…])\s+/).map((s) => s.trim()).filter((s) => (s.match(wordRe) || []).length >= 2);
+  let sentences = text.split(/(?<=[.!?…])\s+|(?<=[。！？؟])\s*/u).map((s) => s.trim()).filter((s) => (s.match(wordRe) || []).length >= 2);
   if (sentences.length === 0) sentences = [text.slice(0, 300)];
   const pool = [...new Set((text.match(wordRe) || []).map((w) => w.toLowerCase()))];
   const fallback = uk ? ['контекст', 'приклад', 'процес', 'система', 'результат'] : ['context', 'example', 'process', 'system', 'result'];
@@ -154,8 +193,9 @@ function buildSampleQuiz(text, lang, count) {
       explain: uk ? `У тексті сказано: «${short(sentence)}».` : `The text says: "${short(sentence)}".`,
     });
   }
-  const head = text.split(/\s+/).slice(0, 5).join(' ');
-  return { title: (uk ? 'Тест за текстом: ' : 'Quiz: ') + head + '...', questions };
+  // Capped in characters: Japanese or Chinese text may have no spaces at all.
+  const head = Array.from(text.split(/\s+/).slice(0, 5).join(' ')).slice(0, 60).join('');
+  return { title: (uk ? 'Тест за текстом' : 'Quiz') + ` [${script}]: ` + head + '...', questions };
 }
 
 function visit(body) {
