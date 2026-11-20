@@ -11,6 +11,10 @@ const CONFIG = {
   timeZone: 'Europe/Kyiv',
   statsCacheSec: 30,
   join: { perCid: 5, windowSec: 600 },
+  // Page-view beacon: one counted visit per cid per day; the limits only stop floods.
+  visit: { perCid: 20, windowSec: 600, perMinute: 300 },
+  // Budget for demo_runs rows, so rejected quiz requests cannot flood the sheet.
+  runLog: { perCidPerHour: 30, perMinute: 120 },
   quiz: {
     minChars: 200,
     maxChars: 3000,
@@ -35,6 +39,19 @@ const CONFIG = {
 };
 
 const HEADERS = ['created_at', 'email', 'ref_code', 'referred_by', 'lang', 'utm_source', 'utm_medium', 'utm_campaign', 'cid'];
+// Append-only analytics tabs. Columns listed in `numeric` keep the default format; all others are plain text.
+const VISITS_TAB = {
+  name: 'visits',
+  headers: ['created_at', 'cid', 'lang', 'utm_source', 'utm_medium', 'utm_campaign', 'ref'],
+  numeric: [],
+};
+const RUNS_TAB = {
+  name: 'demo_runs',
+  headers: ['created_at', 'cid', 'lang', 'sample', 'text_length', 'questions', 'ok', 'error', 'ms'],
+  numeric: ['text_length', 'questions', 'ok', 'ms'],
+};
+const INSIGHTS_NAME = 'Insights';
+const CACHE_MAX_SEC = 21600; // CacheService keeps an entry for at most 6 hours.
 const REF_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 const REF_ALPHABET = REF_LETTERS + '23456789';
 const REF_LENGTH = 7;
@@ -110,6 +127,7 @@ function doPost(e) {
   try {
     if (body.action === 'join') return json_(handleJoin_(body));
     if (body.action === 'quiz') return json_(handleQuiz_(body));
+    if (body.action === 'visit') return json_(handleVisit_(body));
     if (body.action === 'stats') return json_({ ok: true, total: getTotal_() });
     return json_({ ok: false, error: 'bad_request' });
   } catch (err) {
@@ -209,14 +227,41 @@ function ensureSheet_() {
       sheet = ss.insertSheet(CONFIG.sheetName);
     }
   }
-  if (sheet.getLastRow() === 0) {
-    // Plain-text format keeps dates, codes and ids exactly as written (no auto-conversion).
-    sheet.getRange('A:I').setNumberFormat('@');
-    sheet.appendRow(HEADERS);
-    sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
-    sheet.setFrozenRows(1);
-  }
+  if (sheet.getLastRow() === 0) writeHeader_(sheet, HEADERS, []);
   return sheet;
+}
+
+/** Returns an analytics tab (VISITS_TAB or RUNS_TAB), creating it and its header row if needed. Call under the lock. */
+function ensureTab_(tab) {
+  const ss = SpreadsheetApp.getActive();
+  const sheet = ss.getSheetByName(tab.name) || ss.insertSheet(tab.name);
+  if (sheet.getLastRow() === 0) writeHeader_(sheet, tab.headers, tab.numeric);
+  return sheet;
+}
+
+function writeHeader_(sheet, headers, numeric) {
+  // Plain-text format keeps dates, codes and ids exactly as written (no auto-conversion).
+  headers.forEach(function (name, i) {
+    if (numeric.indexOf(name) < 0) sheet.getRange(colLetter_(i + 1) + ':' + colLetter_(i + 1)).setNumberFormat('@');
+  });
+  sheet.appendRow(headers);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  sheet.setFrozenRows(1);
+}
+
+/** Appends one row to an analytics tab. appendRow is atomic, so the lock is taken only to create the tab. */
+function appendLogRow_(tab, row) {
+  let sheet = SpreadsheetApp.getActive().getSheetByName(tab.name);
+  if (!sheet) {
+    const lock = LockService.getScriptLock();
+    if (!lock.tryLock(5000)) throw new Error('lock busy while creating ' + tab.name);
+    try {
+      sheet = ensureTab_(tab);
+    } finally {
+      lock.releaseLock();
+    }
+  }
+  sheet.appendRow(row);
 }
 
 function countSignups_(sheet) {
@@ -251,9 +296,99 @@ function newRefCode_(taken) {
   throw new Error('could not generate a unique ref code');
 }
 
+/* ---------- Visits ---------- */
+
+/** Page-view beacon: appends one row to "visits" per cid per Kyiv day; repeats answer ok with counted: false. */
+function handleVisit_(body) {
+  const cid = cleanCid_(body.cid);
+  if (!cid) return { ok: false, error: 'bad_request' };
+  const limits = CONFIG.visit;
+  if (!bumpUnderLimit_('rl:visit:' + cid + ':' + bucket_(limits.windowSec), limits.perCid, limits.windowSec)) {
+    return { ok: false, error: 'rate_limited' };
+  }
+
+  const cache = CacheService.getScriptCache();
+  const seenKey = 'visit:' + cid + ':' + Utilities.formatDate(new Date(), CONFIG.timeZone, 'yyyy-MM-dd');
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return { ok: false, error: 'server' };
+  try {
+    if (cache.get(seenKey)) return { ok: true, counted: false };
+    if (!bumpUnderLimit_('rl:visit:all:' + bucket_(60), limits.perMinute, 60)) return { ok: false, error: 'rate_limited' };
+    cache.put(seenKey, '1', secondsLeftToday_());
+  } finally {
+    lock.releaseLock();
+  }
+
+  const utm = body.utm && typeof body.utm === 'object' ? body.utm : {};
+  try {
+    appendLogRow_(VISITS_TAB, [
+      nowIso_(),
+      cid,
+      cleanLang_(body.lang),
+      clean_(utm.source, 100),
+      clean_(utm.medium, 100),
+      clean_(utm.campaign, 100),
+      cleanRef_(body.ref),
+    ]);
+  } catch (err) {
+    // Not written, so a retry of the same visit must still count.
+    cache.remove(seenKey);
+    throw err;
+  }
+  return { ok: true, counted: true };
+}
+
+/** Seconds until the next midnight in CONFIG.timeZone, capped by the CacheService maximum. */
+function secondsLeftToday_() {
+  const hms = Utilities.formatDate(new Date(), CONFIG.timeZone, 'HH:mm:ss').split(':').map(Number);
+  const left = 86400 - (hms[0] * 3600 + hms[1] * 60 + hms[2]);
+  return Math.max(1, Math.min(CACHE_MAX_SEC, left));
+}
+
 /* ---------- Quiz demo ---------- */
 
+/** Runs the quiz request and logs it to "demo_runs" whatever the outcome. */
 function handleQuiz_(body) {
+  const started = Date.now();
+  let result = { ok: false, error: 'server' };
+  try {
+    result = runQuiz_(body);
+    return result;
+  } finally {
+    logDemoRun_(body, result, Date.now() - started);
+  }
+}
+
+/**
+ * Appends one row to "demo_runs". Stores only the length of the pasted text, never the text itself.
+ * Never throws: logging must not change the quiz response.
+ */
+function logDemoRun_(body, result, ms) {
+  try {
+    const cid = cleanCid_(body.cid);
+    const limits = CONFIG.runLog;
+    const underBudget =
+      bumpUnderLimit_('rl:runlog:' + (cid || 'anon') + ':' + bucket_(3600), limits.perCidPerHour, 3600) &&
+      bumpUnderLimit_('rl:runlog:all:' + bucket_(60), limits.perMinute, 60);
+    if (!underBudget) return;
+    const textLength = typeof body.text === 'string' ? body.text.trim().length : 0;
+    appendLogRow_(RUNS_TAB, [
+      nowIso_(),
+      cid,
+      cleanLang_(body.lang),
+      cleanSample_(body.sample),
+      textLength,
+      result.ok && result.quiz ? result.quiz.questions.length : 0,
+      result.ok === true,
+      result.ok ? '' : clean_(result.error, 40),
+      ms,
+    ]);
+  } catch (err) {
+    logError_('logDemoRun', err);
+  }
+}
+
+function runQuiz_(body) {
   const text = typeof body.text === 'string' ? body.text.trim() : '';
   if (text.length < CONFIG.quiz.minChars) return { ok: false, error: 'too_short' };
   if (text.length > CONFIG.quiz.maxChars) return { ok: false, error: 'too_long' };
@@ -483,6 +618,18 @@ function cleanLang_(value) {
   return value === 'uk' ? 'uk' : 'en';
 }
 
+/** Sample id of the demo text ("photosynthesis", "custom", ...); '' when not sent. */
+function cleanSample_(value) {
+  return typeof value === 'string' ? value.toLowerCase().replace(/[^a-z0-9_-]/g, '').replace(/^-+/, '').slice(0, 32) : '';
+}
+
+/** 1 -> A, 27 -> AA. */
+function colLetter_(n) {
+  let s = '';
+  for (; n > 0; n = Math.floor((n - 1) / 26)) s = String.fromCharCode(65 + ((n - 1) % 26)) + s;
+  return s;
+}
+
 function clampCount_(value) {
   if (value === null || value === undefined || value === '') return CONFIG.quiz.defaultCount;
   const n = Math.round(Number(value));
@@ -515,18 +662,149 @@ function logError_(where, err) {
   console.error(where + ': ' + (err && err.message ? err.message : String(err)));
 }
 
-/* ---------- Run by hand from the Apps Script editor ---------- */
+/* ---------- Insights dashboard ---------- */
 
-/** Creates the sheet and header row, asks for permissions and logs the setup state. No API call. */
-function checkSetup() {
+/**
+ * Builds the "Insights" tab: plain formulas over waitlist, visits and demo_runs, so it stays live with no script
+ * running at view time. Safe to rerun: the tab is cleared, its chart removed and everything is written again.
+ */
+function setupInsights() {
+  const ss = SpreadsheetApp.getActive();
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sheet = ensureSheet_();
-    console.log('Sheet "' + sheet.getName() + '" ready, signups: ' + countSignups_(sheet));
+    // Formulas that point at a missing tab show #REF!, so every data tab must exist first.
+    ensureSheet_();
+    ensureTab_(VISITS_TAB);
+    ensureTab_(RUNS_TAB);
   } finally {
     lock.releaseLock();
   }
+  // TODAY() in the daily table must use the same day boundary as created_at.
+  if (ss.getSpreadsheetTimeZone() !== CONFIG.timeZone) ss.setSpreadsheetTimeZone(CONFIG.timeZone);
+
+  const sheet = ss.getSheetByName(INSIGHTS_NAME) || ss.insertSheet(INSIGHTS_NAME);
+  sheet.getCharts().forEach(function (chart) { sheet.removeChart(chart); });
+  sheet.clear();
+  ss.setActiveSheet(sheet);
+  ss.moveActiveSheet(1);
+
+  const w = function (col) { return colRef_(CONFIG.sheetName, HEADERS, col); };
+  const v = function (col) { return colRef_(VISITS_TAB.name, VISITS_TAB.headers, col); };
+  const r = function (col) { return colRef_(RUNS_TAB.name, RUNS_TAB.headers, col); };
+  // Distinct non-empty cids of a column that also appear in waitlist.cid.
+  const signedUp = function (cids) {
+    return '=IFERROR(SUMPRODUCT(--ISNUMBER(MATCH(UNIQUE(FILTER(' + cids + ',' + cids + '<>"")),' + w('cid') + ',0))),0)';
+  };
+  const onDay = function (createdAt, row) { return '=COUNTIF(' + createdAt + ',TEXT($A' + row + ',"yyyy-mm-dd")&"*")'; };
+
+  sheet.getRange('A1:A2').setValues([
+    ['Quizpen experiment: live insights'],
+    ['Formulas over the waitlist, visits and demo_runs tabs, so the numbers update by themselves. setupInsights() rebuilds this tab.'],
+  ]);
+
+  // Funnel. B5..B10 are referenced below, keep the order.
+  insightsHeader_(sheet, 4, ['Funnel', 'Value']);
+  sheet.getRange('A5:B12').setValues([
+    ['Unique visitors', '=COUNTUNIQUEIFS(' + v('cid') + ',' + v('cid') + ',"<>")'],
+    ['Demo runs', '=COUNTA(' + r('created_at') + ')'],
+    ['Unique demo users', '=COUNTUNIQUEIFS(' + r('cid') + ',' + r('cid') + ',"<>")'],
+    ['Signups', '=COUNTA(' + w('email') + ')'],
+    ['Visitors who signed up', signedUp(v('cid'))],
+    ['Demo users who signed up', signedUp(r('cid'))],
+    ['Visit → signup', '=IFERROR(B9/B5,0)'],
+    ['Demo user → signup', '=IFERROR(B10/B7,0)'],
+  ]);
+
+  // Sample texts versus the visitor's own text.
+  const sample = r('sample');
+  const okRun = r('ok') + ',TRUE';
+  insightsHeader_(sheet, 14, ['Demo: sample vs own text', 'Runs', 'Successful', 'Success rate']);
+  sheet.getRange('A15:D17').setValues([
+    ['Sample text', '=COUNTIFS(' + sample + ',"<>",' + sample + ',"<>custom")', '=COUNTIFS(' + sample + ',"<>",' + sample + ',"<>custom",' + okRun + ')', '=IFERROR(C15/B15,0)'],
+    ['Own text', '=COUNTIF(' + sample + ',"custom")', '=COUNTIFS(' + sample + ',"custom",' + okRun + ')', '=IFERROR(C16/B16,0)'],
+    ['Not tagged', '=COUNTIFS(' + r('created_at') + ',"<>",' + sample + ',"")', '=COUNTIFS(' + r('created_at') + ',"<>",' + sample + ',"",' + okRun + ')', '=IFERROR(C17/B17,0)'],
+  ]);
+
+  insightsHeader_(sheet, 19, ['Language', 'Visits', 'Demo runs', 'Signups', 'Share of signups']);
+  sheet.getRange('A20:E21').setValues(['uk', 'en'].map(function (code, i) {
+    return [
+      LANG_NAMES[code] + ' (' + code + ')',
+      '=COUNTIF(' + v('lang') + ',"' + code + '")',
+      '=COUNTIF(' + r('lang') + ',"' + code + '")',
+      '=COUNTIF(' + w('lang') + ',"' + code + '")',
+      '=IFERROR(D' + (20 + i) + '/$B$8,0)',
+    ];
+  }));
+
+  // Last 14 days, oldest first; the chart reads A23:A37 and D23:D37.
+  insightsHeader_(sheet, 23, ['Last 14 days', 'Visits', 'Demo runs', 'Signups']);
+  const days = [];
+  for (let i = 0; i < 14; i++) {
+    const row = 24 + i;
+    days.push(['=TODAY()-' + (13 - i), onDay(v('created_at'), row), onDay(r('created_at'), row), onDay(w('created_at'), row)]);
+  }
+  sheet.getRange('A24:D37').setValues(days);
+
+  // QUERY spills up to 10 rows into A40:B49; the empty label drops its header row.
+  const c = colLetter_(HEADERS.indexOf('referred_by') + 1);
+  const query = 'select ' + c + ', count(' + c + ') where ' + c + ' is not null and ' + c + " <> '' group by " + c +
+    ' order by count(' + c + ') desc limit 10 label count(' + c + ") ''";
+  insightsHeader_(sheet, 39, ['Top referrers (ref code)', 'Referrals']);
+  sheet.getRange('A40').setFormula('=IFERROR(QUERY(' + w('referred_by') + ',"' + query + '",0),"No referrals yet")');
+
+  // Formatting.
+  sheet.getRange('A1').setFontSize(16).setFontWeight('bold');
+  sheet.getRange('A2').setFontColor('#5f6368');
+  ['A5:A12', 'A15:A17', 'A20:A21'].forEach(function (a1) { sheet.getRange(a1).setFontWeight('bold'); });
+  ['B5:B10', 'B15:C17', 'B20:D21', 'B24:D37', 'B40:B49'].forEach(function (a1) { sheet.getRange(a1).setNumberFormat('0'); });
+  ['B11:B12', 'D15:D17', 'E20:E21'].forEach(function (a1) { sheet.getRange(a1).setNumberFormat('0.0%'); });
+  sheet.getRange('A24:A37').setNumberFormat('dd.mm').setHorizontalAlignment('left');
+  sheet.setColumnWidth(1, 260);
+  [2, 3, 4, 5].forEach(function (col) { sheet.setColumnWidth(col, 120); });
+  sheet.setFrozenRows(2);
+  sheet.setHiddenGridlines(true);
+
+  sheet.insertChart(
+    sheet.newChart()
+      .setChartType(Charts.ChartType.LINE)
+      .addRange(sheet.getRange('A23:A37'))
+      .addRange(sheet.getRange('D23:D37'))
+      .setNumHeaders(1)
+      .setPosition(4, 7, 0, 0)
+      .setOption('title', 'Signups per day, last 14 days')
+      .setOption('legend', { position: 'none' })
+      .setOption('pointSize', 5)
+      .setOption('vAxis', { format: '0', viewWindow: { min: 0 } })
+      .setOption('width', 620)
+      .setOption('height', 320)
+      .build()
+  );
+  console.log('Insights tab rebuilt');
+}
+
+/** Section header row: bold labels on a light background, value columns right-aligned. */
+function insightsHeader_(sheet, row, labels) {
+  const range = sheet.getRange(row, 1, 1, labels.length);
+  range.setValues([labels]).setFontWeight('bold').setBackground('#e8eaed');
+  if (labels.length > 1) sheet.getRange(row, 2, 1, labels.length - 1).setHorizontalAlignment('right');
+}
+
+/** Whole data column below the header row of a tab, e.g. 'visits'!B2:B. */
+function colRef_(tabName, headers, column) {
+  const index = headers.indexOf(column);
+  if (index < 0) throw new Error('unknown column ' + column + ' in ' + tabName);
+  const letter = colLetter_(index + 1);
+  return "'" + tabName + "'!" + letter + '2:' + letter;
+}
+
+/* ---------- Run by hand from the Apps Script editor ---------- */
+
+/** Creates every tab and the Insights dashboard, asks for permissions and logs the setup state. No API call. */
+function checkSetup() {
+  setupInsights();
+  const sheet = findSheet_();
+  console.log('Sheet "' + sheet.getName() + '" ready, signups: ' + countSignups_(sheet));
   const hasKey = !!PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY');
   console.log('ANTHROPIC_API_KEY set: ' + (hasKey ? 'yes' : 'no (quiz demo will answer "disabled")'));
 }
