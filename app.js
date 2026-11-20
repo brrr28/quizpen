@@ -623,7 +623,10 @@
       return '<button type="button" class="chip" data-sample="' + esc(id) + '" aria-pressed="' + (id === activeSample) + '">' +
         '<span class="chip-subj" data-rsv="' + esc(en[0] + '\n' + uk[0]) + '">' + esc(cur[0]) + '</span>' +
         (cur[0] ? '<span class="sr-only">: </span>' : '') +
-        '<span class="chip-topic">' + esc(upper(cur[1])) + tag + '</span></button>';
+        // The topic box holds both languages' ghosts (data-rsv-en/uk), so a topic that wraps in one language
+        // keeps the same height in the other and the sections below do not move on a language switch.
+        '<span class="chip-topic' + (tag ? ' has-tag' : '') + '" data-rsv-en="' + esc(upper(en[1])) + '" data-rsv-uk="' + esc(upper(uk[1])) + '">' +
+        '<span class="chip-topic-text">' + esc(upper(cur[1])) + tag + '</span></span></button>';
     }).join('');
     if (focusId) { var c = chipsEl.querySelector('.chip[data-sample="' + focusId + '"]'); if (c) c.focus({ preventScroll: true }); }
   }
