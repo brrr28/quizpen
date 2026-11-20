@@ -971,6 +971,19 @@
     apiPost({ action: 'visit', cid: getCid(), lang: lang, utm: attribution.utm, ref: attribution.ref }, 8000).catch(function () { /* ignore */ });
   }
 
+  // Service worker (web/sw.js): offline shell and ready examples after the first visit.
+  // Only on https or the 127.0.0.1 dev stand; ?nosw=1 skips it and removes an installed one.
+  function registerSw() {
+    if (!('serviceWorker' in navigator)) return;
+    if (location.protocol !== 'https:' && location.hostname !== '127.0.0.1') return;
+    if (/[?&]nosw=1(?:&|$)/.test(location.search)) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); }).catch(function () { /* ignore */ });
+      return;
+    }
+    var go = function () { navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function () { /* unsupported or blocked */ }); };
+    if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  }
+
   /* ---------- Init ---------- */
   window.QP_I18N = I18N; // web/ui.js builds language-stable labels from both dictionaries
   document.querySelectorAll('.lang [data-lang]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
@@ -980,4 +993,5 @@
   loadStats();
   track('landing_viewed', { lang: lang, has_ref: !!attribution.ref }); // analytics
   sendVisit();
+  registerSw();
 })();
