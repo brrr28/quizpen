@@ -134,10 +134,23 @@
         h.vars.push({ lang: l, text: v, plain: h.html ? plain(v) : norm(v) });
       });
     });
+    // The CSS ghost (data-rsv in index.html) reserves the width before this script runs; the dictionary stays
+    // the source of truth, so rewrite it from the same variants the stack is built from.
+    if (el.hasAttribute('data-rsv')) el.setAttribute('data-rsv', h.vars.map(function (v) { return v.plain; }).join('\n'));
     h.inline = getComputedStyle(el).display === 'inline';
     h.mid = !!el.closest(MID_SEL);
     hosts.set(el, h);
     return h;
+  }
+  // Blocks whose height CSS reserves for both languages (data-rsv-en / data-rsv-uk): sync them from the dictionary.
+  function syncReservedBlocks() {
+    document.querySelectorAll('[data-rsv-en]').forEach(function (el) {
+      var k = el.getAttribute('data-rsv-key') || keyOf(el);
+      LANGS.forEach(function (l) {
+        var v = I18N[l] && I18N[l][k];
+        if (typeof v === 'string') el.setAttribute('data-rsv-' + l, isHtml(el) ? plain(v) : norm(v));
+      });
+    });
   }
   function matchVariant(h) {
     var now = norm(h.el.textContent);
@@ -267,6 +280,7 @@
   }
   function initLabels() {
     if (!I18N || !window.MutationObserver) return;
+    syncReservedBlocks();
     document.querySelectorAll(STACK_SEL).forEach(function (el) {
       if (el.closest(SKIP_SEL) || hosts.has(el)) return;
       build(makeHost(el), false);
