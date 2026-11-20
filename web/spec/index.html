@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quizpen: turn lesson text into a quiz</title>
+  <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with answers. Join the Quizpen waitlist.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Onest:wght@400;600;800&display=swap">
+  <link rel="stylesheet" href="spec.css">
+</head>
+<body>
+  <main class="wrap">
+    <p class="brand">Quizpen</p>
+    <h1>Paste a lesson. Get a quiz before the bell.</h1>
+    <p class="lede">Quizpen turns any lesson text into a multiple-choice quiz with an answer key and a short reason for each answer.</p>
+
+    <ul class="features">
+      <li>Questions come only from the text you paste.</li>
+      <li>Every answer has a one-sentence explanation.</li>
+      <li>Run it on screen or print it as a worksheet.</li>
+    </ul>
+
+    <form id="form" class="form" novalidate>
+      <label for="email">Your email</label>
+      <div class="row">
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="teacher@school.org" required aria-describedby="error">
+        <button id="btn" type="submit">Join Waitlist</button>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <p id="error" class="error" role="alert"></p>
+    </form>
+
+    <p id="thanks" class="thanks" role="status" aria-live="polite" tabindex="-1" hidden></p>
+    <p id="counter" class="counter" aria-live="polite"></p>
+
+    <p class="proof"><strong>5.9 hours a week</strong> is the time teachers who use AI tools at least weekly say they save. <a href="https://news.gallup.com/poll/691967/three-teachers-weekly-saving-six-weeks-year.aspx" target="_blank" rel="noopener noreferrer">Gallup and Walton Family Foundation, 2025</a>. Survey of 2,232 US public school teachers; time saved is self-reported.</p>
+  </main>
+  <footer class="foot"><a href="../">See the full product version &rarr;</a></footer>
+  <script src="../config.js"></script>
+  <script src="spec.js"></script>
+</body>
+</html>
