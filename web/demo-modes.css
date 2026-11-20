@@ -90,6 +90,13 @@
   color: var(--ink-2);
   text-underline-offset: 5px;
 }
+/* The topic is a [data-rsv-en] block (styles.css): its hidden EN and UK ghosts give the row the height of the
+   longer language. The visible text is the flex item that takes the width. */
+.chip-topic-text { flex: 1 1 auto; min-width: 0; }
+/* A foreign-text tag: the topic (and its ghosts) wrap 30px early and the tag hangs into that space with a zero
+   advance, so the ghosts, which have no tag, wrap exactly like the visible text. */
+.chip-topic.has-tag { padding-right: 30px; }
+.chip-topic.has-tag .chip-tag { margin-right: -30px; }
 .chip:hover .chip-topic { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--line-strong); }
 .chip[aria-pressed="true"] .chip-subj { color: var(--ink); }
 .chip[aria-pressed="true"] .chip-topic {
