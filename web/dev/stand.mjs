@@ -134,6 +134,9 @@ export async function startStand({ mock = true, mockEnv = {} } = {}) {
   });
   page.on('Log.entryAdded', (p) => { if (p.entry.level === 'error' || p.entry.level === 'warning') errors.push('log ' + p.entry.level + ': ' + p.entry.text + ' ' + (p.entry.url || '')); });
   await Promise.all(['Page.enable', 'Runtime.enable', 'Log.enable', 'Network.enable'].map((m) => page.send(m)));
+  // Every run starts without the service worker and its cache of an earlier run (web/sw.js),
+  // so the page always runs the files of this worktree.
+  await page.send('Storage.clearDataForOrigin', { origin: BASE.slice(0, -1), storageTypes: 'service_workers,cache_storage' }).catch(() => {});
   await page.send('Emulation.setFocusEmulationEnabled', { enabled: true });
   await page.send('Browser.grantPermissions', { origin: BASE.slice(0, -1), permissions: ['clipboardReadWrite', 'clipboardSanitizedWrite'] }).catch(() => {});
   return {
