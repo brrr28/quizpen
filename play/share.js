@@ -13,19 +13,19 @@
   var QR_SRC = new URL('../vendor/qrcode.js', PLAY).href;
   var I18N = {
     en: {
-      label: 'For your class', preview: 'Preview as student', share: 'Share with class', close: 'Close',
+      label: 'For your class', preview: 'Preview as a student', share: 'Share with your class', close: 'Close',
       previewTitle: 'Student view', newTab: 'Open in a new tab', shareTitle: 'Share with your class',
-      shareText: 'Students scan the code or open the link on their phones. No sign-up, and nothing about students is collected.',
+      shareText: 'Students scan the code or open the link on their phones. They don\'t sign up, and we collect nothing about them.',
       linkLabel: 'Quiz link', copy: 'Copy link', copied: 'Link copied. Paste it into your class chat.',
-      copyFail: 'Select the link above and copy it.', big: 'Show large for the projector', small: 'Back',
+      copyFail: 'Select the link above and copy it.', big: 'Show it big for the projector', small: 'Back',
       send: 'Send to…', qrAlt: 'QR code with the quiz link', qrLong: 'This quiz is too long for a QR code. Share the link instead.'
     },
     uk: {
       label: 'Для вашого класу', preview: 'Переглянути як учень', share: 'Поділитися з класом', close: 'Закрити',
       previewTitle: 'Так бачить учень', newTab: 'Відкрити в новій вкладці', shareTitle: 'Поділіться з класом',
-      shareText: 'Учні сканують код або відкривають посилання на телефоні. Реєструватися не треба, і жодних даних про учнів ми не збираємо.',
+      shareText: 'Учні сканують код або відкривають посилання на телефоні. Реєструватися їм не треба, і ми нічого про них не збираємо.',
       linkLabel: 'Посилання на тест', copy: 'Копіювати', copied: 'Посилання скопійовано. Вставте його в чат класу.',
-      copyFail: 'Виділіть посилання вище й скопіюйте його.', big: 'Показати великим на проєкторі', small: 'Назад',
+      copyFail: 'Виділіть посилання вище й скопіюйте його.', big: 'Збільшити для проєктора', small: 'Назад',
       send: 'Надіслати…', qrAlt: 'QR-код з посиланням на тест', qrLong: 'Тест задовгий для QR-коду. Надішліть посилання.'
     }
   };

@@ -9,7 +9,7 @@
   var I18N = {
     en: {
       keys: ['A', 'B', 'C', 'D'], loading: 'Loading the quiz…',
-      privacy: 'No sign-up, and nothing about you is collected. Your answers are not saved or sent anywhere.',
+      privacy: 'You don\'t need an account. Nothing about you is collected, and your answers aren\'t saved or sent anywhere.',
       meta: '{n} questions · about {m} min', start: 'Start', hint: 'Tap the answer you think is correct. You\'ll see why right away.',
       progress: 'Question {i} of {n}', streak: 'Streak', streakLabel: '{n} in a row',
       right: ['Right!', 'Correct!', 'Yes, that\'s it.'], wrong: 'Not quite. The answer is {a}.', inRow: '{n} in a row!',
@@ -18,28 +18,28 @@
       score: 'You got {s} of {n} right', starsLabel: '{s} of 3 stars', best: 'Best streak: {n} in a row',
       review: 'Review answers', again: 'Play again', back: 'Back to result', yours: 'Your answer', correct: 'Correct answer',
       made: 'Made with Quizpen', home: 'Go to Quizpen',
-      e_missing: ['There is no quiz in this link', 'Ask your teacher for the quiz link, or make your own quiz on Quizpen.'],
-      e_broken: ['This quiz link looks broken', 'Part of the link may have been lost when it was copied. Ask your teacher to send it again.'],
+      e_missing: ['There is no quiz in this link', 'Ask your teacher for the link to the quiz.'],
+      e_broken: ['This quiz link looks broken', 'Part of the link may have been cut off when it was copied. Ask your teacher to send it again.'],
       e_unsupported: ['This browser cannot open the quiz', 'Update your browser or open the link in Chrome, Safari or Firefox.']
     },
     uk: {
       keys: ['А', 'Б', 'В', 'Г'], loading: 'Завантажуємо тест…',
-      privacy: 'Без реєстрації. Ми не збираємо жодних даних про тебе: відповіді не зберігаються й нікуди не надсилаються.',
+      privacy: 'Реєструватися не треба. Ми нічого про вас не збираємо, а відповіді не зберігаються й нікуди не надсилаються.',
       meta: '{n} {qw} · приблизно {m} хв', start: 'Почати',
-      hint: 'Натисни відповідь, яку вважаєш правильною. Пояснення побачиш одразу.',
+      hint: 'Натисніть відповідь, яку вважаєте правильною. Пояснення побачите одразу.',
       progress: 'Питання {i} з {n}', streak: 'Серія', streakLabel: '{n} поспіль',
       right: ['Правильно!', 'Так, саме так.', 'Влучно!'],
       wrong: 'Не зовсім. Правильна відповідь: {a}.', inRow: '{n} поспіль!',
       next: 'Далі', finish: 'Мій результат',
       stars3: 'Відмінно!', stars2: 'Добре! Ще трохи, і буде ідеально.',
-      stars1: 'Гарний початок. Переглянь відповіді й спробуй ще раз.',
+      stars1: 'Гарний початок. Перегляньте відповіді й спробуйте ще раз.',
       score: 'Правильно {s} з {n}', starsLabel: '{s} з 3 зірок', best: 'Найкраща серія: {n} поспіль',
       review: 'Переглянути відповіді', again: 'Пройти ще раз', back: 'До результату',
-      yours: 'Твоя відповідь', correct: 'Правильна відповідь',
+      yours: 'Ваша відповідь', correct: 'Правильна відповідь',
       made: 'Зроблено в Quizpen', home: 'Перейти до Quizpen',
-      e_missing: ['У цьому посиланні немає тесту', 'Попроси в учителя посилання на тест або створи власний у Quizpen.'],
-      e_broken: ['Схоже, посилання пошкоджене', 'Можливо, під час копіювання частина посилання загубилася. Попроси вчителя надіслати його ще раз.'],
-      e_unsupported: ['Цей браузер не може відкрити тест', 'Онови браузер або відкрий посилання в Chrome, Safari чи Firefox.']
+      e_missing: ['У цьому посиланні немає тесту', 'Попросіть учителя надіслати посилання на тест.'],
+      e_broken: ['Схоже, посилання пошкоджене', 'Можливо, частина посилання загубилася під час копіювання. Попросіть учителя надіслати його ще раз.'],
+      e_unsupported: ['Цей браузер не може відкрити тест', 'Оновіть браузер або відкрийте посилання в Chrome, Safari чи Firefox.']
     }
   };
 

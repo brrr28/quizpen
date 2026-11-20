@@ -11,7 +11,7 @@
   function track(name, props) { if (window.qpAnalytics) window.qpAnalytics.track(name, props); } // analytics hook (../analytics.js)
   var MESSAGES = {
     invalid_email: 'That email doesn\'t look right. Check it for typos.',
-    rate_limited: 'Too many attempts. Please try again in a few minutes.'
+    rate_limited: 'Too many tries from this device. Wait a minute, then try again.'
   };
 
   // Anonymous client id used by the backend for rate limiting.
@@ -31,7 +31,7 @@
   }
 
   function showCounter(total) {
-    counter.textContent = total >= 10 ? total + ' teachers already joined' : 'Be one of the first teachers';
+    counter.textContent = total >= 10 ? total + ' teachers already joined' : 'Be one of the first teachers to try it';
   }
 
   function loadStats() {
@@ -51,7 +51,7 @@
     track('signup_submitted', { lang: 'en', has_ref: false }); // analytics
     btn.textContent = 'Joining…';
     var done = function () { btn.disabled = false; btn.textContent = 'Join Waitlist'; };
-    if (!API) { done(); showError('Signup is not connected yet. Please try again later.'); return; }
+    if (!API) { done(); showError('Signup isn\'t open yet. Please try again later.'); return; }
     var payload = { action: 'join', email: value, lang: 'en', ref: null, utm: {}, hp: document.getElementById('hp').value, cid: cid() };
     var ctl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
@@ -63,7 +63,7 @@
           track('signup_succeeded', { already: !!r.already, has_ref: false }); // analytics
           form.hidden = true;
           thanks.hidden = false;
-          thanks.textContent = r.already ? "You're already on the list at #" + r.position + '.' : "You're #" + r.position + ' on the waitlist';
+          thanks.textContent = r.already ? "You're already on the list as #" + r.position + '.' : "You're #" + r.position + ' on the waitlist';
           thanks.focus();
           if (typeof r.total === 'number') showCounter(r.total);
         } else {
@@ -74,7 +74,7 @@
       .catch(function () {
         clearTimeout(timer);
         done();
-        showError('Could not reach the server. Check your connection and try again.');
+        showError('We couldn\'t reach the server. Check your connection and try again.');
       });
   });
 
