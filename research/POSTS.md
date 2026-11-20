@@ -16,7 +16,7 @@
 
 Буду вдячний, якщо спробуєте на параграфі, який даєте цього тижня, і напишете в коментарях: чи можна дати такий тест класу без правок? Що довелося б виправити насамперед?
 
-https://pavloemilus.github.io/quizpen/?lang=uk&utm_source=facebook&utm_medium=community&utm_campaign=waitlist_test
+https://brrr28.github.io/quizpen/?lang=uk&utm_source=facebook&utm_medium=community&utm_campaign=waitlist_test
 
 Якщо захочете доступ, коли інструмент буде готовий, на сторінці можна залишити пошту. Але це не обов'язково, відгук для мене важливіший.
 
@@ -30,13 +30,13 @@ https://pavloemilus.github.io/quizpen/?lang=uk&utm_source=facebook&utm_medium=co
 
 Мені найважливіше почути, де тест виходить слабким: неправильні варіанти надто очевидні, помилка в ключі, кострубата українська. Пишіть у коментарях або мені в особисті.
 
-Спробувати: https://pavloemilus.github.io/quizpen/?lang=uk&utm_source=telegram&utm_medium=community&utm_campaign=waitlist_test
+Спробувати: https://brrr28.github.io/quizpen/?lang=uk&utm_source=telegram&utm_medium=community&utm_campaign=waitlist_test
 
 ---
 
 ## 3. Коментар під дописом про ШІ в школі («На Урок», «Всеосвіта»)
 
-Дякую за допис, особливо за думку, що відповіді ШІ треба перевіряти. Над цим я зараз і працюю. Quizpen робить тест на 5 питань із тексту, який учитель вставляє сам (параграф, конспект, стаття), і до кожного питання дає пояснення в одне речення, щоб ключ можна було звірити одним поглядом. Версія рання, реєстрація не потрібна. Якщо хтось спробує на своєму тексті й напише, що вийшло не так, буду дуже вдячний: https://pavloemilus.github.io/quizpen/?lang=uk&utm_source=naurok&utm_medium=comment&utm_campaign=waitlist_test
+Дякую за допис, особливо за думку, що відповіді ШІ треба перевіряти. Над цим я зараз і працюю. Quizpen робить тест на 5 питань із тексту, який учитель вставляє сам (параграф, конспект, стаття), і до кожного питання дає пояснення в одне речення, щоб ключ можна було звірити одним поглядом. Версія рання, реєстрація не потрібна. Якщо хтось спробує на своєму тексті й напише, що вийшло не так, буду дуже вдячний: https://brrr28.github.io/quizpen/?lang=uk&utm_source=naurok&utm_medium=comment&utm_campaign=waitlist_test
 
 Для «Всеосвіти» той самий текст, у посиланні utm_source=vseosvita.
 
@@ -52,6 +52,6 @@ You paste a paragraph from a textbook, your notes or an article, and it writes 5
 
 It's an early version. Two questions for you: could you hand this quiz to your class as is, and what would you fix first?
 
-https://pavloemilus.github.io/quizpen/?lang=en&utm_source=reddit&utm_medium=community&utm_campaign=waitlist_test
+https://brrr28.github.io/quizpen/?lang=en&utm_source=reddit&utm_medium=community&utm_campaign=waitlist_test
 
 Mods, happy to take this down if it breaks the self-promotion rule.
