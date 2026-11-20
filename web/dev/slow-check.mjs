@@ -2,6 +2,7 @@
 // (a) the service worker (web/sw.js) installs and caches the shell;
 // (b) a reload while offline (CDP offline emulation plus the static server and mock stopped) renders
 //     the page, a ready example shows its quiz and the offline banner is visible in both themes;
+//     a server that never answers gives the cached page after the 3 s navigation timeout;
 // (c) a signup while offline is kept as pending and sent exactly once when back online (hero form,
 //     next visit, early-access form), counted by the mock;
 // (d) a live quiz slower than 8 s (MOCK_QUIZ_DELAY_MS=9000) shows the slow line; offline gives the busy view;
@@ -10,6 +11,7 @@
 
 import { spawn, spawnSync } from 'node:child_process';
 import { readFileSync, rmSync } from 'node:fs';
+import { createServer } from 'node:http';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -31,7 +33,7 @@ const TXT = {
   slowEn: 'Slow connection. Still working on it.',
 };
 // Failed loads while offline or with the servers stopped are expected; anything else is a real error.
-const EXPECTED_NET = /net::ERR_(INTERNET_DISCONNECTED|CONNECTION_REFUSED|CONNECTION_RESET|ABORTED|NAME_NOT_RESOLVED|FAILED)\b/;
+const EXPECTED_NET = /net::ERR_(INTERNET_DISCONNECTED|CONNECTION_REFUSED|CONNECTION_RESET|EMPTY_RESPONSE|ABORTED|NAME_NOT_RESOLVED|FAILED)\b/;
 
 const results = [];
 const ok = (name, pass, info = '') => { results.push({ name, pass: !!pass }); console.log((pass ? 'PASS ' : 'FAIL ') + name + (info ? '  ' + info : '')); };
@@ -123,6 +125,19 @@ try {
   await wait(300);
   const b2 = await banner();
   ok('online again: banner hidden', serveUp && b2 && !b2.on && b2.text === '', JSON.stringify(b2));
+
+  // A server that accepts and never answers: the page comes from the cache after the 3 s timeout.
+  killTree(s.procs.serve);
+  await until(async () => !(await up(BASE)), 5000);
+  const hang = createServer(() => { /* never answers */ });
+  await new Promise((r) => hang.listen(8080, '127.0.0.1', r));
+  const tNav = Date.now();
+  await page.goto(BASE + '?lang=en');
+  const navMs = Date.now() - tNav;
+  const hungOk = await page.eval(`!!document.querySelector('#sample-chips .chip')`);
+  hang.closeAllConnections(); await new Promise((r) => hang.close(r));
+  ok('hung network: the cached page shows after about 3 s', hungOk && navMs >= 2900 && navMs < 8000, `${navMs} ms`);
+  ok('hung network: server back', await startServe());
 
   // (c1) Hero form while offline: pending, then sent once on 'online'.
   e0 = mark();

@@ -48,17 +48,19 @@ function fromNetworkFirst(event, req) {
   var fallback = function () {
     return caches.match(key).then(function (hit) { return hit || caches.match(scopeUrl('index.html')); });
   };
+  var net = fetch(req);
+  // Registered now, while the event is alive: a page that arrives after the timeout still refreshes the cache.
+  // This callback runs before the page gets the response, so the clone is taken from an unread body.
+  event.waitUntil(net.then(function (res) {
+    if (cacheable(res)) { var copy = res.clone(); return caches.open(CACHE).then(function (c) { return c.put(key, copy); }); }
+  }).catch(function () { /* offline or quota */ }));
   return new Promise(function (resolve) {
     var settled = false;
     var finish = function (res) { if (!settled) { settled = true; resolve(res); } };
     // Slow network: show the cached page after the timeout, keep waiting if nothing is cached.
     var timer = setTimeout(function () { fallback().then(function (hit) { if (hit) finish(hit); }); }, NAV_TIMEOUT_MS);
-    fetch(req).then(function (res) {
+    net.then(function (res) {
       clearTimeout(timer);
-      if (cacheable(res)) {
-        var copy = res.clone();
-        event.waitUntil(caches.open(CACHE).then(function (c) { return c.put(key, copy); }).catch(function () { /* quota */ }));
-      }
       finish(res);
     }, function () {
       clearTimeout(timer);
@@ -70,16 +72,12 @@ function fromNetworkFirst(event, req) {
 function fromCacheThenRevalidate(event, req) {
   return caches.open(CACHE).then(function (cache) {
     return cache.match(req).then(function (hit) {
-      var net = fetch(req).then(function (res) {
-        if (cacheable(res)) {
-          var copy = res.clone();
-          return cache.put(req, copy).catch(function () { /* quota */ }).then(function () { return res; });
-        }
-        return res;
-      });
-      if (!hit) return net;
-      event.waitUntil(net.catch(function () { /* offline: the cached copy stays */ }));
-      return hit;
+      var net = fetch(req);
+      // The refresh runs in the background; the clone is taken before the page reads the body.
+      event.waitUntil(net.then(function (res) {
+        if (cacheable(res)) return cache.put(req, res.clone());
+      }).catch(function () { /* offline: the cached copy stays */ }));
+      return hit || net;
     });
   });
 }
