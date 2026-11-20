@@ -99,6 +99,8 @@ try {
     await page.open(BASE + '?lang=' + lang);
     // Ready examples are the default mode, photosynthesis is preselected: the quiz opens without an API call.
     await page.waitFor(`document.querySelector('#sample-chips .chip[aria-pressed="true"]') ? true : null`);
+    // Web fonts switch in one step after the load event (index.html, html.wf): click in the final layout.
+    await page.waitFor(`typeof window.qpFontsCss !== 'function' || document.documentElement.classList.contains('wf')`, 15000);
     await page.click('#show-btn');
     await page.waitFor(`(() => { const t = document.querySelector('.play-tools'); return t && !t.hidden; })()`, 15000);
     ok(`${lang}: landing tools shown with the quiz`, true);
