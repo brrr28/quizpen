@@ -2,6 +2,10 @@
   "samples": [
     {
       "id": "photosynthesis",
+      "label": {
+        "en": "Biology: photosynthesis",
+        "uk": "Біологія: фотосинтез"
+      },
       "text": {
         "en": "Photosynthesis is the process plants, algae and some bacteria use to make their own food from light. It takes place mainly in the leaves, inside tiny structures called chloroplasts. Chloroplasts contain chlorophyll, a green pigment that absorbs red and blue light and reflects green light, which is why most leaves look green. The plant takes in water through its roots and carbon dioxide from the air through small pores in the leaves called stomata. In the first stage, the light-dependent reactions, light energy splits water molecules and releases oxygen as a by-product. In the second stage, the Calvin cycle, the plant uses the stored energy to turn carbon dioxide into glucose, a sugar it uses for energy and growth. The overall equation is 6CO2 + 6H2O + light energy → C6H12O6 + 6O2. Almost all the oxygen in the air we breathe was produced by photosynthesis.",
         "uk": "Фотосинтезом називають процес, у якому рослини, водорості й деякі бактерії самі створюють собі поживні речовини за допомогою світла. Він відбувається переважно в листках, у крихітних частинах клітини, які називають хлоропластами. Хлоропласти містять хлорофіл, зелений пігмент, що поглинає червоне й синє світло та відбиває зелене. Саме тому більшість листків здаються нам зеленими. Воду рослина отримує через корені, а вуглекислий газ надходить із повітря через дрібні пори в листках, які називають продихами. У світловій фазі енергія світла розщеплює молекули води, і як побічний продукт виділяється кисень. У темновій фазі, яку ще називають циклом Кальвіна, рослина використовує накопичену енергію, щоб перетворити вуглекислий газ на глюкозу, цукор, який дає їй енергію для життя й росту. Загальне рівняння: 6CO2 + 6H2O + світлова енергія → C6H12O6 + 6O2. Майже весь кисень у повітрі, яким ми дихаємо, утворився завдяки фотосинтезу."
@@ -10,27 +14,31 @@
         "en": {
           "title": "Photosynthesis: quick check",
           "questions": [
-            { "q": "Where in the plant cell does photosynthesis mainly take place?", "options": ["In the chloroplasts", "In the nucleus", "In the cell wall", "In the roots"], "answer": 0, "explain": "Chloroplasts hold the chlorophyll that captures light, so the process happens there." },
-            { "q": "Why do most leaves look green?", "options": ["Chlorophyll absorbs green light", "Chlorophyll reflects green light", "Leaves store green water", "Stomata are green"], "answer": 1, "explain": "Chlorophyll absorbs red and blue light and reflects green, so green is what reaches our eyes." },
-            { "q": "How does carbon dioxide get into the leaf?", "options": ["Through the roots", "Through the chlorophyll", "Through small pores called stomata", "Together with the glucose"], "answer": 2, "explain": "Carbon dioxide enters from the air through stomata, the small pores in the leaves." },
-            { "q": "What is released as a by-product of the light-dependent reactions?", "options": ["Glucose", "Carbon dioxide", "Oxygen", "Chlorophyll"], "answer": 2, "explain": "When light energy splits water molecules, oxygen is released." },
-            { "q": "What does the plant make in the Calvin cycle?", "options": ["Water", "Glucose", "Light energy", "Stomata"], "answer": 1, "explain": "In the Calvin cycle the plant turns carbon dioxide into glucose, a sugar it uses for energy and growth." }
+            { "q": "Where in the plant cell does photosynthesis mainly take place?", "options": ["In the cell wall", "In the nucleus", "In the chloroplasts", "In the roots"], "answer": 2, "explain": "Chloroplasts hold the chlorophyll that captures light, so the process happens there." },
+            { "q": "Why do most leaves look green?", "options": ["Chlorophyll reflects green light", "Chlorophyll absorbs green light", "Leaves store green water", "Stomata are green"], "answer": 0, "explain": "Chlorophyll absorbs red and blue light and reflects green, so green is what reaches our eyes." },
+            { "q": "How does carbon dioxide get into the leaf?", "options": ["Through the roots", "Through the chlorophyll", "Together with the glucose", "Through small pores called stomata"], "answer": 3, "explain": "Carbon dioxide enters from the air through stomata, the small pores in the leaves." },
+            { "q": "What is released as a by-product of the light-dependent reactions?", "options": ["Glucose", "Oxygen", "Carbon dioxide", "Chlorophyll"], "answer": 1, "explain": "When light energy splits water molecules, oxygen is released." },
+            { "q": "What does the plant make in the Calvin cycle?", "options": ["Water", "Stomata", "Light energy", "Glucose"], "answer": 3, "explain": "In the Calvin cycle the plant turns carbon dioxide into glucose, a sugar it uses for energy and growth." }
           ]
         },
         "uk": {
           "title": "Фотосинтез: швидка перевірка",
           "questions": [
-            { "q": "Де в клітині рослини переважно відбувається фотосинтез?", "options": ["У хлоропластах", "У ядрі", "У клітинній стінці", "У коренях"], "answer": 0, "explain": "У хлоропластах міститься хлорофіл, який уловлює світло, тому процес відбувається саме там." },
-            { "q": "Чому більшість листків здаються зеленими?", "options": ["Хлорофіл поглинає зелене світло", "Хлорофіл відбиває зелене світло", "Листки накопичують зелену воду", "Продихи мають зелений колір"], "answer": 1, "explain": "Хлорофіл поглинає червоне й синє світло, а зелене відбиває, тому до наших очей доходить саме зелене." },
-            { "q": "Як вуглекислий газ потрапляє в листок?", "options": ["Через корені", "Через хлорофіл", "Через дрібні пори, які називають продихами", "Разом із глюкозою"], "answer": 2, "explain": "Вуглекислий газ надходить із повітря через продихи, дрібні пори в листках." },
-            { "q": "Що виділяється як побічний продукт світлової фази?", "options": ["Глюкоза", "Вуглекислий газ", "Кисень", "Хлорофіл"], "answer": 2, "explain": "Коли енергія світла розщеплює молекули води, виділяється кисень." },
-            { "q": "Що утворює рослина в циклі Кальвіна?", "options": ["Воду", "Глюкозу", "Світлову енергію", "Продихи"], "answer": 1, "explain": "У циклі Кальвіна рослина перетворює вуглекислий газ на глюкозу, яка дає їй енергію для росту." }
+            { "q": "Де в клітині рослини переважно відбувається фотосинтез?", "options": ["У клітинній стінці", "У ядрі", "У хлоропластах", "У коренях"], "answer": 2, "explain": "У хлоропластах міститься хлорофіл, який уловлює світло, тому процес відбувається саме там." },
+            { "q": "Чому більшість листків здаються зеленими?", "options": ["Хлорофіл відбиває зелене світло", "Хлорофіл поглинає зелене світло", "Листки накопичують зелену воду", "Продихи мають зелений колір"], "answer": 0, "explain": "Хлорофіл поглинає червоне й синє світло, а зелене відбиває, тому до наших очей доходить саме зелене." },
+            { "q": "Як вуглекислий газ потрапляє в листок?", "options": ["Через корені", "Через хлорофіл", "Разом із глюкозою", "Через дрібні пори, які називають продихами"], "answer": 3, "explain": "Вуглекислий газ надходить із повітря через продихи, дрібні пори в листках." },
+            { "q": "Що виділяється як побічний продукт світлової фази?", "options": ["Глюкоза", "Кисень", "Вуглекислий газ", "Хлорофіл"], "answer": 1, "explain": "Коли енергія світла розщеплює молекули води, виділяється кисень." },
+            { "q": "Що утворює рослина в циклі Кальвіна?", "options": ["Воду", "Продихи", "Світлову енергію", "Глюкозу"], "answer": 3, "explain": "У циклі Кальвіна рослина перетворює вуглекислий газ на глюкозу, яка дає їй енергію для росту." }
           ]
         }
       }
     },
     {
       "id": "printing",
+      "label": {
+        "en": "History: the printing press",
+        "uk": "Історія: друкарський верстат"
+      },
       "text": {
         "en": "Around 1440, Johannes Gutenberg, a goldsmith from Mainz in Germany, began developing a printing press with movable metal type. Each letter was cast as a separate metal piece, so printers could arrange letters into pages, print hundreds of copies, and then reuse the same letters for the next job. Gutenberg also developed an oil-based ink that stuck to metal better than the water-based inks used before, and he adapted the screw press that farmers used to squeeze grapes and olives. His most famous work, the Gutenberg Bible, was finished around 1455. Historians believe about 180 copies were printed. Before the press, books were copied by hand, often by monks, and a single book could take months to make. By 1500, print shops across Europe had produced millions of books. Cheaper books helped more people learn to read, made it easier to share scientific ideas, and let new ideas such as Martin Luther's 95 Theses of 1517 travel far beyond Wittenberg within weeks.",
         "uk": "Близько 1440 року Йоганн Гутенберг, ювелір із німецького міста Майнц, почав створювати друкарський верстат із рухомими металевими літерами. Кожну літеру відливали окремо, тож друкарі могли складати з них сторінки, друкувати сотні примірників, а потім використовувати ті самі літери для наступної книжки. Гутенберг також створив фарбу на олійній основі, яка краще трималася на металі, ніж водяні чорнила, якими користувалися раніше. Сам верстат він переробив із гвинтового преса, яким селяни вичавлювали виноград і оливки. Його найвідомішу працю, Біблію Гутенберга, завершили близько 1455 року. Історики вважають, що надрукували приблизно 180 примірників. До появи друку книжки переписували вручну, часто це робили ченці, і одна книжка могла забрати кілька місяців праці. До 1500 року друкарні по всій Європі випустили мільйони книжок. Дешевші книжки допомогли більшій кількості людей навчитися читати, полегшили обмін науковими ідеями й дали змогу новим думкам, як-от 95 тезам Мартіна Лютера 1517 року, за кілька тижнів поширитися далеко за межі Віттенберга."
@@ -39,27 +47,31 @@
         "en": {
           "title": "The printing press: quick check",
           "questions": [
-            { "q": "What made Gutenberg's type \"movable\"?", "options": ["Each letter was a separate metal piece that could be rearranged", "The press could be carried from town to town", "The pages moved through the press on rollers", "Monks moved the letters into books by hand"], "answer": 0, "explain": "Each letter was cast separately, so printers could arrange it into pages and use it again." },
-            { "q": "Which machine did Gutenberg adapt for printing?", "options": ["A water mill", "A screw press used for grapes and olives", "A weaving loom", "A goldsmith's furnace"], "answer": 1, "explain": "He adapted the screw press that farmers used to squeeze grapes and olives." },
-            { "q": "Why did Gutenberg use an oil-based ink?", "options": ["It dried faster on paper", "It was cheaper than water", "It stuck to metal type better", "Monks preferred its color"], "answer": 2, "explain": "Oil-based ink stuck to the metal letters better than the older water-based inks." },
+            { "q": "What made Gutenberg's type \"movable\"?", "options": ["Monks moved the letters into books by hand", "The press could be carried from town to town", "The pages moved through the press on rollers", "Each letter was a separate metal piece that could be rearranged"], "answer": 3, "explain": "Each letter was cast separately, so printers could arrange it into pages and use it again." },
+            { "q": "Which machine did Gutenberg adapt for printing?", "options": ["A water mill", "A weaving loom", "A screw press used for grapes and olives", "A goldsmith's furnace"], "answer": 2, "explain": "He adapted the screw press that farmers used to squeeze grapes and olives." },
+            { "q": "Why did Gutenberg use an oil-based ink?", "options": ["It stuck to metal type better", "It was cheaper than water", "It dried faster on paper", "Monks preferred its color"], "answer": 0, "explain": "Oil-based ink stuck to the metal letters better than the older water-based inks." },
             { "q": "About how many copies of the Gutenberg Bible do historians think were printed?", "options": ["18", "180", "1,800", "18,000"], "answer": 1, "explain": "Historians believe about 180 copies were printed around 1455." },
-            { "q": "Which effect of cheaper books does the text mention?", "options": ["More people learned to read", "Monks stopped writing", "Books became longer", "Paper became more expensive"], "answer": 0, "explain": "Cheaper books helped more people learn to read and helped new ideas spread faster." }
+            { "q": "Which effect of cheaper books does the text mention?", "options": ["Books became longer", "Monks stopped writing", "More people learned to read", "Paper became more expensive"], "answer": 2, "explain": "Cheaper books helped more people learn to read and helped new ideas spread faster." }
           ]
         },
         "uk": {
           "title": "Друкарський верстат: швидка перевірка",
           "questions": [
-            { "q": "Чому літери Гутенберга називають рухомими?", "options": ["Кожна літера була окремою металевою деталлю, яку можна переставити", "Верстат можна було перевозити з міста в місто", "Сторінки рухалися крізь верстат на валиках", "Ченці вручну переносили літери в книжки"], "answer": 0, "explain": "Кожну літеру відливали окремо, тож її можна було скласти в сторінку й використати знову." },
-            { "q": "Яку машину Гутенберг переробив для друку?", "options": ["Водяний млин", "Гвинтовий прес для винограду й оливок", "Ткацький верстат", "Ювелірну піч"], "answer": 1, "explain": "Він переробив гвинтовий прес, яким селяни вичавлювали виноград і оливки." },
-            { "q": "Навіщо Гутенберг використав фарбу на олійній основі?", "options": ["Вона швидше висихала на папері", "Вона була дешевшою за воду", "Вона краще трималася на металевих літерах", "Її колір більше подобався ченцям"], "answer": 2, "explain": "Олійна фарба краще трималася на металі, ніж старі водяні чорнила." },
+            { "q": "Чому літери Гутенберга називають рухомими?", "options": ["Ченці вручну переносили літери в книжки", "Верстат можна було перевозити з міста в місто", "Сторінки рухалися крізь верстат на валиках", "Кожна літера була окремою металевою деталлю, яку можна переставити"], "answer": 3, "explain": "Кожну літеру відливали окремо, тож її можна було скласти в сторінку й використати знову." },
+            { "q": "Яку машину Гутенберг переробив для друку?", "options": ["Водяний млин", "Ткацький верстат", "Гвинтовий прес для винограду й оливок", "Ювелірну піч"], "answer": 2, "explain": "Він переробив гвинтовий прес, яким селяни вичавлювали виноград і оливки." },
+            { "q": "Навіщо Гутенберг використав фарбу на олійній основі?", "options": ["Вона краще трималася на металевих літерах", "Вона була дешевшою за воду", "Вона швидше висихала на папері", "Її колір більше подобався ченцям"], "answer": 0, "explain": "Олійна фарба краще трималася на металі, ніж старі водяні чорнила." },
             { "q": "Скільки приблизно примірників Біблії Гутенберга надрукували, на думку істориків?", "options": ["18", "180", "1 800", "18 000"], "answer": 1, "explain": "Історики вважають, що близько 1455 року надрукували приблизно 180 примірників." },
-            { "q": "Який наслідок здешевлення книжок згадано в тексті?", "options": ["Більше людей навчилися читати", "Ченці перестали писати", "Книжки стали довшими", "Папір подорожчав"], "answer": 0, "explain": "Дешевші книжки допомогли більшій кількості людей навчитися читати й швидше поширювали нові ідеї." }
+            { "q": "Який наслідок здешевлення книжок згадано в тексті?", "options": ["Книжки стали довшими", "Ченці перестали писати", "Більше людей навчилися читати", "Папір подорожчав"], "answer": 2, "explain": "Дешевші книжки допомогли більшій кількості людей навчитися читати й швидше поширювали нові ідеї." }
           ]
         }
       }
     },
     {
       "id": "magi",
+      "label": {
+        "en": "Literature: The Gift of the Magi",
+        "uk": "Література: «Дари волхвів»"
+      },
       "text": {
         "en": "In O. Henry's short story \"The Gift of the Magi\" (1905), Della and Jim Young are a young married couple living in a small, cheap apartment in New York. On Christmas Eve, Della has only one dollar and eighty-seven cents to buy Jim a present. The couple own two treasures: Jim's gold watch, which belonged to his father and grandfather, and Della's long, beautiful hair. Della sells her hair for twenty dollars and spends twenty-one dollars on a platinum chain for Jim's watch. When Jim comes home, he stares at her short hair in silence. Then he gives her his present: a set of expensive combs for the long hair she no longer has. Della shows him the chain, and Jim tells her that he sold his watch to buy the combs. The narrator calls the two of them foolish, and then says that of all who give gifts, people like them are the wisest, because each gave up what they valued most for the other. The magi in the title are the wise men who brought gifts to the baby Jesus.",
         "uk": "В оповіданні О. Генрі «Дари волхвів» (1905) молоде подружжя, Делла і Джим Янг, живе в маленькій дешевій квартирі в Нью-Йорку. Напередодні Різдва Делла має лише один долар і вісімдесят сім центів, щоб купити Джимові подарунок. Подружжя має два скарби: золотий годинник Джима, що належав його батькові й дідові, і довге гарне волосся Делли. Делла продає своє волосся за двадцять доларів і витрачає двадцять один долар на платиновий ланцюжок для годинника Джима. Коли Джим повертається додому, він мовчки дивиться на її коротке волосся. Потім він дарує їй свій подарунок: набір дорогих гребенів для довгого волосся, якого вона вже не має. Делла показує ланцюжок, і Джим зізнається, що продав годинник, щоб купити гребені. Оповідач називає їх нерозумними, а потім каже, що з усіх, хто дарує подарунки, такі, як вони, наймудріші, бо кожен віддав найцінніше, що мав, заради іншого. Волхвами в назві оповідання названо мудреців, які принесли дари немовляті Ісусу."
@@ -69,20 +81,165 @@
           "title": "The Gift of the Magi: quick check",
           "questions": [
             { "q": "How much money does Della have on Christmas Eve before she sells her hair?", "options": ["$1.87", "$20", "$21", "$87"], "answer": 0, "explain": "The story opens with Della holding one dollar and eighty-seven cents." },
-            { "q": "What does Della sell to buy Jim's present?", "options": ["Her mother's ring", "Her long hair", "Jim's gold watch", "A set of combs"], "answer": 1, "explain": "She sells her hair for twenty dollars and buys the chain." },
-            { "q": "What does Jim give Della?", "options": ["A platinum chain", "A new coat", "A set of combs for her hair", "A gold watch"], "answer": 2, "explain": "Jim buys expensive combs for the long hair Della has just sold." },
-            { "q": "How did Jim pay for his present?", "options": ["He borrowed money", "He sold his watch", "He worked extra shifts", "He sold Della's hair"], "answer": 1, "explain": "Jim sold the gold watch that Della's chain was meant for." },
-            { "q": "Why does the narrator call Della and Jim the wisest givers?", "options": ["Their gifts were the most expensive", "Each gave up what they valued most for the other", "Their gifts could be returned", "They followed the custom of the magi exactly"], "answer": 1, "explain": "Each gave up their greatest treasure out of love, and the narrator calls that wisdom." }
+            { "q": "What does Della sell to buy Jim's present?", "options": ["Her mother's ring", "A set of combs", "Jim's gold watch", "Her long hair"], "answer": 3, "explain": "She sells her hair for twenty dollars and buys the chain." },
+            { "q": "What does Jim give Della?", "options": ["A platinum chain", "A set of combs for her hair", "A new coat", "A gold watch"], "answer": 1, "explain": "Jim buys expensive combs for the long hair Della has just sold." },
+            { "q": "How did Jim pay for his present?", "options": ["He borrowed money", "He sold Della's hair", "He worked extra shifts", "He sold his watch"], "answer": 3, "explain": "Jim sold the gold watch that Della's chain was meant for." },
+            { "q": "Why does the narrator call Della and Jim the wisest givers?", "options": ["Their gifts were the most expensive", "Their gifts could be returned", "Each gave up what they valued most for the other", "They followed the custom of the magi exactly"], "answer": 2, "explain": "Each gave up their greatest treasure out of love, and the narrator calls that wisdom." }
           ]
         },
         "uk": {
           "title": "«Дари волхвів»: швидка перевірка",
           "questions": [
             { "q": "Скільки грошей має Делла напередодні Різдва, ще до продажу волосся?", "options": ["1 долар 87 центів", "20 доларів", "21 долар", "87 доларів"], "answer": 0, "explain": "Оповідання починається з того, що Делла має один долар і вісімдесят сім центів." },
-            { "q": "Що продає Делла, щоб купити подарунок Джимові?", "options": ["Мамину каблучку", "Своє довге волосся", "Золотий годинник Джима", "Набір гребенів"], "answer": 1, "explain": "Вона продає волосся за двадцять доларів і купує ланцюжок." },
-            { "q": "Що Джим дарує Деллі?", "options": ["Платиновий ланцюжок", "Нове пальто", "Набір гребенів для волосся", "Золотий годинник"], "answer": 2, "explain": "Джим купує дорогі гребені для довгого волосся, яке Делла щойно продала." },
-            { "q": "Як Джим заплатив за свій подарунок?", "options": ["Позичив гроші", "Продав годинник", "Працював понаднормово", "Продав волосся Делли"], "answer": 1, "explain": "Джим продав той самий золотий годинник, для якого Делла купила ланцюжок." },
-            { "q": "Чому оповідач називає Деллу і Джима наймудрішими дарувальниками?", "options": ["Їхні подарунки були найдорожчими", "Кожен віддав найцінніше заради іншого", "Їхні подарунки можна було повернути", "Вони точно дотрималися звичаю волхвів"], "answer": 1, "explain": "Кожен із них віддав свій найбільший скарб із любові, і оповідач називає це мудрістю." }
+            { "q": "Що продає Делла, щоб купити подарунок Джимові?", "options": ["Мамину каблучку", "Набір гребенів", "Золотий годинник Джима", "Своє довге волосся"], "answer": 3, "explain": "Вона продає волосся за двадцять доларів і купує ланцюжок." },
+            { "q": "Що Джим дарує Деллі?", "options": ["Платиновий ланцюжок", "Набір гребенів для волосся", "Нове пальто", "Золотий годинник"], "answer": 1, "explain": "Джим купує дорогі гребені для довгого волосся, яке Делла щойно продала." },
+            { "q": "Як Джим заплатив за свій подарунок?", "options": ["Позичив гроші", "Продав волосся Делли", "Працював понаднормово", "Продав годинник"], "answer": 3, "explain": "Джим продав той самий золотий годинник, для якого Делла купила ланцюжок." },
+            { "q": "Чому оповідач називає Деллу і Джима наймудрішими дарувальниками?", "options": ["Їхні подарунки були найдорожчими", "Їхні подарунки можна було повернути", "Кожен віддав найцінніше заради іншого", "Вони точно дотрималися звичаю волхвів"], "answer": 2, "explain": "Кожен із них віддав свій найбільший скарб із любові, і оповідач називає це мудрістю." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "buoyancy",
+      "label": {
+        "en": "Physics: why things float",
+        "uk": "Фізика: чому тіла плавають"
+      },
+      "text": {
+        "en": "Why does a huge steel ship float while a small steel nail sinks? The answer lies in density and buoyancy. Density tells us how much mass is packed into a given volume. Fresh water has a density of about 1 gram per cubic centimetre, and steel is about eight times denser. An object that is less dense than water floats, and an object that is denser sinks. When an object is placed in water, it pushes some of the water aside. The water pushes back with an upward force called buoyancy. More than two thousand years ago, the Greek scientist Archimedes showed that this force equals the weight of the water the object pushes aside. A nail is solid steel, so the water it pushes aside weighs much less than the nail, and it sinks. A ship is made of steel too, but its hull is shaped like a wide bowl that is mostly filled with air. Because of this, the ship as a whole is less dense than water. Salt water is denser than fresh water, so things float a little higher in the sea than in a lake.",
+        "uk": "Чому величезний сталевий корабель тримається на воді, а маленький сталевий цвях тоне? Відповідь криється в густині та виштовхувальній силі. Густина показує, яка маса міститься в певному об'ємі речовини. Густина прісної води становить близько 1 грама на кубічний сантиметр, а густина сталі приблизно у вісім разів більша. Якщо густина тіла менша за густину води, воно плаває, а якщо більша — тоне. Занурене у воду тіло витісняє частину води. Вода тисне на таке тіло знизу вгору. Силу, з якою вона це робить, називають виштовхувальною. Понад дві тисячі років тому грецький учений Архімед показав, що вона дорівнює вазі води, яку витісняє тіло. Цвях зроблено із суцільної сталі, тому витіснена ним вода важить набагато менше за сам цвях, і він тоне. Корабель теж зроблено зі сталі, але його корпус схожий на широку миску, заповнену переважно повітрям. Тому середня густина корабля менша за густину води. Солона вода густіша за прісну, тож у морі предмети занурюються трохи менше, ніж в озері."
+      },
+      "quiz": {
+        "en": {
+          "title": "Why things float: quick check",
+          "questions": [
+            { "q": "What does density tell us?", "options": ["How fast an object sinks in water", "How much mass is packed into a given volume", "How much water an object can hold", "How hard the water pushes on an object"], "answer": 1, "explain": "Density tells us how much mass is packed into a given volume." },
+            { "q": "What is buoyancy?", "options": ["The weight of an object in the air", "The amount of air inside a ship", "The density of salty sea water", "The upward force of water on an object"], "answer": 3, "explain": "The text calls the upward force that water puts on an object buoyancy." },
+            { "q": "According to Archimedes, what does the upward force on an object equal?", "options": ["The weight of the water the object pushes aside", "The amount of air trapped inside the object", "The depth of the water under the object", "The size of the object's bottom surface"], "answer": 0, "explain": "Archimedes showed that the upward force equals the weight of the water the object pushes aside." },
+            { "q": "Why does a steel ship float even though steel is denser than water?", "options": ["Its steel is a lighter kind than the steel in nails", "Its engines keep pushing it up towards the surface", "Its air-filled hull lowers the ship's overall density", "Salt in the sea makes the steel of its hull less dense"], "answer": 2, "explain": "The hull is mostly filled with air, so the ship as a whole is less dense than water." },
+            { "q": "Why do things float a little higher in the sea than in a lake?", "options": ["Sea water is colder than lake water", "Salt water is denser than fresh water", "Waves push objects upwards", "The sea is deeper than a lake"], "answer": 1, "explain": "The text explains that salt water is denser than fresh water, so things float higher in it." }
+          ]
+        },
+        "uk": {
+          "title": "Чому тіла плавають: швидка перевірка",
+          "questions": [
+            { "q": "Що показує густина?", "options": ["Як швидко тіло тоне у воді", "Яка маса міститься в певному об'ємі", "Скільки води може вмістити тіло", "Як сильно вода тисне на тіло"], "answer": 1, "explain": "Густина показує, яка маса міститься в певному об'ємі речовини." },
+            { "q": "Що таке виштовхувальна сила?", "options": ["Вага тіла, виміряна в повітрі", "Кількість повітря всередині корабля", "Густина солоної морської води", "Сила, з якою вода тисне на тіло знизу"], "answer": 3, "explain": "Виштовхувальною в тексті названо силу, з якою вода тисне на тіло знизу вгору." },
+            { "q": "Чому, за Архімедом, дорівнює виштовхувальна сила?", "options": ["Вазі води, яку витісняє тіло", "Кількості повітря всередині тіла", "Глибині води під тілом", "Площі нижньої поверхні тіла"], "answer": 0, "explain": "Архімед показав, що виштовхувальна сила дорівнює вазі води, яку витісняє тіло." },
+            { "q": "Чому сталевий корабель плаває, хоча сталь густіша за воду?", "options": ["Його сталь легша за ту, з якої роблять цвяхи", "Двигуни весь час штовхають його до поверхні", "Повітря в корпусі зменшує середню густину корабля", "Морська сіль зменшує густину сталі корпусу"], "answer": 2, "explain": "Корпус заповнений переважно повітрям, тому середня густина корабля менша за густину води." },
+            { "q": "Чому в морі предмети занурюються трохи менше, ніж в озері?", "options": ["Морська вода холодніша за озерну", "Солона вода густіша за прісну", "Хвилі виштовхують предмети вгору", "Море глибше за озеро"], "answer": 1, "explain": "У тексті пояснено, що солона вода густіша за прісну, тому в морі предмети занурюються менше." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "timezones",
+      "label": {
+        "en": "Geography: time zones",
+        "uk": "Географія: часові пояси"
+      },
+      "text": {
+        "en": "Earth turns once on its axis about every 24 hours, so it cannot be midday everywhere at once: when it is noon in London, it is already evening in Tokyo. For centuries, each town set its clocks by the Sun, and noon was the moment the Sun stood highest in the sky. This local time worked well until railways spread in the 1800s. Trains linked towns whose clocks differed by several minutes, and timetables became confusing. In 1884, an international conference in Washington chose the meridian through Greenwich, in London, as the prime meridian, the starting line for measuring longitude. Because Earth turns 360 degrees in 24 hours, or 15 degrees each hour, the world was gradually divided into 24 main time zones, each about 15 degrees wide. Travelling one zone east usually means moving your clock one hour forward. Zone borders often follow the borders of countries rather than straight lines. China, for example, is wide enough to cover about five zones, yet the whole country uses one time.",
+        "uk": "Земля робить повний оберт навколо своєї осі приблизно за 24 години, тому полудень не може настати всюди одночасно: коли в Лондоні полудень, у Токіо вже вечір. Протягом століть кожне місто звіряло годинники із Сонцем, і полуднем вважали мить, коли Сонце стоїть найвище на небі. Такий місцевий час добре служив людям, доки в XIX столітті не поширилися залізниці. Потяги з'єднали міста, годинники яких розходилися на кілька хвилин, і розклади стали заплутаними. 1884 року міжнародна конференція у Вашингтоні обрала нульовим меридіан, що проходить через Гринвіч у Лондоні. Від нього відлічують довготу. Земля обертається на 360 градусів за 24 години, тобто на 15 градусів щогодини, тому світ поступово поділили на 24 основні часові пояси завширшки приблизно по 15 градусів. Якщо переїхати на один пояс на схід, годинник зазвичай переводять на годину вперед. Межі поясів часто проходять кордонами країн, а не прямими лініями. Наприклад, Китай такий широкий, що охоплює приблизно п'ять поясів, але вся країна живе за одним часом."
+      },
+      "quiz": {
+        "en": {
+          "title": "Time zones: quick check",
+          "questions": [
+            { "q": "Before the railways, how did each town set its clocks?", "options": ["By a clock in the capital", "By the time in Greenwich", "By the stars at midnight", "By the position of the Sun"], "answer": 3, "explain": "Each town set its clocks by the Sun, and noon was the moment the Sun stood highest." },
+            { "q": "Why did local time become a problem when railways spread?", "options": ["Towns linked by trains had clocks a few minutes apart", "Railway clocks stopped working on long journeys", "Many railway stations had no clocks at all", "Trains could only run while the Sun was up"], "answer": 0, "explain": "Trains linked towns whose clocks differed by several minutes, so timetables became confusing." },
+            { "q": "What did the 1884 conference in Washington decide?", "options": ["To give every country exactly one time zone", "To make noon the moment the Sun is highest", "To use the meridian through Greenwich as the prime meridian", "To move all clocks one hour forward in summer"], "answer": 2, "explain": "The conference chose the meridian through Greenwich, in London, as the prime meridian." },
+            { "q": "Why is each time zone about 15 degrees wide?", "options": ["Daylight lasts about 15 hours", "Earth turns 15 degrees every hour", "The conference picked 15 as a round number", "The equator is split into 15 equal parts"], "answer": 1, "explain": "Earth turns 360 degrees in 24 hours, which is 15 degrees every hour." },
+            { "q": "What do you usually do with your clock when you travel one zone east?", "options": ["Move it one hour forward", "Move it one hour back", "Leave it as it is", "Move it 15 minutes forward"], "answer": 0, "explain": "The text says that travelling one zone east usually means moving your clock one hour forward." }
+          ]
+        },
+        "uk": {
+          "title": "Часові пояси: швидка перевірка",
+          "questions": [
+            { "q": "Як кожне місто виставляло годинники до поширення залізниць?", "options": ["За годинником у столиці", "За часом у Гринвічі", "За зорями опівночі", "За положенням Сонця"], "answer": 3, "explain": "Кожне місто звіряло годинники із Сонцем, і полуднем вважали мить, коли воно стоїть найвище." },
+            { "q": "Чому з поширенням залізниць місцевий час став проблемою?", "options": ["Годинники в містах на одній лінії показували різний час", "У довгих поїздках залізничні годинники зупинялися", "На багатьох станціях узагалі не було годинників", "Потяги могли їздити лише тоді, коли світило Сонце"], "answer": 0, "explain": "Потяги з'єднали міста, годинники яких розходилися на кілька хвилин, і розклади стали заплутаними." },
+            { "q": "Що вирішила конференція 1884 року у Вашингтоні?", "options": ["Дати кожній країні рівно один часовий пояс", "Вважати полуднем мить, коли Сонце стоїть найвище", "Вважати нульовим меридіан, що проходить через Гринвіч", "Щоліта переводити всі годинники на годину вперед"], "answer": 2, "explain": "Конференція обрала нульовим меридіан, що проходить через Гринвіч у Лондоні." },
+            { "q": "Чому кожен часовий пояс має ширину приблизно 15 градусів?", "options": ["Світловий день триває близько 15 годин", "Земля щогодини обертається на 15 градусів", "Учасники конференції обрали кругле число", "Екватор поділено на 15 рівних частин"], "answer": 1, "explain": "Земля обертається на 360 градусів за 24 години, тобто на 15 градусів щогодини." },
+            { "q": "Що зазвичай роблять із годинником, якщо переїхати на один пояс на схід?", "options": ["Переводять на годину вперед", "Переводять на годину назад", "Залишають як є", "Переводять на 15 хвилин уперед"], "answer": 0, "explain": "У тексті сказано, що на один пояс на схід годинник зазвичай переводять на годину вперед." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "market",
+      "label": {
+        "en": "English (A2–B1): a day at the market",
+        "uk": "Англійська (A2–B1): день на ринку"
+      },
+      "text": {
+        "en": "Every Saturday morning, Maya goes to the market with her grandfather. This week they left home at seven o'clock, because Grandpa wanted to buy the freshest fish. The market was already busy and noisy. Sellers were shouting their prices, and the air smelled of fresh bread and oranges. First, they went to the fish stall. \"Good morning!\" said Mr Costa, the fish seller. \"The sardines are very good today.\" Grandpa bought a kilo of sardines for six euros. Next, Maya wanted to buy strawberries, but the fruit seller had sold them all. \"You're too late!\" she laughed. \"Come back earlier next Saturday.\" So Maya chose some cherries instead. Then it started to rain. Everybody ran under the big roof in the middle of the market, and a woman from the bread stall gave them cups of hot tea. While they waited, Grandpa told Maya about the market when he was a boy. \"There were horses here then, not cars,\" he said. When the rain stopped, they carried their heavy bags to the bus stop. Maya was tired, but she was very happy.",
+        "uk": "Every Saturday morning, Maya goes to the market with her grandfather. This week they left home at seven o'clock, because Grandpa wanted to buy the freshest fish. The market was already busy and noisy. Sellers were shouting their prices, and the air smelled of fresh bread and oranges. First, they went to the fish stall. \"Good morning!\" said Mr Costa, the fish seller. \"The sardines are very good today.\" Grandpa bought a kilo of sardines for six euros. Next, Maya wanted to buy strawberries, but the fruit seller had sold them all. \"You're too late!\" she laughed. \"Come back earlier next Saturday.\" So Maya chose some cherries instead. Then it started to rain. Everybody ran under the big roof in the middle of the market, and a woman from the bread stall gave them cups of hot tea. While they waited, Grandpa told Maya about the market when he was a boy. \"There were horses here then, not cars,\" he said. When the rain stopped, they carried their heavy bags to the bus stop. Maya was tired, but she was very happy."
+      },
+      "quiz": {
+        "en": {
+          "title": "A day at the market: quick check",
+          "questions": [
+            { "q": "Why did Maya and her grandfather leave home at seven o'clock?", "options": ["The market closed at eight o'clock", "They had to catch an early bus", "Grandpa wanted to buy the freshest fish", "They wanted to arrive before the rain"], "answer": 2, "explain": "The text says that Grandpa wanted to buy the freshest fish." },
+            { "q": "How much did Grandpa pay for the sardines?", "options": ["Five euros", "Six euros", "Seven euros", "Eight euros"], "answer": 1, "explain": "Grandpa bought a kilo of sardines for six euros." },
+            { "q": "Why didn't Maya buy strawberries?", "options": ["They were too expensive", "They did not look fresh", "Grandpa did not like them", "The seller had sold them all"], "answer": 3, "explain": "The fruit seller had sold all her strawberries, so Maya chose cherries." },
+            { "q": "What did people do when it started to rain?", "options": ["They ran under the big roof", "They went home by bus", "They waited in a café", "They bought umbrellas"], "answer": 0, "explain": "Everybody ran under the big roof in the middle of the market." },
+            { "q": "What did Grandpa tell Maya about the market in the past?", "options": ["It was much smaller", "It was open every day", "Fish was very cheap then", "There were horses, not cars"], "answer": 3, "explain": "Grandpa said that there were horses at the market then, not cars." }
+          ]
+        },
+        "uk": {
+          "title": "A day at the market: quick check",
+          "questions": [
+            { "q": "Why did Maya and her grandfather leave home at seven o'clock?", "options": ["The market closed at eight o'clock", "They had to catch an early bus", "Grandpa wanted to buy the freshest fish", "They wanted to arrive before the rain"], "answer": 2, "explain": "The text says that Grandpa wanted to buy the freshest fish." },
+            { "q": "How much did Grandpa pay for the sardines?", "options": ["Five euros", "Six euros", "Seven euros", "Eight euros"], "answer": 1, "explain": "Grandpa bought a kilo of sardines for six euros." },
+            { "q": "Why didn't Maya buy strawberries?", "options": ["They were too expensive", "They did not look fresh", "Grandpa did not like them", "The seller had sold them all"], "answer": 3, "explain": "The fruit seller had sold all her strawberries, so Maya chose cherries." },
+            { "q": "What did people do when it started to rain?", "options": ["They ran under the big roof", "They went home by bus", "They waited in a café", "They bought umbrellas"], "answer": 0, "explain": "Everybody ran under the big roof in the middle of the market." },
+            { "q": "What did Grandpa tell Maya about the market in the past?", "options": ["It was much smaller", "It was open every day", "Fish was very cheap then", "There were horses, not cars"], "answer": 3, "explain": "Grandpa said that there were horses at the market then, not cars." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "water_es",
+      "lang": "es",
+      "label": {
+        "en": "Spanish: the water cycle",
+        "uk": "Іспанська: кругообіг води"
+      },
+      "text": {
+        "es": "El agua de la Tierra nunca está quieta: recorre una y otra vez las mismas etapas. A este proceso lo llamamos ciclo del agua. Todo empieza con el calor del Sol, que calienta el agua de los mares, los ríos y los lagos. Parte de esa agua se convierte en vapor y sube a la atmósfera: es la evaporación. Las plantas también liberan vapor de agua a través de sus hojas, un proceso llamado transpiración. Al ascender, el vapor se enfría y se transforma en gotas diminutas que forman las nubes. Este paso se llama condensación. Las gotas se juntan y crecen hasta que pesan demasiado y caen en forma de lluvia, nieve o granizo: es la precipitación. Una parte del agua que cae corre por la superficie hasta los ríos, que la devuelven al mar. Otra parte se filtra en el suelo y forma aguas subterráneas, que pueden tardar años en volver a salir. Gracias a este ciclo, el agua dulce se renueva constantemente, aunque la cantidad total de agua del planeta se mantiene casi igual."
+      },
+      "quiz": {
+        "es": {
+          "title": "El ciclo del agua: prueba rápida",
+          "questions": [
+            { "q": "Según el texto, ¿con qué empieza el ciclo del agua?", "options": ["Con el viento que sopla sobre el mar", "Con el calor del Sol", "Con el frío de las montañas", "Con la lluvia que cae en los ríos"], "answer": 1, "explain": "El texto dice que todo empieza con el calor del Sol, que calienta mares, ríos y lagos." },
+            { "q": "¿Cómo se llama el paso en el que el vapor se enfría y forma las nubes?", "options": ["Evaporación", "Transpiración", "Condensación", "Precipitación"], "answer": 2, "explain": "El texto llama condensación al paso en el que el vapor se enfría y forma las nubes." },
+            { "q": "¿Qué es la transpiración?", "options": ["El vapor que liberan las plantas por sus hojas", "El agua que se filtra en el suelo", "El agua que corre hacia los ríos", "Las gotas que forman las nubes"], "answer": 0, "explain": "Según el texto, la transpiración es el vapor de agua que las plantas liberan a través de sus hojas." },
+            { "q": "¿Qué ocurre con el agua que se filtra en el suelo?", "options": ["Vuelve a la atmósfera en pocas horas", "Se convierte enseguida en nubes", "Desaparece para siempre", "Forma aguas subterráneas"], "answer": 3, "explain": "El agua que se filtra en el suelo forma aguas subterráneas, que pueden tardar años en volver a salir." },
+            { "q": "¿Qué dice el texto sobre la cantidad total de agua del planeta?", "options": ["Disminuye un poco cada año", "Se mantiene casi igual", "Aumenta con cada tormenta", "Cambia según la estación"], "answer": 1, "explain": "El texto explica que la cantidad total de agua del planeta se mantiene casi igual." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copernicus_pl",
+      "lang": "pl",
+      "label": {
+        "en": "Polish: Copernicus",
+        "uk": "Польська: Коперник"
+      },
+      "text": {
+        "pl": "Mikołaj Kopernik urodził się w 1473 roku w Toruniu. Studiował najpierw w Krakowie, a potem we Włoszech, gdzie uczył się prawa, medycyny i astronomii. Większość dorosłego życia spędził na Warmii, głównie we Fromborku. Był tam kanonikiem, czyli członkiem rady, która zarządzała katedrą i jej ziemiami. Leczył chorych i napisał nawet traktat o monecie, ale najbardziej fascynowało go niebo. W jego czasach prawie wszyscy uczeni uważali, że Ziemia stoi nieruchomo w środku świata, a Słońce, Księżyc i planety krążą wokół niej. Kopernik przez wiele lat obserwował niebo i obliczał ruchy planet. Doszedł do wniosku, że to Ziemia, tak jak inne planety, krąży wokół Słońca, a do tego raz na dobę obraca się wokół własnej osi. Właśnie dlatego wydaje nam się, że Słońce wędruje po niebie. Jego dzieło „O obrotach sfer niebieskich” ukazało się drukiem dopiero w 1543 roku, w roku jego śmierci. Teorię Kopernika nazywamy heliocentryczną, od greckiego słowa helios, czyli słońce. Zmieniła ona sposób, w jaki ludzie patrzą na Wszechświat."
+      },
+      "quiz": {
+        "pl": {
+          "title": "Mikołaj Kopernik: szybki sprawdzian",
+          "questions": [
+            { "q": "Gdzie urodził się Mikołaj Kopernik?", "options": ["W Krakowie", "We Fromborku", "We Włoszech", "W Toruniu"], "answer": 3, "explain": "Tekst podaje, że Kopernik urodził się w 1473 roku w Toruniu." },
+            { "q": "Kim, według tekstu, był kanonik?", "options": ["Członkiem rady zarządzającej katedrą i jej ziemiami", "Nauczycielem astronomii na uniwersytecie", "Lekarzem pracującym na królewskim dworze", "Urzędnikiem, który bił monety dla miasta"], "answer": 0, "explain": "W tekście kanonik to członek rady, która zarządzała katedrą i jej ziemiami." },
+            { "q": "Co uważali prawie wszyscy uczeni w czasach Kopernika?", "options": ["Że Ziemia krąży wokół Słońca", "Że Ziemia stoi nieruchomo w środku świata", "Że Słońce obraca się wokół własnej osi", "Że planety krążą wokół Księżyca"], "answer": 1, "explain": "Według tekstu uczeni uważali, że Ziemia stoi nieruchomo, a Słońce, Księżyc i planety krążą wokół niej." },
+            { "q": "Dlaczego, według tekstu, wydaje nam się, że Słońce wędruje po niebie?", "options": ["Słońce raz na dobę okrąża Ziemię", "Księżyc co kilka godzin zasłania Słońce", "Ziemia obraca się wokół własnej osi", "Planety przyciągają Słońce w różne strony"], "answer": 2, "explain": "Ziemia raz na dobę obraca się wokół własnej osi i dlatego wydaje nam się, że Słońce wędruje po niebie." },
+            { "q": "Skąd pochodzi nazwa teorii heliocentrycznej?", "options": ["Od greckiego słowa oznaczającego słońce", "Od nazwiska greckiego astronoma", "Od łacińskiego tytułu dzieła Kopernika", "Od nazwy miasta, w którym powstała"], "answer": 0, "explain": "Nazwa pochodzi od greckiego słowa helios, czyli słońce." }
           ]
         }
       }
