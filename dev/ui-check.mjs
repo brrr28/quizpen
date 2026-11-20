@@ -36,7 +36,8 @@ await page.send('Page.addScriptToEvaluateOnNewDocument', { source: `
     } }).observe({ type: 'layout-shift', buffered: true });
   } catch (e) { /* no layout-shift support */ }
   window.__paint = []; window.__themeLog = [];
-  new MutationObserver(() => __themeLog.push(document.documentElement.getAttribute('data-theme'))).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  // documentElement does not exist yet when this runs, so watch the document subtree.
+  new MutationObserver((rs) => rs.forEach((m) => { if (m.target === document.documentElement) __themeLog.push(m.target.getAttribute('data-theme')); })).observe(document, { subtree: true, attributes: true, attributeFilter: ['data-theme'] });
   (function f(i) { requestAnimationFrame(() => {
     const b = document.body;
     __paint.push({ th: document.documentElement.getAttribute('data-theme'), bg: b ? getComputedStyle(b).backgroundColor : null });
@@ -107,7 +108,9 @@ const CONTRAST = `(() => {
     seen.add(el);
     if (!el.getClientRects().length || hidden(el)) continue;
     const cs = getComputedStyle(el);
-    const b = bgOf(el), fg = over(rgba(cs.color), b.c);
+    // The highlighter mark paints the accent as a background image: measure its text against the accent.
+    const b = el.closest('.hl') ? { c: rgba(getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()), img: false } : bgOf(el);
+    const fg = over(rgba(cs.color), b.c);
     const size = parseFloat(cs.fontSize), bold = +cs.fontWeight >= 700;
     const need = size >= 24 || (size >= 18.66 && bold) ? 3 : 4.5;
     rows.push({ el: name(el), text: t.data.trim().slice(0, 28), r: Math.round(ratio(fg, b.c) * 100) / 100, need, img: b.img, accent: el.closest('.btn-accent, .hl, .chip[aria-pressed="true"], .feature-icon, .thanks-badge, .final') ? 1 : 0, link: el.closest('a') ? 1 : 0 });
