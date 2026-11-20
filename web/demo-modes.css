@@ -1,0 +1,108 @@
+/* Demo in two modes: ready examples and the visitor's own text (tabs, panes, notes, early access, busy). */
+
+/* Tabs */
+.demo-tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: 32px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1.5px solid #454C6B;
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+.demo-tabs[hidden] { display: none; }
+.demo-tab {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--night-muted);
+  font-size: 0.96rem;
+  font-weight: 600;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+.demo-tab:hover { color: var(--night-text); }
+.demo-tab[aria-selected="true"] { background: var(--surface); color: var(--ink); }
+.demo-tab:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+.demo-tabs + .demo-grid { margin-top: 20px; }
+@media (min-width: 980px) { .demo-tabs + .demo-grid { margin-top: 24px; } }
+
+/* Both panes share one grid cell: the column keeps the height of the taller one, so a switch moves nothing.
+   The text boxes take the free space, so the shorter pane has no gap at the bottom. */
+.demo-panes { display: grid; }
+.demo-pane { grid-area: 1 / 1; display: flex; flex-direction: column; min-width: 0; }
+.demo-pane.is-off { visibility: hidden; }
+.demo-pane[hidden] { display: none; }
+.demo-form { display: flex; flex-direction: column; flex: 1 1 auto; }
+.demo-form textarea { flex: 1 1 auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .demo-pane.is-in { animation: pane-in 160ms var(--ease-out) both; }
+}
+@keyframes pane-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Ready examples */
+.chip { display: inline-flex; align-items: center; gap: 8px; }
+.chip-tag {
+  padding: 1px 6px;
+  border-radius: 6px;
+  border: 1px solid currentColor;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.demo-langnote { margin-top: 12px; font-size: 0.9rem; color: var(--night-muted); }
+#pane-samples .demo-label { margin-top: 18px; }
+.sample-text {
+  flex: 1 1 200px;
+  min-height: 200px;
+  overflow-y: auto;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  border: 1.5px solid #454C6B;
+  color: var(--night-text);
+  font-size: 1rem;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+.sample-text:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+
+/* No layout shift when the first question replaces the placeholder: the panel starts at the height of a
+   question screen (measured with the longest sample quizzes: 840px at 375 wide, 622px from 640 up).
+   app.js keeps the panel from shrinking afterwards (a ratchet reset on width change). */
+.quiz-panel { display: flex; flex-direction: column; min-height: 840px; }
+@media (min-width: 640px) { .quiz-panel { min-height: 622px; } }
+.quiz-empty { flex: 1 1 auto; }
+.quiz-body:has(> .ea, > .demo-busy) { flex: 1 1 auto; display: flex; flex-direction: column; }
+.quiz-body > .ea, .quiz-body > .demo-busy { flex: 1 1 auto; }
+
+/* Notes sit under the quiz (question and score screens). */
+.quiz-body > .quiz-note { margin: 18px 0 0; }
+.quiz-note .link-btn { padding: 0; font-size: inherit; font-weight: 600; color: inherit; }
+
+/* Early access (own text while generation is closed) */
+.ea { display: grid; align-content: center; gap: 12px; min-height: 370px; }
+.ea-title { font-weight: 700; font-size: 1.2rem; line-height: 1.3; }
+.ea-text { color: var(--ink-2); }
+.ea-form .field-msg:not(:empty) { margin-top: 8px; }
+.ea-done {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--right-bg);
+  color: var(--right-ink);
+  font-weight: 500;
+}
+.ea-done .icon { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.ea-done:focus { outline: none; }
+.ea-done:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.ea .link-btn { justify-self: start; }
+
+/* Busy live demo */
+.demo-busy { justify-items: center; }
+.demo-busy > .icon { width: 28px; height: 28px; }
+.demo-busy p { max-width: 26rem; }
+.demo-busy .quiz-actions { justify-content: center; }

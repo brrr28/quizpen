@@ -86,6 +86,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="demo-modes.css">
   <link rel="stylesheet" href="nav.css">
   <script src="config.js"></script>
   <!-- Analytics (web/analytics.js): off until IDs are set in config.js; must stay before app.js -->
@@ -228,29 +229,39 @@
           <h2 id="demo-title" data-i18n="demo.title">Try it on your own lesson</h2>
           <p data-i18n="demo.sub">Paste a paragraph from your lesson and get a quiz in seconds. No signup, and we don't store your text.</p>
         </div>
+        <div class="demo-tabs" id="demo-tabs" role="tablist" aria-labelledby="demo-title">
+          <button type="button" class="demo-tab" role="tab" id="tab-samples" aria-controls="pane-samples" aria-selected="true" tabindex="0"><span data-i18n="demo.tabSamples" data-rsv="Ready examples&#10;Готові приклади">Ready examples</span></button>
+          <button type="button" class="demo-tab" role="tab" id="tab-own" aria-controls="pane-own" aria-selected="false" tabindex="-1"><span data-i18n="demo.tabOwn" data-rsv="Your text&#10;Ваш текст">Your text</span></button>
+        </div>
         <div class="demo-grid">
-          <form class="demo-input" id="demo-form" novalidate>
-            <label for="lesson" class="demo-label" data-i18n="demo.label">Lesson text</label>
-            <textarea id="lesson" name="lesson" maxlength="3000" rows="11" placeholder="Paste 200 to 3000 characters: a textbook page, your notes or an article." aria-describedby="lesson-meta lesson-error" data-i18n-attr="placeholder:demo.placeholder"></textarea>
-            <div class="demo-meta" id="lesson-meta">
-              <span id="lesson-count" class="mono">0 / 3000</span>
-              <span id="lesson-need"></span>
+          <div class="demo-input demo-panes">
+            <div class="demo-pane" id="pane-samples" role="tabpanel" aria-labelledby="tab-samples">
+              <div class="chips" id="sample-chips" role="group" aria-labelledby="tab-samples"></div>
+              <p class="demo-langnote" data-i18n="demo.langNote">The quiz comes out in the language of the text.</p>
+              <p class="demo-label" id="sample-text-label" data-i18n="demo.label">Lesson text</p>
+              <div class="sample-text" id="sample-text" role="region" tabindex="0" aria-labelledby="sample-text-label"></div>
+              <button type="button" class="btn btn-accent btn-lg gen-btn" id="show-btn">
+                <span class="btn-label" data-i18n="demo.show" data-rsv="Show the quiz&#10;Показати тест">Show the quiz</span>
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+              </button>
             </div>
-            <p id="lesson-error" class="field-msg is-error" aria-live="polite"></p>
-            <div class="samples" id="samples">
-              <p class="samples-label" id="samples-label" data-i18n="demo.samples">No text at hand? Try a sample:</p>
-              <div class="chips" role="group" aria-labelledby="samples-label">
-                <button type="button" class="chip" data-sample="photosynthesis" aria-pressed="false" data-i18n="sample.photosynthesis">Biology: photosynthesis</button>
-                <button type="button" class="chip" data-sample="printing" aria-pressed="false" data-i18n="sample.printing">History: the printing press</button>
-                <button type="button" class="chip" data-sample="magi" aria-pressed="false" data-i18n="sample.magi">Literature: The Gift of the Magi</button>
-              </div>
+            <div class="demo-pane is-off" id="pane-own" role="tabpanel" aria-labelledby="tab-own" inert aria-hidden="true">
+              <form class="demo-form" id="demo-form" novalidate>
+                <label for="lesson" class="demo-label" data-i18n="demo.label">Lesson text</label>
+                <textarea id="lesson" name="lesson" maxlength="3000" rows="11" placeholder="Paste 200 to 3000 characters: a textbook page, your notes or an article." aria-describedby="lesson-meta lesson-error" data-i18n-attr="placeholder:demo.placeholder"></textarea>
+                <div class="demo-meta" id="lesson-meta">
+                  <span id="lesson-count" class="mono">0 / 3000</span>
+                  <span id="lesson-need"></span>
+                </div>
+                <p id="lesson-error" class="field-msg is-error" aria-live="polite"></p>
+                <button type="submit" class="btn btn-accent btn-lg gen-btn" id="gen-btn">
+                  <svg class="icon" aria-hidden="true"><use href="#i-wand"/></svg>
+                  <span class="btn-label" data-i18n="demo.generate">Generate quiz</span>
+                  <span class="spinner" aria-hidden="true"></span>
+                </button>
+              </form>
             </div>
-            <button type="submit" class="btn btn-accent btn-lg gen-btn" id="gen-btn">
-              <svg class="icon" aria-hidden="true"><use href="#i-wand"/></svg>
-              <span class="btn-label" data-i18n="demo.generate">Generate quiz</span>
-              <span class="spinner" aria-hidden="true"></span>
-            </button>
-          </form>
+          </div>
 
           <div class="quiz-panel" id="quiz-panel" aria-busy="false" aria-labelledby="quiz-panel-title" role="region">
             <h3 id="quiz-panel-title" class="sr-only" data-i18n="quiz.region">Your quiz</h3>
