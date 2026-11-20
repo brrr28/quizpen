@@ -252,8 +252,12 @@ function debugCounters() {
     demoRunsOk: demoRuns.filter((r) => r.ok).length,
     lastVisit: visits.at(-1) || null,
     lastDemoRun: demoRuns.at(-1) || null,
+    // Every join request received, repeats included (signups counts unique emails only).
+    joinRequests: joinRequests.length,
+    joinRequestsByEmail: joinRequests.reduce((m, e) => { m[e] = (m[e] || 0) + 1; return m; }, {}),
   };
 }
+const joinRequests = [];
 
 async function quiz(body) {
   const text = typeof body.text === 'string' ? body.text.trim() : '';
@@ -307,7 +311,7 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, { ok: false, error: 'bad_request' });
     }
     if (!body || typeof body !== 'object' || Array.isArray(body)) return send(res, 200, { ok: false, error: 'bad_request' });
-    if (body.action === 'join') return send(res, 200, join(body));
+    if (body.action === 'join') { joinRequests.push(String(body.email || '').trim().toLowerCase()); return send(res, 200, join(body)); }
     if (body.action === 'quiz') return send(res, 200, await loggedQuiz(body));
     if (body.action === 'visit') return send(res, 200, visit(body));
     if (body.action === 'stats') return send(res, 200, { ok: true, total: rows.length });
