@@ -25,7 +25,11 @@
         if (!f || !f.load || !window.Promise) { d.className += ' wf'; return; }
         for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
         all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
-        Promise.all(all).then(function () { d.className += ' wf'; }, function () { /* keep the fallbacks */ });
+        Promise.all(all).then(function () {
+          d.className += ' wf';
+          // ui.js re-measures its reserved heights in the web fonts.
+          try { document.dispatchEvent(new Event('qp:fonts')); } catch (e) { /* no Event constructor */ }
+        }, function () { /* keep the fallbacks */ });
       };
       var fonts = function () {
         var l = document.createElement('link');

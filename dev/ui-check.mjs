@@ -145,6 +145,8 @@ async function viewportRun(w, h, mobile) {
   await media('light');
   await load(BASE + '?lang=en', { w, h, mobile });
   await page.waitFor(`document.querySelector('[data-counter].is-ready')`).catch(() => {});
+  // Web fonts switch in one step after the load event (index.html, html.wf): measure in the final fonts.
+  await page.waitFor(`typeof window.qpFontsCss !== 'function' || document.documentElement.classList.contains('wf')`, 15000);
   await settle(1600);
   const loadCls = await cls();
   ok(`${tag}: CLS on load`, loadCls.sum === 0, `sum ${loadCls.sum}, entries ${loadCls.n}`);
@@ -203,14 +205,17 @@ await themeOnLoad('landing, saved light over system dark', BASE + '?lang=en', { 
   const err0 = s.errors.length;
   await media('light');
   await load(BASE + '?lang=en', { saved: 'dark' });
-  // The sample chips come from data/samples.json after load: wait for the one we click.
+  // The sample chips come from data/samples.json after load: wait for the one we click. A chip selects a ready
+  // example (no API call) and #show-btn opens its quiz, as in demo-check.
   await page.waitFor(`document.querySelector('.chip[data-sample="magi"]')`, 15000);
   await page.click('.chip[data-sample="magi"]');
-  await page.waitFor(`document.getElementById('lesson').value.length > 200`);
-  await page.click('#gen-btn');
+  await page.click('#show-btn');
   await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 15000);
   await page.click('#quiz-body button.opt');
   await settle(700);
+  // Back to the own-text tab (the quiz stays on screen), so #gen-btn is visible for the focus ring audit.
+  await page.click('#tab-own');
+  await settle(300);
   await page.eval(`document.getElementById('demo').scrollIntoView({ block: 'start', behavior: 'instant' }); true`);
   await settle(500);
   await page.shot(resolve(SHOTS, 'demo-dark-1440.png'));
