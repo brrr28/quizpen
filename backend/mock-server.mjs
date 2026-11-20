@@ -1,6 +1,7 @@
 // Local mock of the Apps Script backend: same contract as backend/Code.gs (see API.md).
 // Node 22, no packages, in-memory store. Usage: MOCK_OK=1 node backend/mock-server.mjs
 // Env: PORT (default 8787), MOCK_QUIZ_DELAY_MS (default 1200), MOCK_QUIZ_DISABLED=1.
+// Mock-only: GET ?action=debug returns the in-memory visit and demo-run counters.
 
 import http from 'node:http';
 import { randomInt } from 'node:crypto';
@@ -19,6 +20,7 @@ const QUIZ_DISABLED = process.env.MOCK_QUIZ_DISABLED === '1';
 const LIMITS = {
   join: { perCid: 5, windowMs: 10 * 60 * 1000 },
   quiz: { perCidPerHour: 5, perMinute: 30, perDay: 300 },
+  visit: { perCid: 20, windowMs: 10 * 60 * 1000, perMinute: 300 },
 };
 const REF_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 const REF_ALPHABET = REF_LETTERS + '23456789';
@@ -26,6 +28,9 @@ const EMAIL_RE = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+
 
 const rows = []; // { created_at, email, ref_code, referred_by, lang, utm_source, utm_medium, utm_campaign, cid }
 const counters = new Map(); // key -> { count, expires }
+const visits = []; // { created_at, cid, lang, utm_source, utm_medium, utm_campaign, ref }
+const demoRuns = []; // { created_at, cid, lang, sample, text_length, questions, ok, error, ms }, never the text
+const seenVisits = new Set(); // "<cid>:<Kyiv day>"
 
 function bump(key, limit, windowMs) {
   const now = Date.now();
@@ -57,6 +62,8 @@ const clean = (v, max) =>
 const cleanCid = (v) => (typeof v === 'string' ? v.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64) : '');
 const cleanRef = (v) => (typeof v === 'string' ? v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8) : '');
 const cleanLang = (v) => (v === 'uk' ? 'uk' : 'en');
+const cleanSample = (v) => (typeof v === 'string' ? v.toLowerCase().replace(/[^a-z0-9_-]/g, '').replace(/^-+/, '').slice(0, 32) : '');
+const kyivDay = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Kyiv' });
 
 function clampCount(v) {
   if (v === null || v === undefined || v === '') return 5;
@@ -151,6 +158,63 @@ function buildSampleQuiz(text, lang, count) {
   return { title: (uk ? 'Тест за текстом: ' : 'Quiz: ') + head + '...', questions };
 }
 
+function visit(body) {
+  const cid = cleanCid(body.cid);
+  if (!cid) return { ok: false, error: 'bad_request' };
+  if (!bump(`visit:${cid}`, LIMITS.visit.perCid, LIMITS.visit.windowMs)) return { ok: false, error: 'rate_limited' };
+  const seenKey = `${cid}:${kyivDay()}`;
+  if (seenVisits.has(seenKey)) return { ok: true, counted: false };
+  if (!bump('visit:minute', LIMITS.visit.perMinute, 60e3)) return { ok: false, error: 'rate_limited' };
+  seenVisits.add(seenKey);
+  const utm = body.utm && typeof body.utm === 'object' ? body.utm : {};
+  visits.push({
+    created_at: new Date().toISOString(),
+    cid,
+    lang: cleanLang(body.lang),
+    utm_source: clean(utm.source, 100),
+    utm_medium: clean(utm.medium, 100),
+    utm_campaign: clean(utm.campaign, 100),
+    ref: cleanRef(body.ref),
+  });
+  return { ok: true, counted: true };
+}
+
+/** Same as Code.gs: every quiz request is logged, ok or not, with the text length only. */
+async function loggedQuiz(body) {
+  const started = Date.now();
+  let result = { ok: false, error: 'server' };
+  try {
+    result = await quiz(body);
+    return result;
+  } finally {
+    demoRuns.push({
+      created_at: new Date().toISOString(),
+      cid: cleanCid(body.cid),
+      lang: cleanLang(body.lang),
+      sample: cleanSample(body.sample),
+      text_length: typeof body.text === 'string' ? body.text.trim().length : 0,
+      questions: result.ok ? result.quiz.questions.length : 0,
+      ok: result.ok === true,
+      error: result.ok ? '' : result.error,
+      ms: Date.now() - started,
+    });
+  }
+}
+
+/** Mock-only: GET ?action=debug shows the in-memory counters (Code.gs answers bad_request). */
+function debugCounters() {
+  return {
+    ok: true,
+    signups: rows.length,
+    visits: visits.length,
+    uniqueVisitors: new Set(visits.map((v) => v.cid)).size,
+    demoRuns: demoRuns.length,
+    demoRunsOk: demoRuns.filter((r) => r.ok).length,
+    lastVisit: visits.at(-1) || null,
+    lastDemoRun: demoRuns.at(-1) || null,
+  };
+}
+
 async function quiz(body) {
   const text = typeof body.text === 'string' ? body.text.trim() : '';
   if (text.length < 200) return { ok: false, error: 'too_short' };
@@ -192,6 +256,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'OPTIONS') return send(res, 204, null);
     if (req.method === 'GET') {
       const action = new URL(req.url, `http://${HOST}`).searchParams.get('action') || 'stats';
+      if (action === 'debug') return send(res, 200, debugCounters());
       return send(res, 200, action === 'stats' ? { ok: true, total: rows.length } : { ok: false, error: 'bad_request' });
     }
     if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'bad_request' });
@@ -203,7 +268,8 @@ const server = http.createServer(async (req, res) => {
     }
     if (!body || typeof body !== 'object' || Array.isArray(body)) return send(res, 200, { ok: false, error: 'bad_request' });
     if (body.action === 'join') return send(res, 200, join(body));
-    if (body.action === 'quiz') return send(res, 200, await quiz(body));
+    if (body.action === 'quiz') return send(res, 200, await loggedQuiz(body));
+    if (body.action === 'visit') return send(res, 200, visit(body));
     if (body.action === 'stats') return send(res, 200, { ok: true, total: rows.length });
     return send(res, 200, { ok: false, error: 'bad_request' });
   } catch (err) {

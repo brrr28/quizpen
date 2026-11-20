@@ -681,7 +681,13 @@ function setupInsights() {
     lock.releaseLock();
   }
   // TODAY() in the daily table must use the same day boundary as created_at.
-  if (ss.getSpreadsheetTimeZone() !== CONFIG.timeZone) ss.setSpreadsheetTimeZone(CONFIG.timeZone);
+  if (ss.getSpreadsheetTimeZone() !== CONFIG.timeZone) {
+    try {
+      ss.setSpreadsheetTimeZone(CONFIG.timeZone);
+    } catch (err) {
+      console.warn('Could not set the spreadsheet time zone to ' + CONFIG.timeZone + ', set it in File -> Settings');
+    }
+  }
 
   const sheet = ss.getSheetByName(INSIGHTS_NAME) || ss.insertSheet(INSIGHTS_NAME);
   sheet.getCharts().forEach(function (chart) { sheet.removeChart(chart); });

@@ -74,6 +74,7 @@ Errors:
 | `lang` | `uk` or `en`; anything else becomes `en`. |
 | `count` | Rounded and clamped to 3..7. Missing, null or not a number: 5. |
 | `cid` | Optional. A missing `cid` shares one `anon` bucket. |
+| `sample` | Optional, analytics only, does not change the answer. The page sends the sample chip id whose text was sent unchanged (`photosynthesis`, `printing`, `magi`) or `custom` for the visitor's own or edited text. Lowercased, `a-z0-9_-` only, max 32 chars; missing is stored as empty. |
 
 Success:
 
@@ -106,12 +107,40 @@ Errors:
 Model: `claude-haiku-5-5` via the Anthropic Messages API (`anthropic-version: 2026-10-21`), `max_tokens` 3000 (thinking counts toward it, and Ukrainian needs more tokens), structured JSON output. One retry on 429 or 5xx, only if the first attempt was fast.
 Text length checks run before the key check, and the limits are counted only when the request is accepted.
 
-## Optional fields (sent by the page for the experiment funnel)
+Every quiz request that reaches this action (ok or not) appends one row to the `demo_runs` tab: `created_at, cid, lang, sample, text_length, questions, ok, error, ms`. The pasted text is never stored, only its length. Logging is capped at 30 rows per `cid` per hour and 120 rows per minute in total; above that the request is still served, just not logged.
 
-| Where | Field | Rules |
+### action `visit`
+
+A page-view beacon. The page sends it once per browser session on page load, fire-and-forget: it ignores the answer and any error.
+
+```json
+{ "action": "visit", "cid": "client-id-123", "lang": "uk", "utm": { "source": "tg", "medium": "post", "campaign": "launch" }, "ref": "K7XQ2MA" }
+```
+
+| Field | Rules |
+| --- | --- |
+| `cid` | Required, the same anonymous id as in `join` and `quiz` (`A-Za-z0-9_-`, max 64). Missing or empty: `bad_request`. |
+| `lang` | `uk` or `en`; anything else is stored as `en`. |
+| `utm` | Optional, cleaned as in `join`. |
+| `ref` | Optional referral code from the page URL (may be `null`), cleaned as in `join` (not checked against existing codes). |
+
+Success: `{ "ok": true, "counted": true }`, and one row is appended to the `visits` tab: `created_at, cid, lang, utm_source, utm_medium, utm_campaign, ref`.
+`counted: false` means this `cid` already has a visit today (day in Europe/Kyiv), so nothing is written: a reload does not count twice. The mark is kept in CacheService, which holds it for at most 6 hours, so a return after 6+ hours on the same day can add a second row; the Insights tab counts unique `cid`, so its totals do not grow.
+
+| `error` | When |
+| --- | --- |
+| `bad_request` | No `cid`, or see POST above. |
+| `rate_limited` | More than 20 visit requests in 10 minutes for one `cid`, or more than 300 new visits per minute in total. |
+| `server` | Unexpected failure, or the lock was busy for 5 s. |
+
+## Sheet tabs
+
+| Tab | Written by | Content |
 | --- | --- | --- |
-| action `visit` (new) | whole body | `{ "action": "visit", "cid": "...", "lang": "uk", "utm": { "source": "", "medium": "", "campaign": "" }, "ref": "K7XQ2MA" }`. Sent once per browser session on page load, fire-and-forget: the page ignores the answer and any error (a backend without this action answering `bad_request` is fine). `ref` may be `null`. |
-| action `quiz` | `sample` | `"photosynthesis"`, `"printing"`, `"magi"` (the sample chip whose text was sent unchanged) or `"custom"` (the visitor's own or edited text). For analytics only; it does not change the answer. |
+| `waitlist` | `join` | One row per signup (see `join`). |
+| `visits` | `visit` | One row per `cid` per day. |
+| `demo_runs` | `quiz` | One row per quiz request, without the text. |
+| `Insights` | `setupInsights()` (also run by `checkSetup()`) | Formula-only dashboard over the three tabs above, with a line chart of signups per day. Rerunning rebuilds it without duplicates. |
 
 ## CORS
 
@@ -136,4 +165,5 @@ node backend/test-contract.mjs --target=gas  # runs Code.gs itself in a vm with 
 ```
 
 Mock env: `PORT` (default 8787), `MOCK_QUIZ_DELAY_MS` (default 1200), `MOCK_QUIZ_DISABLED=1` (quiz answers `disabled`). `MOCK_OK=1` is needed to start it from an interactive console. The mock has no 30-second stats cache.
+The mock keeps visits and demo runs in memory; `GET ?action=debug` (mock only, the real backend answers `bad_request`) shows the counters and the last row of each.
 `BASE_URL=<url>` points the test at an already running server.

@@ -75,30 +75,93 @@ async function httpTransport() {
   };
 }
 
+/** Parses 'B2', 'A5:B12' or 'A:A' into 1-based row/column bounds (a column-only range has row 1 and no row count). */
+function parseA1(a1) {
+  const m = /^([A-Z]+)(\d*)(?::([A-Z]+)(\d*))?$/.exec(a1);
+  if (!m) throw new Error('bad A1 ' + a1);
+  const col = (letters) => [...letters].reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);
+  const r = Number(m[2] || 1);
+  const c = col(m[1]);
+  return { r, c, nr: m[4] ? Number(m[4]) - r + 1 : 1, nc: m[3] ? col(m[3]) - c + 1 : 1, a1 };
+}
+
+/** Utilities.formatDate stub that honours the patterns Code.gs uses, in the requested time zone. */
+function formatDate(date, timeZone, pattern) {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-CA', {
+      timeZone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', timeZoneName: 'longOffset',
+    }).formatToParts(date).map((p) => [p.type, p.value]),
+  );
+  const offset = parts.timeZoneName === 'GMT' ? '+00:00' : parts.timeZoneName.slice(3);
+  return pattern
+    .replace('yyyy', parts.year).replace('MM', parts.month).replace('dd', parts.day)
+    .replace('HH', parts.hour).replace('mm', parts.minute).replace('ss', parts.second)
+    .replace("'T'", 'T').replace('XXX', offset);
+}
+
 /** Loads Code.gs into a sandbox with in-memory stubs of the Apps Script services it uses. */
 function gasTransport() {
   const sheets = [];
+  const ssState = { timeZone: 'America/New_York', active: null };
   const makeSheet = (name) => {
-    const data = [];
+    const data = []; // rows written by appendRow
+    const cells = new Map(); // 'r,c' -> value written by setValues / setFormula (the Insights tab)
+    const charts = [];
     const sheet = {
-      name,
-      data,
+      name, data, cells, charts,
       frozen: 0,
       getName: () => sheet.name,
       setName: (n) => { sheet.name = n; },
       getLastRow: () => data.length,
       appendRow: (row) => { data.push(row.map((v) => (typeof v === 'string' && /^[=+\-@]/.test(v) ? '!' + v : v))); },
       setFrozenRows: (n) => { sheet.frozen = n; },
-      getRange: (r, c, nr = 1, nc = 1) => ({
-        setNumberFormat: () => {},
-        setFontWeight: () => {},
-        getValues: () => data.slice(r - 1, r - 1 + nr).map((row) => row.slice(c - 1, c - 1 + nc)),
-      }),
+      setColumnWidth: () => {},
+      setHiddenGridlines: () => {},
+      clear: () => { data.length = 0; cells.clear(); },
+      getCharts: () => [...charts],
+      removeChart: (chart) => { charts.splice(charts.indexOf(chart), 1); },
+      insertChart: (chart) => { charts.push(chart); },
+      newChart: () => {
+        const spec = { ranges: [], options: {} };
+        const builder = {
+          setChartType: (type) => ((spec.type = type), builder),
+          addRange: (range) => (spec.ranges.push(range.a1), builder),
+          setNumHeaders: (n) => ((spec.headers = n), builder),
+          setPosition: (row, col) => ((spec.position = [row, col]), builder),
+          setOption: (key, value) => ((spec.options[key] = value), builder),
+          build: () => ({ ...spec }),
+        };
+        return builder;
+      },
+      getRange: (...args) => {
+        const b = typeof args[0] === 'string' ? parseA1(args[0]) : { r: args[0], c: args[1], nr: args[2] || 1, nc: args[3] || 1 };
+        const range = {
+          a1: b.a1,
+          getValues: () => data.slice(b.r - 1, b.r - 1 + b.nr).map((row) => row.slice(b.c - 1, b.c - 1 + b.nc)),
+          setValues: (values) => {
+            if (values.length !== b.nr || values.some((row) => row.length !== b.nc)) throw new Error('setValues size mismatch at ' + JSON.stringify(b));
+            values.forEach((row, i) => row.forEach((v, j) => cells.set(`${b.r + i},${b.c + j}`, v)));
+            return range;
+          },
+          setFormula: (f) => (cells.set(`${b.r},${b.c}`, f), range),
+        };
+        for (const m of ['setNumberFormat', 'setFontWeight', 'setFontSize', 'setFontColor', 'setBackground', 'setHorizontalAlignment']) range[m] = () => range;
+        return range;
+      },
     };
     sheets.push(sheet);
     return sheet;
   };
   makeSheet('Sheet1');
+  const spreadsheet = {
+    getSheetByName: (n) => sheets.find((s) => s.name === n) || null,
+    getSheets: () => sheets,
+    insertSheet: (n) => makeSheet(n),
+    getSpreadsheetTimeZone: () => ssState.timeZone,
+    setSpreadsheetTimeZone: (tz) => { ssState.timeZone = tz; },
+    setActiveSheet: (s) => { ssState.active = s; return s; },
+    moveActiveSheet: (pos) => { sheets.splice(sheets.indexOf(ssState.active), 1); sheets.splice(pos - 1, 0, ssState.active); },
+  };
   const cache = new Map();
   const props = new Map([['ANTHROPIC_API_KEY', 'test-key-not-real']]);
   const fetchLog = [];
@@ -119,18 +182,13 @@ function gasTransport() {
 
   const sandbox = {
     console: { log() {}, warn() {}, error() {} },
-    SpreadsheetApp: {
-      getActive: () => ({
-        getSheetByName: (n) => sheets.find((s) => s.name === n) || null,
-        getSheets: () => sheets,
-        insertSheet: (n) => makeSheet(n),
-      }),
-      flush: () => {},
-    },
+    SpreadsheetApp: { getActive: () => spreadsheet, flush: () => {} },
+    Charts: { ChartType: { LINE: 'LINE' } },
     CacheService: {
       getScriptCache: () => ({
         get: (k) => (cache.has(k) ? cache.get(k) : null),
         put: (k, v) => { cache.set(k, String(v)); },
+        remove: (k) => { cache.delete(k); },
       }),
     },
     PropertiesService: {
@@ -154,14 +212,15 @@ function gasTransport() {
       MimeType: { JSON: 'application/json' },
       createTextOutput: (s) => ({ content: s, setMimeType() { return this; } }),
     },
-    Utilities: { formatDate: (d) => d.toISOString(), sleep: () => {} },
+    Utilities: { formatDate, sleep: () => {} },
   };
   vm.createContext(sandbox);
   vm.runInContext(readFileSync(path.join(here, 'Code.gs'), 'utf8'), sandbox, { filename: 'Code.gs' });
 
   return {
     name: 'Code.gs (sandbox)',
-    sheets, cache, props, fetchLog, claude,
+    sheets, cache, props, fetchLog, claude, ssState, sandbox,
+    sheet: (n) => sheets.find((s) => s.name === n),
     async get(query) {
       return { json: JSON.parse(sandbox.doGet({ parameter: query }).content), cors: '*' };
     },
@@ -256,6 +315,124 @@ async function runContract(t) {
   return Date.now() - started;
 }
 
+/** Visit beacon and the optional quiz `sample` field: shared by every target. */
+async function runAnalytics(t) {
+  const visit = (extra) => t.post({ action: 'visit', lang: 'uk', utm: { source: 'tg', medium: 'post', campaign: 'launch' }, ref: 'k7xq-2ma', ...extra });
+  const v1 = (await visit({ cid: cid('v') })).json;
+  check('visit: ok + counted', v1.ok === true && v1.counted === true, v1);
+  const v2 = (await visit({ cid: cid('v') })).json;
+  check('visit reload same day: ok, not counted', v2.ok === true && v2.counted === false, v2);
+  const v3 = (await visit({ cid: cid('v2'), lang: 'xx', utm: undefined, ref: undefined })).json;
+  check('visit other cid: counted', v3.ok === true && v3.counted === true, v3);
+  const noCid = (await visit({ cid: '' })).json;
+  check('visit without cid -> bad_request', noCid.ok === false && noCid.error === 'bad_request', noCid);
+
+  const burst = [];
+  for (let i = 0; i < 21; i++) burst.push((await visit({ cid: cid('vrl') })).json);
+  check('visit burst: 20 ok, only the first counted', burst.slice(0, 20).every((r) => r.ok) && burst.filter((r) => r.counted).length === 1, burst.map((r) => r.error || r.counted));
+  check('visit burst: 21st rate_limited', burst[20].ok === false && burst[20].error === 'rate_limited', burst[20]);
+
+  const withSample = (await t.post({ action: 'quiz', text: LONG_TEXT_UK, lang: 'uk', count: 3, cid: cid('qs'), sample: 'photosynthesis' })).json;
+  checkQuizShape('quiz with sample field', withSample, 3);
+}
+
+/** Mock only: the in-memory counters behind GET ?action=debug. */
+async function runMockCounters(t, quizPosts) {
+  const d = (await t.get({ action: 'debug' })).json;
+  check('mock: 3 visits counted (one per cid per day)', d.visits === 3 && d.uniqueVisitors === 3, d);
+  check('mock: every quiz request logged', d.demoRuns === quizPosts, { logged: d.demoRuns, sent: quizPosts });
+  const run = d.lastDemoRun || {};
+  check('mock: demo run keeps sample, length, no text', run.sample === 'photosynthesis' && run.text_length === LONG_TEXT_UK.trim().length && run.ok === true && !('text' in run), run);
+  check('mock: visit row cleaned', d.lastVisit && d.lastVisit.ref === 'K7XQ2MA' && d.lastVisit.utm_source === 'tg', d.lastVisit);
+}
+
+/** Code.gs only: rows written to visits and demo_runs, and the Insights tab. */
+async function runGasAnalytics(t, quizPosts) {
+  // After runGasOnly the API key is gone, so this request ends as "disabled" and is still logged.
+  const custom = (await t.post({ action: 'quiz', text: LONG_TEXT_UK, lang: 'en', cid: cid('qc'), sample: '=Custom' })).json;
+  check('quiz without key still answers disabled', custom.error === 'disabled', custom);
+  quizPosts++;
+
+  const visits = t.sheet('visits');
+  check('visits tab created', !!visits);
+  if (!visits) return;
+  check('visits header', JSON.stringify(visits.data[0]) === JSON.stringify(['created_at', 'cid', 'lang', 'utm_source', 'utm_medium', 'utm_campaign', 'ref']), visits.data[0]);
+  check('visits header frozen', visits.frozen === 1);
+  const byCid = (sheet, col, id) => sheet.data.slice(1).filter((row) => row[col] === id);
+  const rowsV = byCid(visits, 1, cid('v'));
+  check('visit stored once for a reloaded page', rowsV.length === 1, rowsV.length);
+  const rowV = rowsV[0] || [];
+  check('visit row fields', /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(rowV[0]) && rowV[2] === 'uk' && rowV[3] === 'tg' && rowV[4] === 'post' && rowV[5] === 'launch' && rowV[6] === 'K7XQ2MA', rowV);
+  const rowV2 = byCid(visits, 1, cid('v2'))[0] || [];
+  check('visit row defaults', rowV2[2] === 'en' && rowV2[3] === '' && rowV2[6] === '', rowV2);
+  check('visit burst stored once', byCid(visits, 1, cid('vrl')).length === 1);
+  check('visits: 3 rows in total', visits.data.length === 4, visits.data.length);
+
+  const dayKey = `visit:${cid('v')}:${formatDate(new Date(), 'Europe/Kyiv', 'yyyy-MM-dd')}`;
+  check('visit dedupe mark is per Kyiv day', t.cache.has(dayKey), [...t.cache.keys()].filter((k) => k.startsWith('visit:')));
+  t.cache.delete(dayKey);
+  const nextDay = (await t.post({ action: 'visit', cid: cid('v'), lang: 'uk' })).json;
+  check('visit counted again once the day mark is gone', nextDay.counted === true && byCid(visits, 1, cid('v')).length === 2, nextDay);
+
+  const runs = t.sheet('demo_runs');
+  check('demo_runs tab created', !!runs);
+  if (!runs) return;
+  check('demo_runs header', JSON.stringify(runs.data[0]) === JSON.stringify(['created_at', 'cid', 'lang', 'sample', 'text_length', 'questions', 'ok', 'error', 'ms']), runs.data[0]);
+  check('demo_runs: one row per quiz request, ok or not', runs.data.length - 1 === quizPosts, { rows: runs.data.length - 1, sent: quizPosts });
+  const rowOk = byCid(runs, 1, cid('qs'))[0] || [];
+  check('demo run ok row', rowOk[2] === 'uk' && rowOk[3] === 'photosynthesis' && rowOk[4] === LONG_TEXT_UK.trim().length && rowOk[5] === 3 && rowOk[6] === true && rowOk[7] === '' && isInt(rowOk[8]) && rowOk[8] >= 0, rowOk);
+  const rowShort = runs.data.find((row) => row[7] === 'too_short') || [];
+  check('demo run too_short row', rowShort[3] === '' && rowShort[4] === 199 && rowShort[5] === 0 && rowShort[6] === false, rowShort);
+  check('demo run refusal logged as server', runs.data.some((row) => row[1] === cid('r1') && row[7] === 'server' && row[6] === false));
+  check('demo run rate_limited logged', runs.data.some((row) => row[1] === cid('qrl') && row[7] === 'rate_limited'));
+  const rowCustom = byCid(runs, 1, cid('qc'))[0] || [];
+  check('demo run sample cleaned, disabled logged', rowCustom[3] === 'custom' && rowCustom[7] === 'disabled', rowCustom);
+  const stored = JSON.stringify(runs.data);
+  check('demo_runs never stores the pasted text', !stored.includes(LONG_TEXT_UK.slice(0, 30)) && !stored.includes('Фотосинтез') && !stored.includes('xxxxxxxxxx'));
+  check('no formula characters in analytics rows', [visits, runs].every((sh) => sh.data.every((row) => row.every((v) => !String(v).startsWith('!')))));
+
+  // Insights: build twice (the second time through checkSetup) to prove the rebuild is clean.
+  t.sandbox.setupInsights();
+  t.sandbox.checkSetup();
+  const insightTabs = t.sheets.filter((sh) => sh.name === 'Insights');
+  check('insights: exactly one tab after two builds', insightTabs.length === 1, insightTabs.length);
+  const ins = insightTabs[0];
+  if (!ins) return;
+  check('insights: first tab', t.sheets[0] === ins, t.sheets.map((sh) => sh.name));
+  check('insights: data tabs untouched', visits.data.length === 5 && runs.data.length - 1 === quizPosts);
+  check('insights: one chart after rebuild', ins.charts.length === 1, ins.charts.length);
+  const chart = ins.charts[0] || {};
+  check('insights: line chart of dates and signups', chart.type === 'LINE' && JSON.stringify(chart.ranges) === '["A23:A37","D23:D37"]' && chart.headers === 1, chart);
+  check('insights: spreadsheet time zone Europe/Kyiv', t.ssState.timeZone === 'Europe/Kyiv', t.ssState.timeZone);
+  check('insights: title rows frozen', ins.frozen === 2, ins.frozen);
+
+  const cell = (a1) => { const b = parseA1(a1); return ins.cells.get(`${b.r},${b.c}`); };
+  const formulas = [...ins.cells.values()].filter((v) => typeof v === 'string' && v.startsWith('='));
+  check('insights: formulas written', formulas.length >= 70, formulas.length);
+  const tabs = new Set(formulas.flatMap((f) => [...f.matchAll(/'([^']+)'!/g)].map((m) => m[1])));
+  check('insights: formulas read only the data tabs', tabs.size === 3 && [...tabs].every((n) => ['waitlist', 'visits', 'demo_runs'].includes(n)), [...tabs]);
+  const balanced = (f) => {
+    if ((f.match(/"/g) || []).length % 2) return false;
+    let depth = 0;
+    for (const ch of f.replace(/"[^"]*"/g, '')) {
+      depth += ch === '(' ? 1 : ch === ')' ? -1 : 0;
+      if (depth < 0) return false;
+    }
+    return depth === 0;
+  };
+  check('insights: balanced quotes and parentheses', formulas.every(balanced), formulas.filter((f) => !balanced(f)));
+  check('insights: unique visitors by visits.cid', cell('A5') === 'Unique visitors' && cell('B5') === `=COUNTUNIQUEIFS('visits'!B2:B,'visits'!B2:B,"<>")`, cell('B5'));
+  check('insights: signups by waitlist.email', cell('A8') === 'Signups' && cell('B8') === `=COUNTA('waitlist'!B2:B)`, cell('B8'));
+  check('insights: visitors who signed up joins visits.cid to waitlist.cid', cell('B9').includes(`FILTER('visits'!B2:B,'visits'!B2:B<>"")`) && cell('B9').includes(`'waitlist'!I2:I`), cell('B9'));
+  check('insights: demo users who signed up joins demo_runs.cid', cell('B10').includes(`'demo_runs'!B2:B`) && cell('B10').includes(`'waitlist'!I2:I`), cell('B10'));
+  check('insights: conversions', cell('A11') === 'Visit → signup' && cell('B11') === '=IFERROR(B9/B5,0)' && cell('B12') === '=IFERROR(B10/B7,0)', [cell('B11'), cell('B12')]);
+  check('insights: sample vs own text', cell('B16') === `=COUNTIF('demo_runs'!D2:D,"custom")` && cell('C15').includes(`'demo_runs'!G2:G,TRUE`), [cell('B16'), cell('C15')]);
+  check('insights: language split', cell('A20') === 'Ukrainian (uk)' && cell('D21') === `=COUNTIF('waitlist'!E2:E,"en")` && cell('E20') === '=IFERROR(D20/$B$8,0)', [cell('A20'), cell('D21'), cell('E20')]);
+  check('insights: 14 days ending today', cell('A24') === '=TODAY()-13' && cell('A37') === '=TODAY()-0' && cell('A38') === undefined, [cell('A24'), cell('A37')]);
+  check('insights: signups per day', cell('D24') === `=COUNTIF('waitlist'!A2:A,TEXT($A24,"yyyy-mm-dd")&"*")` && cell('B37') === `=COUNTIF('visits'!A2:A,TEXT($A37,"yyyy-mm-dd")&"*")`, [cell('D24'), cell('B37')]);
+  check('insights: top referrers query on waitlist.referred_by', cell('A40').startsWith(`=IFERROR(QUERY('waitlist'!D2:D,"select D, count(D)`) && cell('A40').includes('group by D order by count(D) desc limit 10'), cell('A40'));
+}
+
 /** Extra checks that only make sense against Code.gs itself: the Claude request and failure handling. */
 async function runGasOnly(t) {
   const call = t.fetchLog[0] || { options: { headers: {} }, payload: {} };
@@ -307,10 +484,22 @@ async function runGasOnly(t) {
 }
 
 const t = target === 'gas' ? gasTransport() : await httpTransport();
+let quizPosts = 0;
+const rawPost = t.post;
+t.post = (body) => {
+  if (body && body.action === 'quiz') quizPosts++;
+  return rawPost(body);
+};
 let quizMs = 0;
 try {
   quizMs = await runContract(t);
-  if (target === 'gas') await runGasOnly(t);
+  await runAnalytics(t);
+  if (target === 'gas') {
+    await runGasOnly(t);
+    await runGasAnalytics(t, quizPosts);
+  } else if (t.name === 'mock-server.mjs') {
+    await runMockCounters(t, quizPosts);
+  }
 } catch (err) {
   failures.push('crashed: ' + err.message);
 } finally {
