@@ -11,7 +11,7 @@ const REPO = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const CHROME = process.env.CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const PROFILE = process.env.PLAY_CHROME_PROFILE || resolve(process.env.TEMP || '.', 'play-chrome');
 const PORT = 8093, CDP = 9353, BASE = `http://127.0.0.1:${PORT}/`, PLAY = BASE + 'play/';
-const PROD_PLAY = 'https://pavloemilus.github.io/quizpen/play/';
+const PROD_PLAY = 'https://brrr28.github.io/quizpen/play/';
 const SHOTS = resolve(REPO, 'shots');
 const SAMPLES = JSON.parse(readFileSync(resolve(REPO, 'web/data/samples.json'), 'utf8')).samples;
 

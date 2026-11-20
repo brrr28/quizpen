@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quizpen: turn lesson text into a quiz</title>
   <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with answers. Join the Quizpen waitlist.">
+  <!-- SEO: test variant of the landing, kept out of search results -->
+  <meta name="robots" content="noindex,follow">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,6 +42,8 @@
   </main>
   <footer class="foot"><a href="../">See the full product version &rarr;</a></footer>
   <script src="../config.js"></script>
+  <!-- Analytics: PostHog only on this variant (no Clarity, no consent bar) -->
+  <script src="../analytics.js" data-surface="spec"></script>
   <script src="spec.js"></script>
 </body>
 </html>
