@@ -636,6 +636,19 @@ a:hover { text-decoration-thickness: 2px; }
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 .toast .icon { color: var(--accent); width: 18px; height: 18px; }
 
+/* Offline banner (app.js): fixed under the sticky header, so nothing moves when it shows. It stays in
+   the accessibility tree (opacity only) so the polite live region announces the text it receives. */
+.offline-bar {
+  position: fixed; left: 50%; top: calc(var(--header-h) + 8px); z-index: var(--z-toast);
+  max-width: min(30rem, calc(100vw - 32px)); width: max-content; padding: 8px 14px; border-radius: var(--r);
+  background: var(--toast-bg); color: var(--toast-text); font-size: 0.9rem; font-weight: 500; line-height: 1.35; text-align: center;
+  box-shadow: 0 6px 20px rgba(22, 27, 46, 0.24);
+  opacity: 0; transform: translate(-50%, -6px); pointer-events: none;
+  transition: opacity 180ms var(--ease-out), transform 240ms var(--ease-out);
+}
+.offline-bar:empty { padding: 0; box-shadow: none; }
+.offline-bar.is-on { opacity: 1; transform: translate(-50%, 0); }
+
 /* Features */
 .features { padding: 72px 0; }
 @media (min-width: 980px) { .features { padding: 112px 0; } }
@@ -804,6 +817,7 @@ a:hover { text-decoration-thickness: 2px; }
 :root[data-theme="dark"] .quiz-panel { box-shadow: inset 0 0 0 1px var(--line-strong); }
 :root[data-theme="dark"] .demo textarea:not([aria-invalid="true"]) { border-color: var(--line-strong); }
 :root[data-theme="dark"] .toast { box-shadow: inset 0 0 0 1px var(--line-strong), 0 8px 28px rgba(0, 0, 0, 0.45); }
+:root[data-theme="dark"] .offline-bar:not(:empty) { box-shadow: inset 0 0 0 1px var(--line-strong), 0 6px 20px rgba(0, 0, 0, 0.45); }
 
 .brand-mark rect { fill: var(--mark-bg); }
 .brand-mark circle[fill="none"] { stroke: var(--mark-fg); }
