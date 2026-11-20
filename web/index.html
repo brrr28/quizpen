@@ -19,12 +19,18 @@
       for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#0E1220' : '#F6F6F2');
       // Called by the fonts stylesheet once it has loaded: fetch every weight (Latin and Cyrillic) and switch from
       // the fallbacks in one step (html.wf), so text never reflows face by face as single files arrive.
+      // The font files are fetched only after the window load event: on a slow link they would otherwise take the
+      // bandwidth of the render-blocking styles and the scripts and delay the first paint and the ready state.
       window.qpFontsCss = function () {
-        var f = document.fonts, all = [], w = ['400', '500', '600', '700', '800'];
+        var f = document.fonts, w = ['400', '500', '600', '700', '800'];
         if (!f || !f.load || !window.Promise) { d.className += ' wf'; return; }
-        for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
-        all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
-        Promise.all(all).then(function () { d.className += ' wf'; }, function () { /* keep the fallbacks */ });
+        var go = function () {
+          var all = [];
+          for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
+          all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
+          Promise.all(all).then(function () { d.className += ' wf'; }, function () { /* keep the fallbacks */ });
+        };
+        if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
       };
     })(document.documentElement);
   </script>

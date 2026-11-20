@@ -18,7 +18,7 @@ const s = await startStand();
 const { page } = s;
 try {
   await page.send('Page.addScriptToEvaluateOnNewDocument', { source: `
-    window.__fp = { cls: 0, n: 0, src: [], fcp: null, app: null, ready: null, barOn: null, barOff: null, fontsAt: null };
+    window.__fp = { cls: 0, n: 0, src: [], fcp: null, app: null, ready: null, barOn: null, barOff: null, fontsAt: null, wf: null };
     try {
       new PerformanceObserver((l) => { for (const e of l.getEntries()) {
         __fp.cls += e.value; __fp.n++;
@@ -37,6 +37,7 @@ try {
       if (d) {
         if (__fp.app === null && window.QP_I18N) __fp.app = now;
         if (__fp.ready === null && d.classList.contains('is-ready')) __fp.ready = now;
+        if (__fp.wf === null && d.classList.contains('wf')) __fp.wf = now;
         const cs = getComputedStyle(d, '::before');
         const on = cs.content !== 'none' && cs.display !== 'none' && parseFloat(cs.opacity) > 0.5 && parseFloat(cs.height) > 0;
         if (on && __fp.barOn === null) __fp.barOn = now;
@@ -60,9 +61,10 @@ try {
     await page.eval('localStorage.clear(); sessionStorage.clear(); true');
     await page.send('Network.clearBrowserCache');
   };
-  // Waits for ready, fonts and a quiet tail, then returns the measurements.
+  // Waits for ready, the one-step web font switch (html.wf), fonts and a quiet tail, then returns the measurements.
   const measure = async (quietMs) => {
     await page.waitFor(`__fp.ready !== null || __fp.app !== null`, 90000);
+    await page.waitFor(`typeof window.qpFontsCss !== 'function' || document.documentElement.classList.contains('wf')`, 90000);
     await page.waitFor(`document.fonts.status === 'loaded'`, 90000);
     await s.wait(quietMs);
     return page.eval(`(() => {
@@ -80,7 +82,7 @@ try {
     const m = await measure(2500);
     await slow(false);
     const ready = m.ready ?? m.app;
-    console.log(`METRIC ${lang} slow3g fcp=${r0(m.fcp)}ms ready=${r0(ready)}ms fonts=${r0(m.fontsAt)}ms cls=${m.cls} shifts=${m.n} barOn=${r0(m.barOn)} barOff=${r0(m.barOff)} fontsCss=${JSON.stringify(m.fontsCss)}`);
+    console.log(`METRIC ${lang} slow3g fcp=${r0(m.fcp)}ms ready=${r0(ready)}ms fonts=${r0(m.fontsAt)}ms wf=${r0(m.wf)}ms cls=${m.cls} shifts=${m.n} barOn=${r0(m.barOn)} barOff=${r0(m.barOff)} fontsCss=${JSON.stringify(m.fontsCss)}`);
     ok(`${lang} slow 3G: first contentful paint before the scripts are ready`, m.fcp !== null && ready !== null && m.fcp < ready, `fcp ${r0(m.fcp)} ms, ready ${r0(ready)} ms`);
     ok(`${lang} slow 3G: fonts stylesheet does not block rendering`, m.fontsCss && m.fontsCss.block === 'non-blocking', JSON.stringify(m.fontsCss));
     ok(`${lang} slow 3G: html.is-ready set by app.js`, m.ready !== null, `ready ${r0(m.ready)} ms`);
