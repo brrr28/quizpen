@@ -155,8 +155,9 @@ const external = (reqs) => reqs.filter((u) => /^https?:/.test(u) && !u.startsWit
 const captures = (page) => page.eval(`(window.posthog || []).filter((c) => Array.isArray(c) && c[0] === 'capture').map((c) => ({ e: c[1], p: c[2] }))`);
 
 async function landingFlow(page) {
-  await page.click('.chip[data-sample="photosynthesis"]');
-  await page.click('#gen-btn');
+  // Ready examples are the default mode with the first example (photosynthesis) preselected: no API call.
+  await page.waitFor("document.querySelector('#sample-chips .chip[aria-pressed=\"true\"]') ? true : null");
+  await page.click('#show-btn');
   for (let i = 0; i < 10; i++) {
     // The loading skeleton also has .opt bars (div.skel-bar.opt) inside #quiz-body: wait for real answer buttons.
     const state = await page.waitFor(`document.querySelector('#quiz-body .score') ? 'done' : (document.querySelector('#quiz-body button.opt:not([disabled])') ? 'q' : null)`, 10000);
@@ -241,7 +242,7 @@ try {
     const order = expected.map((e) => names.indexOf(e));
     ok('funnel: track() events fire in flow order', order.every((x, i) => x >= 0 && (i === 0 || x > order[i - 1])), names.join(' > '));
     const gen = got.find((c) => c.e === 'quiz_generated')?.p || {};
-    ok('funnel: quiz_generated props {ok, ms, source}', gen.ok === true && gen.source === 'fallback' && gen.ms > 0, JSON.stringify(gen));
+    ok('funnel: quiz_generated props {ok, ms, source}', gen.ok === true && gen.source === 'sample' && gen.ms > 0, JSON.stringify(gen));
     const su = got.find((c) => c.e === 'signup_succeeded')?.p || {};
     ok('funnel: signup_succeeded props {already, has_ref, demo_used}', su.already === false && su.has_ref === false && su.demo_used === true, JSON.stringify(su));
     const answered = got.filter((c) => c.e === 'quiz_answered').length;

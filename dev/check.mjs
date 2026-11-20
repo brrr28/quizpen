@@ -1,8 +1,14 @@
 // Headless interaction check of the waitlist page against the local mock.
 // Usage: node web/dev/check.mjs   (prints one line per check, exit 1 on any failure)
 
+import { readFileSync } from 'node:fs';
 import { startStand, BASE } from './stand.mjs';
 
+const SAMPLES = Object.fromEntries(JSON.parse(readFileSync(new URL('../data/samples.json', import.meta.url), 'utf8')).samples.map((x) => [x.id, x]));
+const OWN_TEXT = {
+  en: 'The Dnipro is one of the longest rivers in Europe. It starts in the Valdai Hills and flows south through Ukraine into the Black Sea. ',
+  uk: 'Річка Дніпро бере початок на Валдайській височині і впадає в Чорне море. ',
+};
 const results = [];
 const ok = (name, pass, info = '') => { results.push({ name, pass: !!pass, info }); console.log((pass ? 'PASS ' : 'FAIL ') + name + (info ? '  ' + info : '')); };
 const s = await startStand();
@@ -25,10 +31,10 @@ page.on('Network.loadingFinished', async (p) => {
   lastQuiz = JSON.parse(r.body).quiz;
 });
 
-async function answerAll(wrongFirst) {
+async function answerAll(quiz, wrongFirst) {
   const n = await page.eval(`document.querySelectorAll('.quiz-bars i').length`);
   for (let i = 0; i < n; i++) {
-    const answer = lastQuiz.questions[i].answer;
+    const answer = quiz.questions[i].answer;
     const pick = wrongFirst && i === 0 ? (answer + 1) % 4 : answer;
     await page.click(`.opt[data-k="${pick}"]`);
     const fb = await page.eval(`(() => { const f = document.querySelector('.feedback'); return f && { cls: f.className, text: f.textContent.trim().slice(0, 60) }; })()`);
@@ -59,19 +65,50 @@ try {
     const inv = await page.eval(`({ inv: document.getElementById('email').getAttribute('aria-invalid'), msg: document.getElementById('join-msg').textContent.trim(), thanks: !document.getElementById('thanks').hidden })`);
     ok(`${lang}: invalid email inline error`, inv.inv === 'true' && inv.msg && !inv.thanks, inv.msg);
 
-    // Demo: chip -> generate -> answer all.
+    const T = await page.eval('window.QP_I18N.' + lang);
+    const noteText = `(document.querySelector('#quiz-body .quiz-note') || {}).textContent || ''`;
+
+    // Ready example: the quiz written in advance opens at once, with the note under it and no API call.
+    await page.waitFor(`document.querySelectorAll('#sample-chips .chip').length === ${Object.keys(SAMPLES).length}`, 5000);
+    const pre = await page.eval(`({ pressed: [...document.querySelectorAll('#sample-chips .chip[aria-pressed="true"]')].map((c) => c.dataset.sample), text: document.getElementById('sample-text').textContent.length, tags: document.querySelectorAll('#sample-chips .chip-tag').length })`);
+    ok(`${lang}: first example preselected`, pre.pressed.join() === 'photosynthesis' && pre.text > 200 && pre.tags === 2, JSON.stringify(pre));
     await page.click('.chip[data-sample="printing"]');
-    await page.waitFor(`document.getElementById('lesson').value.length > 200`);
+    await page.click('#show-btn');
+    await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 3000);
+    const sTitle = await page.eval(`document.querySelector('.quiz-title').textContent`);
+    const sNote = await page.eval(noteText);
+    ok(`${lang}: ready example quiz`, sTitle === SAMPLES.printing.quiz[lang].title, sTitle);
+    ok(`${lang}: ready example note under the quiz`, sNote === T['quiz.noteSample'].replace('{link}', T['quiz.ownLink']) &&
+      (await page.eval(`!!document.querySelector('#quiz-body > .quiz-note:last-child [data-open-own]')`)), sNote);
+    ok(`${lang}: ready example without API call`, posts.filter((b) => b.action === 'quiz').length === 0);
+    await page.click('.opt[data-k="' + SAMPLES.printing.quiz[lang].questions[0].answer + '"]');
+
+    // The note link opens "Your text": live quiz from the mock.
+    await page.click('#quiz-body [data-open-own]');
+    await s.wait(100);
+    const mode = await page.eval(`({ sel: document.getElementById('tab-own').getAttribute('aria-selected'), focus: document.activeElement && document.activeElement.id, empty: !document.getElementById('quiz-empty').hidden })`);
+    ok(`${lang}: note link opens own text`, mode.sel === 'true' && mode.focus === 'lesson' && mode.empty, JSON.stringify(mode));
+    await page.type('#lesson', OWN_TEXT[lang].repeat(3));
     await page.click('#gen-btn');
     await page.waitFor(`document.querySelector('.skel')`, 3000);
     ok(`${lang}: loading skeleton shown`, true);
     await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 15000);
     const title = await page.eval(`document.querySelector('.quiz-title').textContent`);
-    const note = await page.eval(`(document.querySelector('.quiz-note') || {}).textContent || ''`);
-    ok(`${lang}: live quiz from mock`, !note, title);
+    ok(`${lang}: live quiz from mock`, (await page.eval(noteText)) === T['quiz.noteLive'], title);
     const qBody = posts.filter((b) => b.action === 'quiz').pop() || {};
-    ok(`${lang}: quiz request sample field`, qBody.sample === 'printing' && qBody.lang === lang, JSON.stringify({ sample: qBody.sample, lang: qBody.lang }));
-    const score = await answerAll(true);
+    ok(`${lang}: quiz request sample field`, qBody.sample === 'custom' && qBody.lang === lang, JSON.stringify({ sample: qBody.sample, lang: qBody.lang }));
+
+    // Each mode keeps its own view.
+    await page.click('#tab-samples');
+    await s.wait(100);
+    const back = await page.eval(`({ title: document.querySelector('.quiz-title').textContent, answered: !!document.querySelector('.feedback') })`);
+    ok(`${lang}: ready tab keeps its quiz`, back.title === sTitle && back.answered, JSON.stringify(back));
+    await page.click('#tab-own');
+    await s.wait(100);
+    ok(`${lang}: own tab keeps the live quiz`, (await page.eval(`document.querySelector('.quiz-title').textContent`)) === title, title);
+
+    const score = await answerAll(lastQuiz, true);
+    ok(`${lang}: note under the score`, (await page.eval(`!!document.querySelector('.score') && (document.querySelector('#quiz-body > .quiz-note:last-child') || {}).textContent`)) === T['quiz.noteLive']);
     ok(`${lang}: final score`, /^\d+\/\d+$/.test(score || ''), score);
     const copyBtn = await page.eval(`!!document.querySelector('[data-copy-quiz]')`);
     if (copyBtn) {
@@ -115,25 +152,63 @@ try {
     ok(`${lang}: no console errors`, s.errors.length === 0, s.errors.join(' || ').slice(0, 600));
   }
 
-  // Fallback: mock stopped -> sample quiz with honest note.
+  // Busy: mock stopped -> an honest message with retry, never a substitute quiz; the ready examples still work.
   s.errors.length = 0;
   s.stopMock();
-  await page.goto(BASE + '?lang=en');
-  await page.click('.chip[data-sample="magi"]');
-  await page.waitFor(`document.getElementById('lesson').value.length > 200`);
-  await page.click('#gen-btn');
-  await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 15000);
-  const fbNote = await page.eval(`(document.querySelector('.quiz-note') || {}).textContent || ''`);
-  ok('fallback: sample quiz with note', fbNote.length > 20, fbNote);
-  // Own text without a sample -> photosynthesis fallback with the other note.
   await page.goto(BASE + '?lang=uk');
-  await page.type('#lesson', 'Річка Дніпро бере початок на Валдайській височині і впадає в Чорне море. '.repeat(4));
+  const TU = await page.eval('window.QP_I18N.uk');
+  await page.click('#tab-own');
+  await page.type('#lesson', OWN_TEXT.uk.repeat(4));
   await page.click('#gen-btn');
+  await page.waitFor(`document.querySelector('#quiz-body .demo-busy')`, 15000);
+  const busy = await page.eval(`({ text: document.querySelector('.demo-busy p').textContent, retry: !!document.querySelector('[data-retry]'), quiz: !!document.querySelector('#quiz-body .opt') })`);
+  ok('busy: honest message, no substitute quiz', busy.text === TU['demo.busy'] && busy.retry && !busy.quiz, busy.text);
+  await page.click('#quiz-body [data-open-samples]');
+  await s.wait(100);
+  await page.click('#show-btn');
+  await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 3000);
+  ok('busy: ready example still opens', (await page.eval(`document.querySelector('.quiz-title').textContent`)) === SAMPLES.photosynthesis.quiz.uk.title);
+  await page.click('#tab-own');
+  await s.wait(100);
+  ok('busy: own tab keeps the busy view', await page.eval(`!!document.querySelector('#quiz-body .demo-busy')`));
+  await s.startMock();
+  await page.click('[data-retry]');
   await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 15000);
-  const fbNote2 = await page.eval(`(document.querySelector('.quiz-note') || {}).textContent || ''`);
-  ok('fallback uk own text: note', fbNote2.length > 20, fbNote2);
+  ok('busy: retry gives the live quiz', (await page.eval(`(document.querySelector('#quiz-body .quiz-note') || {}).textContent`)) === TU['quiz.noteLive']);
   const realErrors = s.errors.filter((e) => !/Failed to load resource|net::ERR|ERR_EMPTY_RESPONSE/.test(e));
-  ok('fallback: no console errors besides network', realErrors.length === 0, s.errors.join(' || ').slice(0, 400));
+  ok('busy: no console errors besides network', realErrors.length === 0, s.errors.join(' || ').slice(0, 400));
+
+  // Disabled: own text opens early access; the inline signup joins quietly; a joined visitor sees "already".
+  s.errors.length = 0;
+  s.stopMock();
+  await s.startMock({ MOCK_QUIZ_DISABLED: '1' });
+  await page.goto(BASE + '?lang=en');
+  await page.eval(`localStorage.clear(); sessionStorage.clear(); true`);
+  await page.goto(BASE + '?lang=en');
+  const TE = await page.eval('window.QP_I18N.en');
+  await page.click('#tab-own');
+  await page.type('#lesson', OWN_TEXT.en.repeat(3));
+  await page.click('#gen-btn');
+  await page.waitFor(`document.getElementById('ea-email')`, 15000);
+  const ea = await page.eval(`({ title: document.querySelector('.ea-title').textContent, text: document.querySelector('.ea-text').textContent, quiz: !!document.querySelector('#quiz-body .opt') })`);
+  ok('disabled: early access view', ea.title === TE['ea.title'] && ea.text === TE['ea.text'] && !ea.quiz, ea.title);
+  await page.click('#ea-btn');
+  await s.wait(200);
+  ok('disabled: empty email error', (await page.eval(`document.getElementById('ea-msg').textContent`)) === TE['err.empty']);
+  await page.type('#ea-email', `ea.${Date.now()}@example.com`);
+  await page.click('#ea-btn');
+  await page.waitFor(`document.querySelector('.ea-done')`, 8000);
+  const done = await page.eval(`({ text: document.querySelector('.ea-done').textContent, thanks: !document.getElementById('thanks').hidden, focus: document.activeElement && document.activeElement.className })`);
+  ok('disabled: inline join success', done.text === TE['ea.done'] && done.thanks && done.focus === 'ea-done', JSON.stringify(done));
+  const joinBody = posts.filter((b) => b.action === 'join').pop() || {};
+  ok('disabled: join request', /^ea\.\d+@example\.com$/.test(joinBody.email || '') && joinBody.lang === 'en', joinBody.email);
+  await page.goto(BASE + '?lang=en');
+  await page.click('#tab-own');
+  await page.type('#lesson', OWN_TEXT.en.repeat(3));
+  await page.click('#gen-btn');
+  await page.waitFor(`document.querySelector('.ea-done')`, 15000);
+  ok('disabled: joined visitor sees already', (await page.eval(`document.querySelector('.ea-done').textContent`)) === TE['ea.already'] && !(await page.eval(`!!document.getElementById('ea-email')`)));
+  ok('disabled: no console errors', s.errors.length === 0, s.errors.join(' || ').slice(0, 400));
 } catch (e) {
   ok('script', false, e.message);
 } finally {
