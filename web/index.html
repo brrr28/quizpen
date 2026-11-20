@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quizpen: turn lesson text into a quiz in seconds</title>
-  <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with answers and explanations. Join the Quizpen waitlist for teachers.">
+  <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with an answer key and a one-line explanation for each question. Join the Quizpen waitlist for teachers.">
   <meta name="theme-color" content="#F6F6F2">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -81,7 +81,7 @@
         <div class="hero-copy">
           <p class="kicker" data-i18n="hero.kicker">An AI assistant for teachers</p>
           <h1 id="hero-title" data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</h1>
-          <p class="hero-sub" data-i18n="hero.sub">Quizpen turns the text you teach from into a multiple-choice quiz with answers and a short explanation for each.</p>
+          <p class="hero-sub" data-i18n="hero.sub">Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.</p>
 
           <div class="join-slot" id="join-slot">
             <form id="join-form" class="join" novalidate>
@@ -127,7 +127,7 @@
           </div>
 
           <p class="counter" data-counter aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text"></span></p>
-          <a class="try-link" href="#demo"><span data-i18n="hero.try">Try it live on a lesson, no signup</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="try-link" href="#demo"><span data-i18n="hero.try">Try it on your own text, no signup</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
 
         <div class="hero-art" aria-hidden="true">
@@ -159,7 +159,7 @@
       <div class="wrap">
         <div class="demo-head">
           <h2 id="demo-title" data-i18n="demo.title">Try it on your own lesson</h2>
-          <p data-i18n="demo.sub">Paste a paragraph from your lesson and get a quiz in seconds.</p>
+          <p data-i18n="demo.sub">Paste a paragraph from your lesson and get a quiz in seconds. No signup, and we don't store your text.</p>
         </div>
         <div class="demo-grid">
           <form class="demo-input" id="demo-form" novalidate>
@@ -190,7 +190,7 @@
             <div class="quiz-empty" id="quiz-empty">
               <div class="empty-stack" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
               <p class="empty-title" data-i18n="quiz.emptyTitle">Your quiz will appear here</p>
-              <p class="empty-sub" data-i18n="quiz.emptySub">Five questions, four options each, with a one-line explanation for every answer.</p>
+              <p class="empty-sub" data-i18n="quiz.emptySub">Five questions, four options each: one correct answer, three plausible wrong ones, and a one-line reason for the correct one.</p>
             </div>
             <div class="quiz-body" id="quiz-body" hidden></div>
             <p class="sr-only" id="quiz-status" aria-live="polite"></p>
@@ -203,7 +203,7 @@
       <div class="wrap features-grid">
         <div class="features-head">
           <h2 id="features-title" data-i18n="features.title">What Quizpen does for you</h2>
-          <p data-i18n="features.sub">Built around the way teachers already plan: start from the material, end with something students can answer.</p>
+          <p data-i18n="features.sub">Start with the material you already teach from and finish with questions your students can answer.</p>
         </div>
         <ul class="feature-list">
           <li class="feature">
@@ -216,8 +216,8 @@
           <li class="feature">
             <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-checklist"/></svg></span>
             <div>
-              <h3 data-i18n="f2.t">An answer key that explains itself</h3>
-              <p data-i18n="f2.d">Each question has one correct answer and a one-sentence reason. You check the key at a glance, and students see why they got it wrong.</p>
+              <h3 data-i18n="f2.t">An answer key you can check at a glance</h3>
+              <p data-i18n="f2.d">Each correct answer comes with a one-sentence reason that points to what your text says. Its letter, A to D, is picked at random, so students can't guess a pattern.</p>
             </div>
           </li>
           <li class="feature">
@@ -237,7 +237,7 @@
         <ol class="facts">
           <li class="fact"><p><span data-i18n-html="proof.1"><strong>About 4 hours a week</strong> is how long a typical lower secondary teacher spends marking and correcting student work.</span><sup><a href="#src-1" aria-label="Source 1">1</a></sup></p></li>
           <li class="fact"><p><span data-i18n-html="proof.2"><strong>5.9 hours a week</strong> is the time teachers who use AI tools at least weekly say they save.</span><sup><a href="#src-2" aria-label="Source 2">2</a></sup></p></li>
-          <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practised recalling it remembered more than students who read it again.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
+          <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practiced recalling it remembered more than students who read it again.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
         </ol>
         <div class="proof-foot">
           <p class="counter counter-lg" data-counter><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text"></span></p>
@@ -256,7 +256,7 @@
         <div class="faq-list">
           <details>
             <summary><span data-i18n="faq.q1">When can I start using Quizpen?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a1">We're letting teachers in small groups, in the order they joined. We'll send one email when your spot opens.</p>
+            <p data-i18n="faq.a1">We're opening access in small groups, in the order teachers joined. We'll send one email when your spot opens.</p>
           </details>
           <details>
             <summary><span data-i18n="faq.q2">Will it cost anything?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
@@ -264,11 +264,11 @@
           </details>
           <details>
             <summary><span data-i18n="faq.q3">Which subjects and languages does it work for?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a3">Any subject you teach from text: science, history, literature, geography and more. The demo above works in English and Ukrainian.</p>
+            <p data-i18n="faq.a3">Any subject you teach from text: history, biology, geography, literature and more. The demo writes the quiz in the language of this page, Ukrainian or English, even if your text is in the other one.</p>
           </details>
           <details>
             <summary><span data-i18n="faq.q4">What happens to the text I paste?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a4">It's sent to an AI model only to write your quiz. Paste lesson material and leave out student names or other personal details.</p>
+            <p data-i18n="faq.a4">It goes to an AI model only to write your quiz, and we don't store it. Paste lesson material and leave out student names and other personal details.</p>
           </details>
         </div>
       </div>

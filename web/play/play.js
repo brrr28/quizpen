@@ -9,10 +9,10 @@
   var I18N = {
     en: {
       keys: ['A', 'B', 'C', 'D'], loading: 'Loading the quiz…',
-      privacy: 'No sign-up. Nothing about you is collected: your answers are not saved or sent anywhere.',
-      meta: '{n} questions · about {m} min', start: 'Start', hint: 'Tap the answer you think is right. You will see why straight away.',
+      privacy: 'No sign-up, and nothing about you is collected. Your answers are not saved or sent anywhere.',
+      meta: '{n} questions · about {m} min', start: 'Start', hint: 'Tap the answer you think is correct. You\'ll see why right away.',
       progress: 'Question {i} of {n}', streak: 'Streak', streakLabel: '{n} in a row',
-      right: ['Right!', 'Correct!', 'Yes, that is it.'], wrong: 'Not quite. The answer is {a}.', inRow: '{n} in a row!',
+      right: ['Right!', 'Correct!', 'Yes, that\'s it.'], wrong: 'Not quite. The answer is {a}.', inRow: '{n} in a row!',
       next: 'Next question', finish: 'See my result',
       stars3: 'Excellent work!', stars2: 'Good job! Almost there.', stars1: 'Good start. Look at the answers and try again.',
       score: 'You got {s} of {n} right', starsLabel: '{s} of 3 stars', best: 'Best streak: {n} in a row',
@@ -31,14 +31,14 @@
       right: ['Правильно!', 'Так, саме так.', 'Влучно!'],
       wrong: 'Не зовсім. Правильна відповідь: {a}.', inRow: '{n} поспіль!',
       next: 'Далі', finish: 'Мій результат',
-      stars3: 'Чудова робота!', stars2: 'Добре! Ще трохи, і буде ідеально.',
+      stars3: 'Відмінно!', stars2: 'Добре! Ще трохи, і буде ідеально.',
       stars1: 'Гарний початок. Переглянь відповіді й спробуй ще раз.',
       score: 'Правильно {s} з {n}', starsLabel: '{s} з 3 зірок', best: 'Найкраща серія: {n} поспіль',
       review: 'Переглянути відповіді', again: 'Пройти ще раз', back: 'До результату',
       yours: 'Твоя відповідь', correct: 'Правильна відповідь',
       made: 'Зроблено в Quizpen', home: 'Перейти до Quizpen',
       e_missing: ['У цьому посиланні немає тесту', 'Попроси в учителя посилання на тест або створи власний у Quizpen.'],
-      e_broken: ['Схоже, посилання пошкоджене', 'Можливо, частина посилання загубилася під час копіювання. Попроси учителя надіслати його ще раз.'],
+      e_broken: ['Схоже, посилання пошкоджене', 'Можливо, під час копіювання частина посилання загубилася. Попроси вчителя надіслати його ще раз.'],
       e_unsupported: ['Цей браузер не може відкрити тест', 'Онови браузер або відкрий посилання в Chrome, Safari чи Firefox.']
     }
   };
