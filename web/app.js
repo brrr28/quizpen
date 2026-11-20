@@ -600,6 +600,9 @@
   function startQuiz(quiz, noteKey, live) {
     stopLoading();
     quizState = { quiz: quiz, i: 0, picks: [], noteKey: noteKey, live: live };
+    /* ---------- Student play mode hook (web/play/share.js): announce the shown quiz ---------- */
+    document.dispatchEvent(new CustomEvent('quizpen:quiz', { detail: { quiz: quiz, lang: lang } }));
+    /* ---------- end of student play mode hook ---------- */
     renderQuiz();
     statusEl.textContent = (noteKey ? t(noteKey) + ' ' : '') + t('quiz.ready', { n: quiz.questions.length });
   }
