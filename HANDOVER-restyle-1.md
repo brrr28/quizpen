@@ -43,7 +43,7 @@ Brief: tokens, fonts, header/rail/drawer, hero, thanks, footer, consent bar, met
 - Fallback ratios above are measured; do not re-measure unless the weights change.
 
 ## Tests
-None run yet on the restyle. Scratch measuring script: C:\Users\User1\AppData\Local\Temp\claude\a67057b0fb04d8bc\04f06cdb-1798-4f6b-9039-8c87ce3d446f\scratchpad\qp-measure.mjs (delete at the end with its .log).
+None run yet on the restyle. The measuring script (stand.mjs + injected Google Fonts link, DOM widths of EN+UK hero texts vs local faces) was deleted after use; the numbers above are its output. Stand ports 8080/8787/9339 are free.
 
 ## Files
 web/index.html, web/app.js, web/ui.js, web/styles.css, web/nav.css, web/consent.css, web/dev/ui-check.mjs.
