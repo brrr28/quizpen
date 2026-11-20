@@ -126,8 +126,10 @@ try {
     await page.waitFor(`!document.querySelector('dialog.play-preview')`);
   }
   // The rest of the samples are encoded by the same in-page codec the landing uses.
+  // Spanish and Polish examples hold one quiz in their own language; the player UI still runs in en and uk.
+  const quizOf = (s, lang) => s.quiz[s.lang || lang];
   for (const s of SAMPLES.slice(1)) for (const lang of ['en', 'uk']) {
-    const token = await page.eval(`QuizpenCodec.encode(${JSON.stringify(s.quiz[lang])}, '${lang}')`);
+    const token = await page.eval(`QuizpenCodec.encode(${JSON.stringify(quizOf(s, lang))}, '${lang}')`);
     links[s.id + '-' + lang] = PLAY + '?lang=' + lang + '#q=' + token;
   }
   for (const [k, v] of Object.entries(links)) console.log(`LINK ${k}: ${v.length} local, ${v.length - PLAY.length + PROD_PLAY.length} on GitHub Pages`);
@@ -179,7 +181,7 @@ try {
 
   for (const s of SAMPLES) for (const lang of ['en', 'uk']) {
     const shots = s.id === 'photosynthesis' && lang === 'en' ? { question: 1, name: 'play-375-question.png', final: 'play-375-final.png' } : {};
-    await play(s.id + '-' + lang, s.quiz[lang], lang === 'en' ? [0] : [0, 2], shots);
+    await play(s.id + '-' + lang, quizOf(s, lang), lang === 'en' ? [0] : [0, 2], shots);
   }
 
   /* ---------- Desktop 1440 ---------- */
@@ -224,7 +226,9 @@ try {
   ok('reduced motion: no animations', (await page.eval(`getComputedStyle(document.querySelector('.start-title')).animationName`)) === 'none');
   await page.send('Emulation.setEmulatedMedia', { features: [] });
 
-  ok('no console errors or warnings', errors.length === 0, errors.slice(0, 5).join(' | '));
+  // config.js has the real PostHog key: in headless Chrome PostHog drops every event as a bot and says so. Expected, not a page fault.
+  const real = errors.filter((e) => !/\[PostHog\.js\] Events are being dropped because the user agent looks like a bot/.test(e));
+  ok('no console errors or warnings', real.length === 0, real.slice(0, 5).join(' | '));
 } catch (e) {
   ok('run', false, e.message);
 } finally {
