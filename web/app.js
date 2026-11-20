@@ -734,7 +734,7 @@
     busyQuiz = true;
     genBtn.disabled = true; genBtn.classList.add('is-busy'); genBtn.setAttribute('aria-busy', 'true');
     var started = Date.now(), quizLang = lang;
-    var loading = { kind: 'loading', key: 'demo.steps', every: 1100, t0: started };
+    var loading = { kind: 'loading', key: 'demo.steps', every: 1100, t0: started, slowAfter: SLOW_MS };
     views.own = loading;
     if (mode === 'own') { renderView(); scrollToPanel(); statusEl.textContent = t('demo.working'); }
     demoT0 = started; track('demo_started', { sample: 'custom', lang: quizLang }); // analytics
@@ -782,9 +782,11 @@
   }
 
   // Renders the view of the current mode (also after a tab switch or a language switch).
-  var stepTimer = null;
+  var stepTimer = null, slowTimer = null;
+  var SLOW_MS = 8000; // a live quiz still loading after this gets the "slow connection" line
   function renderView() {
     clearInterval(stepTimer);
+    clearTimeout(slowTimer);
     var v = views[mode];
     quizState = v && v.kind === 'quiz' ? v.state : null;
     panel.setAttribute('aria-busy', String(!!v && v.kind === 'loading'));
@@ -799,7 +801,7 @@
   function renderLoading(v) {
     var steps = raw(v.key);
     bodyEl.innerHTML = '<div class="skel"><ul class="skel-steps">' + steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') +
-      '</ul><div class="skel-bar q"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div></div>';
+      '</ul>' + (v.slowAfter ? '<p class="skel-slow" hidden>' + esc(t('demo.slow')) + '</p>' : '') + '<div class="skel-bar q"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div></div>';
     var lis = bodyEl.querySelectorAll('.skel-steps li'), max = v.finish ? lis.length : lis.length - 1;
     var at = function () { return Math.min(max, Math.floor((Date.now() - v.t0) / v.every)); };
     var tick = function () {
@@ -809,6 +811,14 @@
     };
     tick();
     if (at() < max) stepTimer = setInterval(tick, v.every);
+    if (!v.slowAfter) return;
+    // Slow connection: one calm line under the steps, announced once through the status region.
+    var slowEl = bodyEl.querySelector('.skel-slow'), left = v.slowAfter - (Date.now() - v.t0);
+    if (left <= 0) { slowEl.hidden = false; return; }
+    slowTimer = setTimeout(function () {
+      slowEl.hidden = false;
+      if (views[mode] === v) statusEl.textContent = t('demo.slow');
+    }, left);
   }
   // A label for a button rendered after ui.js init: the data-rsv ghost holds every variant, so the width stays put.
   function labelSpan(keys, cls) {

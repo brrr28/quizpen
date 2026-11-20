@@ -535,6 +535,7 @@ a:hover { text-decoration-thickness: 2px; }
 .skel-steps li.is-now::before { border-color: var(--ink); background: var(--accent); }
 .skel-steps li.is-done { color: var(--ink-2); }
 .skel-steps li.is-done::before { border-color: var(--right); background: var(--right); }
+.skel-slow { margin: 0 0 10px; font-size: 0.92rem; font-weight: 500; color: var(--ink-2); }
 .skel-bar { height: 16px; border-radius: 8px; background: var(--tint); position: relative; overflow: hidden; }
 .skel-bar.q { height: 22px; width: 82%; margin-bottom: 6px; }
 .skel-bar.opt { height: 46px; border-radius: 10px; }
