@@ -693,6 +693,9 @@ function setupInsights() {
     }
   }
 
+  // Formulas below use English syntax with commas; a locale such as Ukrainian expects semicolons and
+  // would turn every formula into a parse error.
+  if (ss.getSpreadsheetLocale() !== 'en_US') ss.setSpreadsheetLocale('en_US');
   const sheet = ss.getSheetByName(INSIGHTS_NAME) || ss.insertSheet(INSIGHTS_NAME);
   sheet.getCharts().forEach(function (chart) { sheet.removeChart(chart); });
   sheet.clear();
@@ -785,7 +788,8 @@ function setupInsights() {
       .setOption('title', 'Signups per day, last 14 days')
       .setOption('legend', { position: 'none' })
       .setOption('pointSize', 5)
-      .setOption('vAxis', { format: '0', viewWindow: { min: 0 } })
+      // A soft maximum of 5 keeps whole-number ticks while the list is small; bigger counts still fit.
+      .setOption('vAxis', { format: '0', minValue: 0, maxValue: 5, viewWindow: { min: 0 } })
       .setOption('width', 620)
       .setOption('height', 320)
       .build()
