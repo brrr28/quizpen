@@ -110,9 +110,9 @@
         measured by swapping the texts in place inside one task (never painted). */
   var STACK_SEL = [
     '.site-header [data-i18n]', '.btn [data-i18n]', '.chip[data-i18n]', '.share-btn [data-i18n]',
-    '.kicker[data-i18n]', '.join-label[data-i18n]', '.hero-art [data-i18n]', '.hero-art [data-i18n-html]'
+    '.kicker[data-i18n]', '.join-label[data-i18n]', '.hero-art [data-i18n]', '.hero-art [data-i18n-html]', '.demo-tab [data-i18n]'
   ].join(',');
-  var MID_SEL = '.site-header, .btn, .chip, .share-btn, .kicker';
+  var MID_SEL = '.site-header, .btn, .chip, .share-btn, .kicker, .demo-tab';
   var STATE_KEYS = { 'cta': ['cta.joined', 'form.sending'], 'thanks.copy': ['thanks.copied'] };
   var SKIP_SEL = '.sr-only';
   var hosts = new Map();

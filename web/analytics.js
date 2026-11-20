@@ -17,7 +17,7 @@
   var CLARITY = String(window.CLARITY_ID || '').trim();
   var CONSENT_KEY = 'qp_consent', CONSENT_DAYS = 365;
   // Elements whose content must never reach session replays: email, lesson text, quiz text, referral and quiz links.
-  var MASK = '#email, #lesson, input, textarea, #ref-link, #quiz-body, #thanks-body, .play-dialog';
+  var MASK = '#email, #ea-email, #lesson, input, textarea, #ref-link, #quiz-body, #thanks-body, .play-dialog';
 
   var api = { enabled: false, surface: SURFACE, track: function () { /* off */ } };
   window.qpAnalytics = api;
