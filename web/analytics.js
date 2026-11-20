@@ -3,7 +3,8 @@
    - Microsoft Clarity: heatmaps and session replays, loaded only when CLARITY_ID is set AND the visitor allowed it.
    - Nothing loads when the IDs are empty or the browser sends Do Not Track, Global Privacy Control or prefers-reduced-data.
    Never pass emails, lesson text, quiz text, referral codes or any other personal data to track().
-   Surfaces (data-surface on the script tag): landing (default), spec (PostHog only), play (student page, see below).
+   Surfaces (data-surface on the script tag): landing (default), spec (PostHog only).
+   The student player (web/play/) never loads this file: its page promises that answers are not sent anywhere.
    See ANALYTICS-SEO.md for setup. */
 (function () {
   'use strict';
@@ -14,7 +15,6 @@
   var KEY = String(window.POSTHOG_KEY || '').trim();
   var HOST = String(window.POSTHOG_HOST || '').trim().replace(/\/+$/, '') || 'https://eu.i.posthog.com';
   var CLARITY = String(window.CLARITY_ID || '').trim();
-  var STUDENT = window.ANALYTICS_STUDENT === true;
   var CONSENT_KEY = 'qp_consent', CONSENT_DAYS = 365;
   // Elements whose content must never reach session replays: email, lesson text, quiz text, referral and quiz links.
   var MASK = '#email, #lesson, input, textarea, #ref-link, #quiz-body, #thanks-body, .play-dialog';
@@ -41,6 +41,8 @@
     return false;
   }
   if (privacySignal()) return;
+  // Only the teacher-facing pages are tracked; any other surface (and any page inside an iframe) stays off.
+  if ((SURFACE !== 'landing' && SURFACE !== 'spec') || window.self !== window.top) return;
 
   // Props are limited to short primitives with snake_case keys; anything that looks like an email is dropped.
   function clean(props) {
@@ -53,29 +55,6 @@
       else if (typeof v === 'string' && v.length <= 40 && v.indexOf('@') < 0) out[k] = v;
     });
     return out;
-  }
-
-  /* ---------- Student player (web/play/): anonymous beacons, off unless ANALYTICS_STUDENT is true ---------- */
-  if (SURFACE === 'play') {
-    // The teacher's "Preview as student" iframe is not a student play, it is tracked on the landing instead.
-    if (!KEY || !STUDENT || window.self !== window.top) return;
-    api.enabled = true;
-    api.track = function (name, props) {
-      var properties = clean(props);
-      // One shared id for every student: no per-device id, no person profile, no GeoIP, no URL (the quiz lives in the fragment).
-      properties.distinct_id = 'anonymous_student';
-      properties.$process_person_profile = false;
-      properties.$geoip_disable = true;
-      properties.surface = 'play';
-      try {
-        fetch(HOST + '/i/v0/e/', {
-          method: 'POST', keepalive: true, credentials: 'omit', referrerPolicy: 'no-referrer',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ api_key: KEY, event: String(name), properties: properties })
-        }).catch(function () { /* analytics must never break the quiz */ });
-      } catch (e) { /* ignore */ }
-    };
-    return;
   }
 
   if (!KEY && !CLARITY) return;

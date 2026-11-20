@@ -1,6 +1,6 @@
 // Headless check of web/analytics.js and the SEO tags (dev only).
 // Usage: node web/dev/analytics-check.mjs   (own ports: static 8095, CDP 9355; exit 1 on any failure)
-// Fake IDs are served in memory as config.js overrides (never written to web/config.js). Requests to PostHog and
+// The IDs are overridden in memory in the served config.js (empty or fake, never the real ones from web/config.js). Requests to PostHog and
 // Clarity are intercepted by CDP and answered locally with empty bodies, so nothing leaves the machine.
 // Env: CHROME (chrome.exe path), ANALYTICS_CHROME_PROFILE (base dir for temp Chrome profiles).
 
@@ -53,11 +53,10 @@ const server = http.createServer((req, res) => {
   try { data = readFileSync(path); } catch { res.writeHead(404); res.end(); return; }
   if (url.pathname === '/config.js') {
     let extra = '\nwindow.WAITLIST_API = "/api";\n';
-    if (mode === 'fake') extra += `window.POSTHOG_KEY = "${FAKE.POSTHOG_KEY}"; window.CLARITY_ID = "${FAKE.CLARITY_ID}"; window.ANALYTICS_STUDENT = true;\n`;
+    // The real IDs in web/config.js are always replaced: empty for the "off" run, fake for the rest.
+    extra += mode === 'fake' ? `window.POSTHOG_KEY = "${FAKE.POSTHOG_KEY}"; window.CLARITY_ID = "${FAKE.CLARITY_ID}";\n` : 'window.POSTHOG_KEY = ""; window.CLARITY_ID = "";\n';
     data = Buffer.concat([data, Buffer.from(extra)]);
   }
-  // Student analytics switch-on step from ANALYTICS-SEO.md: allow the PostHog host in the player CSP.
-  if (mode === 'fake' && url.pathname === '/play/') data = Buffer.from(String(data).replace("default-src 'none';", "default-src 'none'; connect-src https://eu.i.posthog.com;"));
   res.writeHead(200, { 'Content-Type': TYPES[extname(path)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
   res.end(data);
 });
@@ -109,16 +108,16 @@ async function session(name, fn, opts = {}) {
   const profile = join(PROFILE_BASE, name);
   rmSync(profile, { recursive: true, force: true });
   mkdirSync(profile, { recursive: true });
-  const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${CDP}`, `--user-data-dir=${profile}`, '--no-first-run',
+  const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${CDP}`, `--user-data-dir=${profile}`, '--no-first-run', '--lang=en-US', '--accept-lang=en-US',
     '--no-default-browser-check', '--disable-extensions', '--hide-scrollbars', '--mute-audio', '--window-size=1440,900', 'about:blank'],
   { windowsHide: true, stdio: 'ignore' });
-  let ws;
+  let ws, ctx;
   try {
     const list = await until(() => fetch(`http://127.0.0.1:${CDP}/json/list`).then((r) => r.json()), 15000, 'chrome');
     ws = new WebSocket(list.find((t) => t.type === 'page').webSocketDebuggerUrl);
     await new Promise((r, f) => { ws.onopen = r; ws.onerror = f; });
     const page = new Page(ws);
-    const ctx = { page, errors: [], requests: [], intercepted: [] };
+    ctx = { page, errors: [], requests: [], intercepted: [] };
     page.on('Runtime.exceptionThrown', (p) => ctx.errors.push('exception: ' + (p.exceptionDetails.exception?.description || p.exceptionDetails.text)));
     page.on('Runtime.consoleAPICalled', (p) => { if (p.type === 'error' || p.type === 'warning') ctx.errors.push(p.type + ': ' + p.args.map((a) => a.value ?? a.description).join(' ')); });
     page.on('Log.entryAdded', (p) => { if (p.entry.level === 'error') ctx.errors.push('log: ' + p.entry.text + ' ' + (p.entry.url || '')); });
@@ -140,7 +139,7 @@ async function session(name, fn, opts = {}) {
     try { await fn(ctx); } finally { if (page.covered.length) console.log('COVERED ' + page.covered.slice(0, 3).join(' ; ')); }
     ok(`${name}: no console errors`, ctx.errors.length === 0, ctx.errors.slice(0, 4).join(' | '));
   } catch (e) {
-    ok(`${name}: run`, false, e.message.slice(0, 120));
+    ok(`${name}: run`, false, e.message.slice(0, 600) + (ctx && ctx.errors.length ? '  errors: ' + ctx.errors.slice(0, 4).join(' | ') : ''));
   } finally {
     try { ws && ws.send(JSON.stringify({ id: 999999, method: 'Browser.close' })); } catch { /* gone */ }
     await wait(500);
@@ -159,9 +158,10 @@ async function landingFlow(page) {
   await page.click('.chip[data-sample="photosynthesis"]');
   await page.click('#gen-btn');
   for (let i = 0; i < 10; i++) {
-    const state = await page.waitFor(`document.querySelector('#quiz-body .score') ? 'done' : (document.querySelector('#quiz-body .opt:not([disabled])') ? 'q' : null)`, 10000);
+    // The loading skeleton also has .opt bars (div.skel-bar.opt) inside #quiz-body: wait for real answer buttons.
+    const state = await page.waitFor(`document.querySelector('#quiz-body .score') ? 'done' : (document.querySelector('#quiz-body button.opt:not([disabled])') ? 'q' : null)`, 10000);
     if (state === 'done') break;
-    await page.click('#quiz-body .opt:not([disabled])');
+    await page.click('#quiz-body button.opt:not([disabled])');
     await page.click('#quiz-body [data-next]');
   }
   await page.click('#quiz-body [data-copy-quiz]');
@@ -242,8 +242,10 @@ try {
     ok('funnel: signup_succeeded props {already, has_ref, demo_used}', su.already === false && su.has_ref === false && su.demo_used === true, JSON.stringify(su));
     const answered = got.filter((c) => c.e === 'quiz_answered').length;
     ok('funnel: one quiz_answered per question', answered >= 3, String(answered));
-    const leak = JSON.stringify(got).match(/@|photosynth|teacher@/i);
-    ok('privacy: no email or quiz text in any event props', !leak, leak ? leak[0] : '');
+    // demo_started.sample is the fixed preset id ("photosynthesis"), not visitor text, so it is checked on its own.
+    const leak = JSON.stringify(got.map((c) => ({ ...c.p, sample: undefined }))).match(/@|photosynth|chloroplast|teacher/i);
+    const sample = got.find((c) => c.e === 'demo_started')?.p.sample;
+    ok('privacy: no email, lesson or quiz text in event props (only the preset sample id)', !leak && sample === 'photosynthesis', leak ? leak[0] : String(sample));
     const stored = await page.eval(`localStorage.getItem('qp_consent')`);
     ok('consent: choice stored in localStorage', /"choice":"granted"/.test(stored || ''), stored);
 
@@ -265,24 +267,22 @@ try {
     ok('withdraw: after reload no bar and no Clarity request', !(await page.eval(`!!(document.querySelector('.qp-consent') && !document.querySelector('.qp-consent').hidden)`)) &&
       requests.filter((u) => /clarity\.ms/.test(u)).length === before);
 
-    // Student player: anonymous beacons only after the documented switch-on (flag + CSP); none from the preview iframe.
-    const n0 = intercepted.length;
+    // Student player: sends nothing even with IDs set (its page promises answers go nowhere).
+    const n0 = intercepted.length, r0 = requests.length;
     await page.open(playLink);
     await page.click('.btn-primary');
     for (let i = 0; i < 10; i++) {
-      const st = await page.waitFor(`document.querySelector('.screen-final') ? 'done' : (document.querySelector('.opt:not([disabled])') ? 'q' : null)`);
+      const st = await page.waitFor(`document.querySelector('.screen-final') ? 'done' : (document.querySelector('button.opt:not([disabled])') ? 'q' : null)`);
       if (st === 'done') break;
-      await page.click('.opt:not([disabled])');
+      await page.click('button.opt:not([disabled])');
       await page.click('[data-next]');
     }
     await wait(600);
-    const beacons = intercepted.slice(n0).filter((r) => r.method === 'POST' && r.url === 'https://eu.i.posthog.com/i/v0/e/').map((r) => JSON.parse(r.body));
-    const ev = beacons.map((b) => b.event);
-    ok('play: student events sent in order', ev[0] === 'student_quiz_opened' && ev[1] === 'student_quiz_started' && ev.includes('student_quiz_answered') && ev[ev.length - 1] === 'student_quiz_completed', ev.join(' > '));
-    const ids = [...new Set(beacons.map((b) => b.properties.distinct_id))];
-    const urlish = beacons.some((b) => Object.keys(b.properties).some((k) => /url|referrer|title/i.test(k)));
-    ok('play: no identifiers (one shared distinct_id, no URL/title, no person profile)', ids.length === 1 && ids[0] === 'anonymous_student' && !urlish && beacons.every((b) => b.properties.$process_person_profile === false), ids.join(','));
-    ok('play: PostHog/Clarity scripts not loaded on the student page', !intercepted.slice(n0).some((r) => /array\.js|clarity\.ms/.test(r.url)));
+    const playExt = external(requests.slice(r0)).concat(intercepted.slice(n0).map((r) => r.url));
+    const playGlobals = await page.eval(`typeof window.qpAnalytics + ',' + typeof window.posthog + ',' + typeof window.clarity`);
+    ok('play: student quiz played to the end, no request leaves the site, no analytics globals', playExt.length === 0 && playGlobals === 'undefined,undefined,undefined', playExt.slice(0, 3).join(' ') + ' ' + playGlobals);
+    const playHtml = readFileSync(join(WEB, 'play', 'index.html'), 'utf8') + readFileSync(join(WEB, 'play', 'play.js'), 'utf8');
+    ok('play: no analytics include or track() call in web/play/ player files', !/analytics\.js|config\.js|track\(|posthog|clarity/i.test(playHtml));
 
     // Strict variant: PostHog signup events, no consent bar, no Clarity.
     await page.open(BASE + 'spec/');
