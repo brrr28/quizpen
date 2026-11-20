@@ -1,0 +1,91 @@
+{
+  "samples": [
+    {
+      "id": "photosynthesis",
+      "text": {
+        "en": "Photosynthesis is the process plants, algae and some bacteria use to make their own food from light. It takes place mainly in the leaves, inside tiny structures called chloroplasts. Chloroplasts contain chlorophyll, a green pigment that absorbs red and blue light and reflects green light, which is why most leaves look green. The plant takes in water through its roots and carbon dioxide from the air through small pores in the leaves called stomata. In the first stage, the light-dependent reactions, light energy splits water molecules and releases oxygen as a by-product. In the second stage, the Calvin cycle, the plant uses the stored energy to turn carbon dioxide into glucose, a sugar it uses for energy and growth. The overall equation is 6CO2 + 6H2O + light energy → C6H12O6 + 6O2. Almost all the oxygen in the air we breathe was produced by photosynthesis.",
+        "uk": "Фотосинтезом називають процес, у якому рослини, водорості й деякі бактерії самі створюють собі поживні речовини за допомогою світла. Він відбувається переважно в листках, у крихітних частинах клітини, які називають хлоропластами. Хлоропласти містять хлорофіл, зелений пігмент, що поглинає червоне й синє світло та відбиває зелене. Саме тому більшість листків здаються нам зеленими. Воду рослина отримує через корені, а вуглекислий газ надходить із повітря через дрібні пори в листках, які називають продихами. У світловій фазі енергія світла розщеплює молекули води, і як побічний продукт виділяється кисень. У темновій фазі, яку ще називають циклом Кальвіна, рослина використовує накопичену енергію, щоб перетворити вуглекислий газ на глюкозу, цукор, який дає їй енергію для життя й росту. Загальне рівняння: 6CO2 + 6H2O + світлова енергія → C6H12O6 + 6O2. Майже весь кисень у повітрі, яким ми дихаємо, утворився завдяки фотосинтезу."
+      },
+      "quiz": {
+        "en": {
+          "title": "Photosynthesis: quick check",
+          "questions": [
+            { "q": "Where in the plant cell does photosynthesis mainly take place?", "options": ["In the chloroplasts", "In the nucleus", "In the cell wall", "In the roots"], "answer": 0, "explain": "Chloroplasts hold the chlorophyll that captures light, so the process happens there." },
+            { "q": "Why do most leaves look green?", "options": ["Chlorophyll absorbs green light", "Chlorophyll reflects green light", "Leaves store green water", "Stomata are green"], "answer": 1, "explain": "Chlorophyll absorbs red and blue light and reflects green, so green is what reaches our eyes." },
+            { "q": "How does carbon dioxide get into the leaf?", "options": ["Through the roots", "Through the chlorophyll", "Through small pores called stomata", "Together with the glucose"], "answer": 2, "explain": "Carbon dioxide enters from the air through stomata, the small pores in the leaves." },
+            { "q": "What is released as a by-product of the light-dependent reactions?", "options": ["Glucose", "Carbon dioxide", "Oxygen", "Chlorophyll"], "answer": 2, "explain": "When light energy splits water molecules, oxygen is released." },
+            { "q": "What does the plant make in the Calvin cycle?", "options": ["Water", "Glucose", "Light energy", "Stomata"], "answer": 1, "explain": "In the Calvin cycle the plant turns carbon dioxide into glucose, a sugar it uses for energy and growth." }
+          ]
+        },
+        "uk": {
+          "title": "Фотосинтез: швидка перевірка",
+          "questions": [
+            { "q": "Де в клітині рослини переважно відбувається фотосинтез?", "options": ["У хлоропластах", "У ядрі", "У клітинній стінці", "У коренях"], "answer": 0, "explain": "У хлоропластах міститься хлорофіл, який уловлює світло, тому процес відбувається саме там." },
+            { "q": "Чому більшість листків здаються зеленими?", "options": ["Хлорофіл поглинає зелене світло", "Хлорофіл відбиває зелене світло", "Листки накопичують зелену воду", "Продихи мають зелений колір"], "answer": 1, "explain": "Хлорофіл поглинає червоне й синє світло, а зелене відбиває, тому до наших очей доходить саме зелене." },
+            { "q": "Як вуглекислий газ потрапляє в листок?", "options": ["Через корені", "Через хлорофіл", "Через дрібні пори, які називають продихами", "Разом із глюкозою"], "answer": 2, "explain": "Вуглекислий газ надходить із повітря через продихи, дрібні пори в листках." },
+            { "q": "Що виділяється як побічний продукт світлової фази?", "options": ["Глюкоза", "Вуглекислий газ", "Кисень", "Хлорофіл"], "answer": 2, "explain": "Коли енергія світла розщеплює молекули води, виділяється кисень." },
+            { "q": "Що утворює рослина в циклі Кальвіна?", "options": ["Воду", "Глюкозу", "Світлову енергію", "Продихи"], "answer": 1, "explain": "У циклі Кальвіна рослина перетворює вуглекислий газ на глюкозу, яка дає їй енергію для росту." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "printing",
+      "text": {
+        "en": "Around 1440, Johannes Gutenberg, a goldsmith from Mainz in Germany, began developing a printing press with movable metal type. Each letter was cast as a separate metal piece, so printers could arrange letters into pages, print hundreds of copies, and then reuse the same letters for the next job. Gutenberg also developed an oil-based ink that stuck to metal better than the water-based inks used before, and he adapted the screw press that farmers used to squeeze grapes and olives. His most famous work, the Gutenberg Bible, was finished around 1455. Historians believe about 180 copies were printed. Before the press, books were copied by hand, often by monks, and a single book could take months to make. By 1500, print shops across Europe had produced millions of books. Cheaper books helped more people learn to read, made it easier to share scientific ideas, and let new ideas such as Martin Luther's 95 Theses of 1517 travel far beyond Wittenberg within weeks.",
+        "uk": "Близько 1440 року Йоганн Гутенберг, ювелір із німецького міста Майнц, почав створювати друкарський верстат із рухомими металевими літерами. Кожну літеру відливали окремо, тож друкарі могли складати з них сторінки, друкувати сотні примірників, а потім використовувати ті самі літери для наступної книжки. Гутенберг також створив фарбу на олійній основі, яка краще трималася на металі, ніж водяні чорнила, якими користувалися раніше. Сам верстат він переробив із гвинтового преса, яким селяни вичавлювали виноград і оливки. Його найвідомішу працю, Біблію Гутенберга, завершили близько 1455 року. Історики вважають, що надрукували приблизно 180 примірників. До появи друку книжки переписували вручну, часто це робили ченці, і одна книжка могла забрати кілька місяців праці. До 1500 року друкарні по всій Європі випустили мільйони книжок. Дешевші книжки допомогли більшій кількості людей навчитися читати, полегшили обмін науковими ідеями й дали змогу новим думкам, як-от 95 тезам Мартіна Лютера 1517 року, за кілька тижнів поширитися далеко за межі Віттенберга."
+      },
+      "quiz": {
+        "en": {
+          "title": "The printing press: quick check",
+          "questions": [
+            { "q": "What made Gutenberg's type \"movable\"?", "options": ["Each letter was a separate metal piece that could be rearranged", "The press could be carried from town to town", "The pages moved through the press on rollers", "Monks moved the letters into books by hand"], "answer": 0, "explain": "Each letter was cast separately, so printers could arrange it into pages and use it again." },
+            { "q": "Which machine did Gutenberg adapt for printing?", "options": ["A water mill", "A screw press used for grapes and olives", "A weaving loom", "A goldsmith's furnace"], "answer": 1, "explain": "He adapted the screw press that farmers used to squeeze grapes and olives." },
+            { "q": "Why did Gutenberg use an oil-based ink?", "options": ["It dried faster on paper", "It was cheaper than water", "It stuck to metal type better", "Monks preferred its colour"], "answer": 2, "explain": "Oil-based ink stuck to the metal letters better than the older water-based inks." },
+            { "q": "About how many copies of the Gutenberg Bible do historians think were printed?", "options": ["18", "180", "1,800", "18,000"], "answer": 1, "explain": "Historians believe about 180 copies were printed around 1455." },
+            { "q": "Which effect of cheaper books does the text mention?", "options": ["More people learned to read", "Monks stopped writing", "Books became longer", "Paper became more expensive"], "answer": 0, "explain": "Cheaper books helped more people learn to read and helped new ideas spread faster." }
+          ]
+        },
+        "uk": {
+          "title": "Друкарський верстат: швидка перевірка",
+          "questions": [
+            { "q": "Чому літери Гутенберга називають рухомими?", "options": ["Кожна літера була окремою металевою деталлю, яку можна переставити", "Верстат можна було перевозити з міста в місто", "Сторінки рухалися крізь верстат на валиках", "Ченці вручну переносили літери в книжки"], "answer": 0, "explain": "Кожну літеру відливали окремо, тож її можна було скласти в сторінку й використати знову." },
+            { "q": "Яку машину Гутенберг переробив для друку?", "options": ["Водяний млин", "Гвинтовий прес для винограду й оливок", "Ткацький верстат", "Ювелірну піч"], "answer": 1, "explain": "Він переробив гвинтовий прес, яким селяни вичавлювали виноград і оливки." },
+            { "q": "Навіщо Гутенберг використав фарбу на олійній основі?", "options": ["Вона швидше висихала на папері", "Вона була дешевшою за воду", "Вона краще трималася на металевих літерах", "Її колір більше подобався ченцям"], "answer": 2, "explain": "Олійна фарба краще трималася на металі, ніж старі водяні чорнила." },
+            { "q": "Скільки приблизно примірників Біблії Гутенберга, на думку істориків, надрукували?", "options": ["18", "180", "1 800", "18 000"], "answer": 1, "explain": "Історики вважають, що близько 1455 року надрукували приблизно 180 примірників." },
+            { "q": "Який наслідок здешевлення книжок згадано в тексті?", "options": ["Більше людей навчилися читати", "Ченці перестали писати", "Книжки стали довшими", "Папір подорожчав"], "answer": 0, "explain": "Дешевші книжки допомогли більшій кількості людей навчитися читати й швидше поширювали нові ідеї." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "magi",
+      "text": {
+        "en": "In O. Henry's short story \"The Gift of the Magi\" (1905), Della and Jim Young are a young married couple living in a small, cheap flat in New York. On Christmas Eve, Della has only one dollar and eighty-seven cents to buy Jim a present. The couple own two treasures: Jim's gold watch, which belonged to his father and grandfather, and Della's long, beautiful hair. Della sells her hair for twenty dollars and spends twenty-one dollars on a platinum chain for Jim's watch. When Jim comes home, he stares at her short hair in silence. Then he gives her his present: a set of expensive combs for the long hair she no longer has. Della shows him the chain, and Jim tells her that he sold his watch to buy the combs. The narrator calls the two of them foolish, and then says that of all who give gifts, people like them are the wisest, because each gave up what they valued most for the other. The magi in the title are the wise men who brought gifts to the baby Jesus.",
+        "uk": "В оповіданні О. Генрі «Дари волхвів» (1905) молоде подружжя, Делла і Джим Янг, живе в маленькій дешевій квартирі в Нью-Йорку. Напередодні Різдва Делла має лише один долар і вісімдесят сім центів, щоб купити Джимові подарунок. Подружжя має два скарби: золотий годинник Джима, що належав його батькові й дідові, і довге гарне волосся Делли. Делла продає своє волосся за двадцять доларів і витрачає двадцять один долар на платиновий ланцюжок для годинника Джима. Коли Джим повертається додому, він мовчки дивиться на її коротке волосся. Потім він дарує їй свій подарунок: набір дорогих гребенів для довгого волосся, якого вона вже не має. Делла показує ланцюжок, і Джим зізнається, що продав годинник, щоб купити гребені. Оповідач називає їх нерозумними, а потім каже, що з усіх, хто дарує подарунки, такі, як вони, наймудріші, бо кожен віддав найцінніше, що мав, заради іншого. Волхвами в назві оповідання названо мудреців, які принесли дари немовляті Ісусу."
+      },
+      "quiz": {
+        "en": {
+          "title": "The Gift of the Magi: quick check",
+          "questions": [
+            { "q": "How much money does Della have on Christmas Eve before she sells her hair?", "options": ["$1.87", "$20", "$21", "$87"], "answer": 0, "explain": "The story opens with Della holding one dollar and eighty-seven cents." },
+            { "q": "What does Della sell to buy Jim's present?", "options": ["Her mother's ring", "Her long hair", "Jim's gold watch", "A set of combs"], "answer": 1, "explain": "She sells her hair for twenty dollars and buys the chain." },
+            { "q": "What does Jim give Della?", "options": ["A platinum chain", "A new coat", "A set of combs for her hair", "A gold watch"], "answer": 2, "explain": "Jim buys expensive combs for the long hair Della has just sold." },
+            { "q": "How did Jim pay for his present?", "options": ["He borrowed money", "He sold his watch", "He worked extra shifts", "He sold Della's hair"], "answer": 1, "explain": "Jim sold the gold watch that Della's chain was meant for." },
+            { "q": "Why does the narrator call Della and Jim the wisest givers?", "options": ["Their gifts were the most expensive", "Each gave up what they valued most for the other", "Their gifts could be returned", "They followed the custom of the magi exactly"], "answer": 1, "explain": "Each gave up their greatest treasure out of love, and the narrator calls that wisdom." }
+          ]
+        },
+        "uk": {
+          "title": "«Дари волхвів»: швидка перевірка",
+          "questions": [
+            { "q": "Скільки грошей має Делла напередодні Різдва, ще до продажу волосся?", "options": ["1 долар 87 центів", "20 доларів", "21 долар", "87 доларів"], "answer": 0, "explain": "Оповідання починається з того, що Делла має один долар і вісімдесят сім центів." },
+            { "q": "Що продає Делла, щоб купити подарунок Джимові?", "options": ["Мамину каблучку", "Своє довге волосся", "Золотий годинник Джима", "Набір гребенів"], "answer": 1, "explain": "Вона продає волосся за двадцять доларів і купує ланцюжок." },
+            { "q": "Що Джим дарує Деллі?", "options": ["Платиновий ланцюжок", "Нове пальто", "Набір гребенів для волосся", "Золотий годинник"], "answer": 2, "explain": "Джим купує дорогі гребені для довгого волосся, яке Делла щойно продала." },
+            { "q": "Як Джим заплатив за свій подарунок?", "options": ["Позичив гроші", "Продав годинник", "Працював понаднормово", "Продав волосся Делли"], "answer": 1, "explain": "Джим продав той самий золотий годинник, для якого Делла купила ланцюжок." },
+            { "q": "Чому оповідач називає Деллу і Джима наймудрішими дарувальниками?", "options": ["Їхні подарунки були найдорожчими", "Кожен віддав найцінніше заради іншого", "Їхні подарунки можна було повернути", "Вони точно дотрималися звичаю волхвів"], "answer": 1, "explain": "Кожен із них віддав свій найбільший скарб із любові, і оповідач називає це мудрістю." }
+          ]
+        }
+      }
+    }
+  ]
+}
