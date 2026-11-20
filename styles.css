@@ -274,11 +274,11 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Sheet geometry: the header and the hero are one worksheet. The red margin line runs down both at
    --sheet-line; their content starts --sheet-gap after it (minus the offset of the centred .wrap). */
-.site-header > .wrap, .hero > .wrap {
+.site-header > .wrap, .hero > .wrap, .demo > .wrap {
   padding-left: max(calc(var(--sheet-line) + var(--sheet-gap) - max(0px, (100% - 1200px) / 2)), env(safe-area-inset-left));
 }
 .hero { position: relative; }
-.site-header::before, .hero::before {
+.site-header::before, .hero::before, .demo::before {
   content: ""; position: absolute; z-index: 1; top: 0; bottom: 0; left: var(--sheet-line);
   border-left: 1.5px solid var(--margin); pointer-events: none;
 }
@@ -546,13 +546,11 @@ a:hover { text-decoration-thickness: 2px; }
   .hero-art > * { max-width: 34rem; }
 }
 
-/* Demo */
-.demo {
-  background: var(--night);
-  color: var(--night-text);
-  padding: 64px 0 72px;
-}
-@media (min-width: 980px) { .demo { padding: 104px 0 112px; } }
+/* Demo: the same worksheet goes on. The red margin line continues (see the sheet geometry above); from 1100px the
+   section is ruled like the hero and every line box and margin of the head, the tabs and the list of examples is a
+   multiple of 32px, so their text sits on the rules. The quiz panel is a printed sheet lying on the page. */
+.demo { position: relative; padding: 40px 0 72px; color: var(--ink); }
+@media (min-width: 1100px) { .demo { padding: 32px 0 96px; background-image: var(--ruling); } }
 .demo-head { max-width: 40rem; }
 .demo h2, .features h2, .proof h2, .faq h2, .final h2 {
   font-size: clamp(1.9rem, 1.3rem + 2.1vw, 2.85rem);
@@ -560,66 +558,74 @@ a:hover { text-decoration-thickness: 2px; }
   letter-spacing: -0.03em;
   font-weight: 780;
 }
-.demo-head p { margin-top: 12px; font-size: 1.12rem; color: var(--night-muted); }
-.demo-grid { display: grid; gap: 24px; margin-top: 36px; }
-@media (min-width: 980px) {
-  .demo-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 48px; }
+.demo h2 { font-weight: 600; letter-spacing: -0.018em; line-height: 1.15; }
+.demo-head p { margin-top: 12px; font-family: var(--serif); font-size: 1.125rem; line-height: 30px; color: var(--ink); }
+@media (min-width: 640px) { .demo-head p { font-size: 1.1875rem; line-height: var(--lh); } }
+@media (min-width: 1100px) {
+  .demo h2 { line-height: 64px; }
+  .demo-head p { margin-top: 0; }
 }
-.demo-label { display: block; font-weight: 600; margin-bottom: 8px; }
+.demo-grid { display: grid; gap: 32px; margin-top: 32px; }
+.demo-grid > * { min-width: 0; }
+@media (min-width: 980px) {
+  .demo-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 40px; align-items: start; }
+}
+/* Captions ("Lesson text") are small-caps pencil lines, like the labels of the sheet */
+.demo-label {
+  display: block;
+  font-size: 0.8125rem; font-weight: 700; line-height: var(--lh); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+/* Your text: written on a ruled slip; the rules scroll with the text */
 .demo textarea {
   display: block;
   width: 100%;
-  min-height: 240px;
+  min-height: 256px;
   resize: vertical;
-  padding: 14px 16px;
-  border-radius: var(--r);
-  border: 1.5px solid transparent;
-  background: var(--surface);
-  color: var(--ink);
-  font-size: 1rem;
-  line-height: 1.55;
-}
-.demo textarea::placeholder { color: var(--ink-3); }
-.demo textarea:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; border-radius: var(--r); }
-.demo textarea[aria-invalid="true"] { border-color: #F0A79C; }
-.demo-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; font-size: 0.88rem; color: var(--night-muted); }
-.demo-meta .is-ok { color: #A6E3BF; }
-.demo .field-msg.is-error { color: #FFB4A8; }
-.demo :focus-visible { outline-color: var(--accent); }
-.samples { margin-top: 18px; }
-.samples-label { font-size: 0.94rem; color: var(--night-muted); margin-bottom: 10px; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  min-height: 40px;
   padding: 0 14px;
-  border-radius: 999px;
-  border: 1.5px solid #454C6B;
-  background: transparent;
-  color: var(--night-text);
-  font-size: 0.92rem; font-weight: 550;
-  transition: border-color 160ms var(--ease-out), background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 0;
+  background-color: var(--surface);
+  background-image: var(--ruling);
+  background-attachment: local;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: var(--lh);
+  transition: border-color 160ms var(--ease-out);
 }
-.chip:hover { border-color: var(--night-muted); }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.chip:active { transform: scale(0.97); }
-.gen-btn { margin-top: 22px; width: 100%; }
-@media (min-width: 520px) { .gen-btn { width: auto; } }
+.demo textarea::placeholder { color: var(--ink-3); opacity: 1; }
+.demo textarea:hover { border-color: var(--ink); }
+.demo textarea:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 2px; border-color: var(--ink); }
+.demo textarea[aria-invalid="true"] { border-color: var(--wrong); }
+.demo-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; font-size: 0.88rem; line-height: 1.5; color: var(--ink-3); }
+.demo-meta .is-ok { color: var(--right); }
+.gen-btn { --btn-h: 48px; margin-top: 24px; width: 100%; }
+@media (min-width: 520px) { .gen-btn { width: auto; align-self: flex-start; } }
+@media (min-width: 1100px) { .gen-btn { margin-top: 32px; } }
 
+/* The quiz panel: a printed sheet, flat and square */
 .quiz-panel {
   position: relative;
   min-height: 420px;
-  border-radius: var(--r-lg);
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
   background: var(--surface);
   color: var(--ink);
-  padding: 22px;
+  padding: 18px 18px 22px;
   scroll-margin-top: calc(var(--header-h) + 16px);
 }
-@media (min-width: 640px) { .quiz-panel { padding: 28px; } }
+@media (min-width: 640px) { .quiz-panel { padding: 24px 32px 28px; } }
 .quiz-empty { display: grid; place-content: center; justify-items: center; text-align: center; min-height: 370px; gap: 6px; padding: 0 12px; }
+/* A blank question: a line for the question and four circled letters with empty lines */
 .empty-stack { display: grid; gap: 8px; width: 200px; margin-bottom: 18px; }
-.empty-stack i { display: block; height: 30px; border-radius: 8px; border: 1.5px dashed var(--line-strong); }
-.empty-stack i:first-child { height: 14px; width: 70%; border-style: solid; border-color: transparent; background: var(--tint); margin-bottom: 4px; }
-.empty-title { font-weight: 700; font-size: 1.1rem; }
+.empty-stack i { display: flex; align-items: center; gap: 10px; height: 22px; }
+.empty-stack i::before { content: ""; flex: none; width: 18px; height: 18px; border: 1.25px solid var(--line-strong); border-radius: 50%; }
+.empty-stack i::after { content: ""; flex: 1 1 auto; border-bottom: 1.5px solid var(--line-strong); }
+.empty-stack i:first-child { margin-bottom: 4px; }
+.empty-stack i:first-child::before { display: none; }
+.empty-stack i:first-child::after { border-bottom-color: var(--ink-3); }
+.empty-title { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; }
 .empty-sub { color: var(--ink-2); max-width: 26rem; font-size: 0.96rem; }
 
 /* Loading skeleton */
@@ -628,16 +634,16 @@ a:hover { text-decoration-thickness: 2px; }
 .skel-steps li { display: flex; align-items: center; gap: 10px; color: var(--ink-3); }
 .skel-steps li::before {
   content: ""; width: 10px; height: 10px; border-radius: 50%;
-  border: 2px solid var(--line-strong); flex: none;
+  border: 1.5px solid var(--line-strong); flex: none;
 }
 .skel-steps li.is-now { color: var(--ink); font-weight: 600; }
-.skel-steps li.is-now::before { border-color: var(--ink); background: var(--accent); }
+.skel-steps li.is-now::before { border-color: var(--ink); background: var(--ink); }
 .skel-steps li.is-done { color: var(--ink-2); }
 .skel-steps li.is-done::before { border-color: var(--right); background: var(--right); }
 .skel-slow { margin: 0 0 10px; font-size: 0.92rem; font-weight: 500; color: var(--ink-2); }
-.skel-bar { height: 16px; border-radius: 8px; background: var(--tint); position: relative; overflow: hidden; }
+.skel-bar { height: 16px; background: var(--tint); position: relative; overflow: hidden; }
 .skel-bar.q { height: 22px; width: 82%; margin-bottom: 6px; }
-.skel-bar.opt { height: 46px; border-radius: 10px; }
+.skel-bar.opt { height: 40px; }
 @media (prefers-reduced-motion: no-preference) {
   .skel-bar::after {
     content: ""; position: absolute; inset: 0;
@@ -648,78 +654,108 @@ a:hover { text-decoration-thickness: 2px; }
 }
 @keyframes shimmer { to { transform: translateX(100%); } }
 
-/* Quiz */
-.quiz-note {
-  display: flex; gap: 10px; align-items: flex-start;
-  padding: 10px 12px; margin-bottom: 16px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  font-size: 0.9rem; line-height: 1.45;
+/* Quiz sheet: a Name line, the title with "Question n of N" in small caps, the numbered question with circled
+   letters; after the answer the right letter is circled and ticked in red pen and a wrong pick is struck out. */
+.quiz-sheet { display: flex; align-items: flex-end; gap: 8px; height: 32px; font-size: 0.94rem; line-height: 24px; }
+.quiz-sheet i { flex: 0 1 220px; height: 24px; border-bottom: 1.5px solid var(--ink); }
+.quiz-top {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px;
+  margin-top: 14px; padding-bottom: 8px; border-bottom: 1.5px solid var(--ink);
 }
-.quiz-note .icon { width: 18px; height: 18px; margin-top: 1px; }
-.quiz-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.quiz-title { font-weight: 700; font-size: 0.95rem; color: var(--ink-2); }
-.quiz-progress { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-3); white-space: nowrap; }
-.quiz-bars { display: flex; gap: 5px; margin-top: 12px; }
-.quiz-bars i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); transition: background-color 200ms var(--ease-out); }
-.quiz-bars i.right { background: var(--right); }
-.quiz-bars i.wrong { background: var(--wrong); }
-.quiz-bars i.now { background: var(--ink); }
-.quiz-q { margin-top: 20px; font-size: 1.3rem; line-height: 1.3; letter-spacing: -0.015em; font-weight: 720; }
+.quiz-title { font-family: var(--serif); font-weight: 600; font-size: 1.125rem; line-height: 1.35; }
+.quiz-progress {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.quiz-item { margin-top: 20px; }
+.quiz-q { position: relative; padding-left: 28px; font-family: var(--serif); font-size: 1.125rem; line-height: 1.45; }
+@media (min-width: 640px) { .quiz-q { font-size: 1.1875rem; } }
+.quiz-num { position: absolute; left: 0; font-weight: 600; }
 .quiz-q:focus { outline: none; }
-.opts { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 9px; }
+.opts { list-style: none; margin: 8px 0 0; padding: 0 0 0 26px; display: grid; gap: 2px; }
 .opt {
-  display: flex; align-items: center; gap: 12px;
+  position: relative; display: flex; align-items: flex-start; gap: 14px;
   width: 100%;
-  min-height: 52px;
-  padding: 10px 14px;
+  min-height: 40px;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
   text-align: left;
-  border-radius: 12px;
-  border: 1.5px solid var(--line-strong);
-  background: var(--surface);
-  font-size: 1rem; line-height: 1.35;
-  transition: border-color 140ms var(--ease-out), background-color 140ms var(--ease-out), transform 120ms var(--ease-out);
+  font-family: var(--serif); font-size: 1.0625rem; line-height: 28px;
+  color: var(--ink);
 }
-.opt:hover:not(:disabled) { border-color: var(--ink); }
-.opt:active:not(:disabled) { transform: scale(0.985); }
 .opt:disabled { cursor: default; }
+.opt:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 0; }
 .opt-key {
-  display: grid; place-items: center;
-  width: 28px; height: 28px; flex: none;
-  border-radius: 7px;
-  background: var(--tint-2);
-  font-family: var(--mono); font-size: 0.82rem; font-weight: 700;
-  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+  position: relative; flex: none; display: inline-grid; place-items: center;
+  width: 24px; height: 24px; margin: 2px 0 0 2px;
+  border: 1.25px solid var(--ink); border-radius: 50%;
+  font: 700 12.5px/1 var(--font);
+  transition: background-color 140ms var(--ease-out), transform 120ms var(--ease-out);
 }
-.opt-mark { margin-left: auto; width: 20px; height: 20px; flex: none; }
-.opt.is-right { background: var(--right-bg); border-color: var(--right); }
-.opt.is-right .opt-key { background: var(--right); color: var(--on-status); }
-.opt.is-right .opt-mark { color: var(--right); }
-.opt.is-wrong { background: var(--wrong-bg); border-color: var(--wrong); }
-.opt.is-wrong .opt-key { background: var(--wrong); color: var(--on-status); }
-.opt.is-wrong .opt-mark { color: var(--wrong); }
-.opt.is-dim { opacity: 0.6; }
+.opt-text { min-width: 0; text-underline-offset: 4px; }
+.opt:hover:not(:disabled) .opt-key { background: var(--tint-2); }
+.opt:hover:not(:disabled) .opt-text { text-decoration: underline; text-decoration-color: var(--line-strong); }
+.opt:active:not(:disabled) .opt-key { transform: scale(0.92); }
+.opt.is-dim { color: var(--ink-3); }
+.opt.is-dim .opt-key { border-color: var(--ink-3); }
+.opt.is-wrong .opt-text { text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: var(--pen); }
+.opt-loop { position: absolute; left: -11px; top: -9px; width: 46px; height: 40px; max-width: none; overflow: visible; color: var(--pen); pointer-events: none; }
+.opt-tick { flex: none; align-self: center; width: 30px; height: 25px; margin-left: 2px; overflow: visible; color: var(--pen); }
+.opt-loop path, .opt-tick path { stroke-dasharray: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .opt-loop path { animation: pen-draw 460ms var(--ease-out) 60ms both; }
+  .opt-tick path { animation: pen-draw 320ms var(--ease-out) 460ms both; }
+  .opt.is-wrong .opt-text { animation: pen-strike 260ms var(--ease-out) both; }
+}
+@keyframes pen-strike { from { text-decoration-color: transparent; } to { text-decoration-color: var(--pen); } }
+/* The reason: an inline pencil note under the options; a red handwritten note in the margin on wide screens */
 .feedback {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-size: 0.97rem; line-height: 1.45;
+  margin-top: 10px; padding-left: 28px;
+  font-family: var(--serif); font-style: italic; font-size: 1rem; line-height: 1.5;
+  color: var(--ink-3);
 }
-.feedback strong { display: block; margin-bottom: 2px; }
-.feedback.is-right { background: var(--right-bg); color: var(--right-ink); }
-.feedback.is-wrong { background: var(--wrong-bg); color: var(--wrong-ink); }
+.feedback strong { font-style: normal; font-weight: 600; color: var(--pen); }
 @media (prefers-reduced-motion: no-preference) {
   .feedback { animation: fade-up 240ms var(--ease-out) both; }
 }
-.quiz-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+@media (min-width: 1280px) {
+  .quiz-item { display: grid; grid-template-columns: minmax(0, 1fr) 160px; column-gap: 24px; align-items: start; }
+  .quiz-item > .quiz-q, .quiz-item > .opts { grid-column: 1; }
+  .quiz-item > .feedback {
+    grid-column: 2; grid-row: 1 / span 2;
+    margin: 2px 0 0; padding: 0;
+    font: 600 1.375rem/1.1 var(--hand); color: var(--pen);
+    rotate: -2deg;
+  }
+  .quiz-item > .feedback strong { display: block; margin-bottom: 4px; font-weight: 700; }
+}
+.quiz-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 
-.score { text-align: center; padding: 12px 0 4px; }
-.score-num { font-size: clamp(3rem, 2rem + 4vw, 4.2rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
-.score-label { margin-top: 8px; font-weight: 600; }
-.score-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
-.score-dots i { width: 28px; height: 6px; border-radius: 3px; background: var(--wrong); }
-.score-dots i.right { background: var(--right); }
-.score-note { margin: 16px auto 0; max-width: 28rem; color: var(--ink-2); font-size: 0.95rem; }
+/* Answer key: a tear-off strip under a dashed cut line; it fills in as the visitor answers */
+.quiz-key {
+  position: relative; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px;
+  margin-top: 28px; padding-top: 14px; border-top: 1.5px dashed var(--ink-3);
+  font-size: 0.94rem; line-height: 1.6;
+}
+.quiz-key-cut { position: absolute; left: 14px; top: -10px; width: 28px; height: 18px; padding: 0 4px; box-sizing: content-box; background: var(--surface); color: var(--ink-3); }
+.quiz-key-label { margin-right: 2px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--right); }
+.quiz-key i { font-style: normal; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink-3); }
+.quiz-key i.now { color: var(--ink); }
+.quiz-key i.right { color: var(--right); }
+.quiz-key i.wrong { color: var(--pen); }
+.key-blank { display: inline-block; width: 0.8em; height: 1em; vertical-align: -0.15em; border-bottom: 1.5px solid currentColor; }
+
+/* Score: the mark circled in red pen, like a teacher's mark on the sheet */
+.score { text-align: center; padding: 16px 0 4px; }
+.score-mark { position: relative; display: inline-grid; place-items: center; width: 168px; height: 108px; }
+.score-num { position: relative; font: 700 4.25rem/1 var(--hand); color: var(--pen); font-variant-numeric: tabular-nums; }
+.score-loop { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--pen); pointer-events: none; }
+.score-loop path { stroke-dasharray: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .score-loop path { animation: pen-draw 600ms var(--ease-out) 120ms both; }
+}
+.score-label { margin-top: 10px; font-family: var(--serif); font-size: 1.0625rem; font-weight: 600; }
 .score .quiz-actions { justify-content: center; margin-top: 22px; }
 .score .btn { white-space: normal; text-align: center; }
 .quiz-error { display: grid; place-content: center; text-align: center; min-height: 370px; gap: 8px; color: var(--ink-2); }
@@ -918,9 +954,6 @@ a:hover { text-decoration-thickness: 2px; }
   --backdrop: rgba(4, 6, 12, 0.72);
   --confetti: #F2E14A, #ECEDE6, #5FCB8F, #F28C7C, #8FB0FF;
 }
-/* Panels on the demo band need an edge in dark; inset shadow and border colour only, so no layout change. */
-:root[data-theme="dark"] .quiz-panel { box-shadow: inset 0 0 0 1px var(--line-strong); }
-:root[data-theme="dark"] .demo textarea:not([aria-invalid="true"]) { border-color: var(--line-strong); }
 :root[data-theme="dark"] .toast { box-shadow: inset 0 0 0 1px var(--line-strong), 0 8px 28px rgba(0, 0, 0, 0.45); }
 :root[data-theme="dark"] .offline-bar:not(:empty) { box-shadow: inset 0 0 0 1px var(--line-strong), 0 6px 20px rgba(0, 0, 0, 0.45); }
 
