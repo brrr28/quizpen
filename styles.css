@@ -792,7 +792,7 @@ a:hover { text-decoration-thickness: 2px; }
 @media (min-width: 980px) { .proof { padding: 0 0 112px; } }
 .proof-grid { display: grid; gap: 32px; }
 @media (min-width: 980px) {
-  .proof-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 64px; row-gap: 48px; align-items: start; }
+  .proof-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 64px; row-gap: 40px; align-items: start; }
   .proof-grid > h2 { grid-row: 1 / span 2; }
   .facts, .proof-foot { grid-column: 2; }
 }
@@ -805,8 +805,8 @@ a:hover { text-decoration-thickness: 2px; }
   text-decoration: underline 2px var(--pen); text-underline-offset: 0.22em; text-decoration-skip-ink: none;
 }
 @media (min-width: 640px) { .fact strong { font-size: 1.625rem; } }
-.fact sup { margin-left: 2px; font-family: var(--font); font-size: 0.75rem; font-weight: 700; line-height: 0; }
-.fact sup a { padding: 2px 3px; color: var(--ink); text-decoration: none; }
+.fact sup { margin-left: 1px; font-family: var(--font); font-size: 0.8125rem; font-weight: 700; line-height: 0; }
+.fact sup a { padding: 2px; color: var(--ink); text-decoration: none; }
 .fact sup a:hover { text-decoration: underline; text-underline-offset: 2px; }
 .proof-foot { display: grid; gap: 28px; max-width: 38rem; }
 .counter-lg { margin-top: 0; font-size: 1.1rem; }
@@ -825,11 +825,13 @@ a:hover { text-decoration-thickness: 2px; }
 @media (min-width: 980px) { .faq { padding: 0 0 112px; } }
 .faq-grid { display: grid; gap: 28px; }
 @media (min-width: 980px) { .faq-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; align-items: start; } }
-.faq-list { display: grid; counter-reset: faq; }
+/* --faq-n: the width of the "Q1." column; the answer starts under the question text */
+.faq-list { --faq-n: 30px; --faq-gap: 8px; display: grid; counter-reset: faq; }
+@media (min-width: 640px) { .faq-list { --faq-n: 2.25rem; --faq-gap: 10px; } }
 .faq details { counter-increment: faq; border-bottom: 1px solid var(--rule); }
 .faq details:first-child { border-top: 1px solid var(--rule); }
 .faq summary {
-  list-style: none; display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 20px; column-gap: 10px; align-items: baseline;
+  list-style: none; display: grid; grid-template-columns: var(--faq-n) minmax(0, 1fr) 20px; column-gap: var(--faq-gap); align-items: baseline;
   padding: 18px 0; cursor: pointer;
   font-family: var(--serif); font-size: 1.125rem; line-height: 1.45; font-weight: 600; color: var(--ink);
 }
@@ -847,7 +849,7 @@ a:hover { text-decoration-thickness: 2px; }
 .faq-pm-v { transform-box: view-box; transform-origin: 12px 12px; transition: transform 200ms var(--ease-out); }
 .faq details[open] .faq-pm-v { transform: scaleY(0); }
 .faq details p {
-  max-width: 44rem; padding: 0 30px 22px calc(2.25rem + 10px);
+  max-width: 44rem; padding: 0 calc(20px + var(--faq-gap)) 22px calc(var(--faq-n) + var(--faq-gap));
   font-family: var(--serif); font-size: 1.0625rem; line-height: 1.65; color: var(--ink-2);
 }
 
