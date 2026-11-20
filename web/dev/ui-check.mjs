@@ -14,10 +14,10 @@ const REPO = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const SHOTS = resolve(REPO, 'shots');
 mkdirSync(SHOTS, { recursive: true });
 const SAMPLES = JSON.parse(readFileSync(resolve(REPO, 'web/data/samples.json'), 'utf8')).samples;
-// Page colours: the landing is on the worksheet paper (#FBF8F0 / #22252B); the quiz player (web/play) is not
-// restyled yet and keeps the old ones (#F6F6F2 / #0E1220).
+// Page colours: the landing is on the worksheet paper (#FBF8F0 / #22252B). The quiz player (web/play) is the
+// same printed sheet for students since the step 3 restyle, so it paints the same paper in both themes.
 const BG = { light: 'rgb(251, 248, 240)', dark: 'rgb(34, 37, 43)' };
-const PLAYER_BG = { light: 'rgb(246, 246, 242)', dark: 'rgb(14, 18, 32)' };
+const PLAYER_BG = { light: 'rgb(251, 248, 240)', dark: 'rgb(34, 37, 43)' };
 
 const results = [];
 const details = {};
