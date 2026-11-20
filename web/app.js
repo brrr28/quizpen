@@ -613,11 +613,17 @@
   function renderChips() {
     var focused = document.activeElement && document.activeElement.closest ? document.activeElement.closest('.chip') : null;
     var focusId = focused ? focused.getAttribute('data-sample') : null;
+    // A table-of-contents row: "Biology" in small caps, then the topic; the label is split at its first ": ".
+    var split = function (str) { var i = str.indexOf(': '); return i < 0 ? ['', str] : [str.slice(0, i), str.slice(i + 2)]; };
+    var upper = function (str) { return str.charAt(0).toUpperCase() + str.slice(1); };
     chipsEl.innerHTML = sampleOrder.map(function (id) {
       var s = samples[id], label = s.label || {};
+      var cur = split(label[lang] || label.en || id), en = split(label.en || id), uk = split(label.uk || label.en || id);
       var tag = s.lang ? '<span class="chip-tag" aria-hidden="true">' + esc(s.lang.toUpperCase()) + '</span>' : '';
       return '<button type="button" class="chip" data-sample="' + esc(id) + '" aria-pressed="' + (id === activeSample) + '">' +
-        '<span data-rsv="' + esc((label.en || id) + '\n' + (label.uk || label.en || id)) + '">' + esc(label[lang] || label.en || id) + '</span>' + tag + '</button>';
+        '<span class="chip-subj" data-rsv="' + esc(en[0] + '\n' + uk[0]) + '">' + esc(cur[0]) + '</span>' +
+        (cur[0] ? '<span class="sr-only">: </span>' : '') +
+        '<span class="chip-topic">' + esc(upper(cur[1])) + tag + '</span></button>';
     }).join('');
     if (focusId) { var c = chipsEl.querySelector('.chip[data-sample="' + focusId + '"]'); if (c) c.focus({ preventScroll: true }); }
   }
@@ -829,13 +835,13 @@
   function renderEarly(v) {
     var prev = document.getElementById('ea-email'), typed = prev ? prev.value : '';
     var inner;
-    if (v.done) inner = '<p class="ea-done" tabindex="-1">' + icon('i-check') + '<span>' + esc(t('ea.done')) + '</span></p>';
-    else if (joined) inner = '<p class="ea-done">' + icon('i-check') + '<span>' + esc(t('ea.already')) + '</span></p>';
+    if (v.done) inner = '<p class="ea-done" tabindex="-1">' + penTick('ea-tick') + '<span>' + esc(t('ea.done')) + '</span></p>';
+    else if (joined) inner = '<p class="ea-done">' + penTick('ea-tick') + '<span>' + esc(t('ea.already')) + '</span></p>';
     else {
       inner = '<p class="ea-text">' + esc(t('ea.text')) + '</p><form class="ea-form" id="ea-form" novalidate>' +
         '<label for="ea-email" class="sr-only">' + esc(t('form.label')) + '</label><div class="join-row">' +
         '<input id="ea-email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="' + esc(t('form.placeholder')) + '" aria-describedby="ea-msg">' +
-        '<button type="submit" class="btn btn-accent btn-lg join-btn" id="ea-btn">' + labelSpan(['cta', 'form.sending'], 'btn-label') + '<span class="spinner" aria-hidden="true"></span></button></div>' +
+        '<button type="submit" class="btn btn-ink btn-lg join-btn" id="ea-btn">' + labelSpan(['cta', 'form.sending'], 'btn-label') + '<span class="spinner" aria-hidden="true"></span></button></div>' +
         '<p id="ea-msg" class="field-msg" aria-live="polite"></p></form>';
     }
     bodyEl.innerHTML = '<div class="ea"><p class="ea-title">' + esc(t('ea.title')) + '</p>' + inner +
@@ -865,7 +871,7 @@
     if (mode === 'own') renderView();
   }
   function renderBusy() {
-    bodyEl.innerHTML = '<div class="quiz-error demo-busy">' + icon('i-info') + '<p>' + esc(t('demo.busy')) + '</p>' +
+    bodyEl.innerHTML = '<div class="quiz-error demo-busy"><p>' + esc(t('demo.busy')) + '</p>' +
       '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-retry>' + icon('i-refresh') + labelSpan(['demo.retry'], 'btn-text') + '</button>' +
       '<button type="button" class="btn btn-ghost" data-open-samples>' + labelSpan(['demo.tabSamples'], 'btn-text') + '</button></div></div>';
   }
@@ -899,6 +905,15 @@
 
   var KEYS = ['A', 'B', 'C', 'D'];
   function icon(id, cls) { return '<svg class="icon ' + (cls || '') + '" aria-hidden="true"><use href="#' + id + '"/></svg>'; }
+  // Red pen marks drawn by hand (the hero's loop and tick paths); pathLength 1 lets CSS draw them in.
+  function penSvg(cls, box, width, inner) {
+    return '<svg class="' + cls + '" viewBox="' + box + '" fill="none" stroke="currentColor" stroke-width="' + width +
+      '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + inner + '</svg>';
+  }
+  function penTick(cls) { return penSvg(cls, '0 0 34 28', 3, '<path pathLength="1" d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/>'); }
+  var PEN_LOOP = penSvg('opt-loop', '0 0 46 40', 2.2, '<path pathLength="1" d="M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11"/>');
+  var SCORE_LOOP = penSvg('score-loop', '0 0 168 108', 2.5, '<path pathLength="1" d="M99 12 C51 5 13 24 16 54 C20 84 69 101 113 92 C150 84 162 57 146 34 C133 16 102 8 69 15 C55 18 44 23 38 30"/>');
+  var SCISSORS = penSvg('quiz-key-cut', '0 0 30 18', 1.5, '<circle cx="5.5" cy="4.5" r="3.5"/><circle cx="5.5" cy="13.5" r="3.5"/><path d="M8.5 6.5 L27 14"/><path d="M8.5 11.5 L27 4"/>');
 
   // The note sits under the quiz: where this quiz came from, said plainly.
   function noteHtml(s) {
@@ -908,38 +923,44 @@
       var parts = t('quiz.noteSample').split('{link}');
       body = esc(parts[0]) + '<button type="button" class="link-btn" data-open-own>' + esc(t('quiz.ownLink')) + '</button>' + esc(parts[1] || '');
     }
-    return '<p class="quiz-note">' + icon('i-info') + '<span>' + body + '</span></p>';
+    return '<p class="quiz-note">' + body + '</p>';
+  }
+
+  // The answer key: a tear-off strip that fills in as the visitor answers; it is also the progress
+  // (the checks count `.quiz-bars i` to know the number of questions).
+  function keyHtml(s) {
+    return '<div class="quiz-key quiz-bars" aria-hidden="true">' + SCISSORS + '<span class="quiz-key-label">' + esc(t('quiz.keyTitle')) + '</span>' +
+      s.quiz.questions.map(function (q, k) {
+        var p = s.picks[k], cls = p === undefined ? (k === s.i ? 'now' : '') : (p === q.answer ? 'right' : 'wrong');
+        return '<i' + (cls ? ' class="' + cls + '"' : '') + '>' + (k + 1) + '&nbsp;' + (p === undefined ? '<span class="key-blank"></span>' : KEYS[q.answer]) + '</i>';
+      }).join('') + '</div>';
   }
 
   function renderQuiz(focusSel) {
     var s = quizState, qs = s.quiz.questions, n = qs.length;
     var note = noteHtml(s);
-    var bars = qs.map(function (q, k) {
-      var p = s.picks[k];
-      return '<i class="' + (p === undefined ? (k === s.i ? 'now' : '') : (p === q.answer ? 'right' : 'wrong')) + '"></i>';
-    }).join('');
-    var head = '<div class="quiz-top"><p class="quiz-title">' + esc(s.quiz.title || '') + '</p>' +
-      (s.i < n ? '<p class="quiz-progress">' + esc(t('quiz.progress', { i: s.i + 1, n: n })) + '</p>' : '') + '</div><div class="quiz-bars" aria-hidden="true">' + bars + '</div>';
+    var head = '<p class="quiz-sheet" aria-hidden="true"><span>' + esc(t('sheet.name')) + '</span><i></i></p>' +
+      '<div class="quiz-top"><p class="quiz-title">' + esc(s.quiz.title || '') + '</p>' +
+      (s.i < n ? '<p class="quiz-progress">' + esc(t('quiz.progress', { i: s.i + 1, n: n })) + '</p>' : '') + '</div>';
 
-    if (s.i >= n) { bodyEl.innerHTML = head + renderScore() + note; bindScore(); ratchet(); focusIn(focusSel || '.score-num'); return; }
+    if (s.i >= n) { bodyEl.innerHTML = head + renderScore() + keyHtml(s) + note; bindScore(); ratchet(); focusIn(focusSel || '.score-num'); return; }
 
     var q = qs[s.i], pick = s.picks[s.i], answered = pick !== undefined;
+    // After the answer the right letter is circled and ticked in red pen, a wrong pick is struck out.
     var opts = q.options.map(function (o, k) {
-      var cls = 'opt', mark = '';
-      if (answered) {
-        if (k === q.answer) { cls += ' is-right'; mark = icon('i-check', 'opt-mark'); }
-        else if (k === pick) { cls += ' is-wrong'; mark = icon('i-x', 'opt-mark'); }
-        else cls += ' is-dim';
-      }
-      return '<li><button type="button" class="' + cls + '" data-k="' + k + '"' + (answered ? ' disabled' : '') + '><span class="opt-key">' + KEYS[k] + '</span><span>' + esc(o) + '</span>' + mark + '</button></li>';
+      var cls = 'opt', right = answered && k === q.answer;
+      if (answered) cls += right ? ' is-right' : (k === pick ? ' is-wrong' : ' is-dim');
+      return '<li><button type="button" class="' + cls + '" data-k="' + k + '"' + (answered ? ' disabled' : '') + '><span class="opt-key">' + KEYS[k] + (right ? PEN_LOOP : '') + '</span>' +
+        '<span class="opt-text">' + esc(o) + '</span>' + (right ? penTick('opt-tick') : '') + '</button></li>';
     }).join('');
-    var fb = '';
+    var fb = '', actions = '';
     if (answered) {
       var ok = pick === q.answer;
-      fb = '<div class="feedback ' + (ok ? 'is-right' : 'is-wrong') + '" role="status"><strong>' + esc(ok ? t('quiz.right') : t('quiz.wrong', { a: KEYS[q.answer] })) + '</strong>' + esc(q.explain || '') + '</div>' +
-        '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-next>' + esc(s.i === n - 1 ? t('quiz.finish') : t('quiz.next')) + icon('i-arrow') + '</button></div>';
+      fb = '<div class="feedback ' + (ok ? 'is-right' : 'is-wrong') + '" role="status"><strong>' + esc(ok ? t('quiz.right') : t('quiz.wrong', { a: KEYS[q.answer] })) + '</strong> ' + esc(q.explain || '') + '</div>';
+      actions = '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-next>' + esc(s.i === n - 1 ? t('quiz.finish') : t('quiz.next')) + icon('i-arrow') + '</button></div>';
     }
-    bodyEl.innerHTML = head + '<p class="quiz-q" tabindex="-1">' + esc(q.q) + '</p><ul class="opts">' + opts + '</ul>' + fb + note;
+    bodyEl.innerHTML = head + '<div class="quiz-item"><p class="quiz-q" tabindex="-1"><span class="quiz-num" aria-hidden="true">' + (s.i + 1) + '.</span>' + esc(q.q) + '</p>' +
+      '<ul class="opts">' + opts + '</ul>' + fb + '</div>' + actions + keyHtml(s) + note;
 
     bodyEl.querySelectorAll('.opt').forEach(function (b) {
       b.addEventListener('click', function (ev) {
@@ -961,10 +982,10 @@
     var s = quizState, qs = s.quiz.questions, n = qs.length;
     var right = qs.reduce(function (a, q, k) { return a + (s.picks[k] === q.answer ? 1 : 0); }, 0);
     var verdict = right === n ? t('quiz.perfect') : (right >= Math.ceil(n * 0.6) ? t('quiz.good') : t('quiz.low'));
-    var dots = qs.map(function (q, k) { return '<i class="' + (s.picks[k] === q.answer ? 'right' : '') + '"></i>'; }).join('');
-    return '<div class="score"><p class="score-num" tabindex="-1">' + right + '/' + n + '</p><p class="score-label">' + esc(verdict + ' ' + t('quiz.score', { s: right, n: n })) + '</p>' +
-      '<div class="score-dots" aria-hidden="true">' + dots + '</div>' +
-      '<div class="quiz-actions"><button type="button" class="btn btn-accent btn-lg" data-join>' + esc(t('quiz.cta')) + '</button>' +
+    // The mark circled in red pen, like a teacher's mark on the sheet.
+    return '<div class="score"><div class="score-mark">' + SCORE_LOOP + '<p class="score-num" tabindex="-1">' + right + '/' + n + '</p></div>' +
+      '<p class="score-label">' + esc(verdict + ' ' + t('quiz.score', { s: right, n: n })) + '</p>' +
+      '<div class="quiz-actions"><button type="button" class="btn btn-ink btn-lg" data-join>' + esc(t('quiz.cta')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-copy-quiz>' + icon('i-copy') + esc(t('quiz.copy')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-again>' + icon('i-refresh') + esc(t('quiz.again')) + '</button></div></div>';
   }
