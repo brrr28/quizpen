@@ -712,7 +712,8 @@
     c.width = W * dpr; c.height = H * dpr; ctx.scale(dpr, dpr);
     var r = originEl ? originEl.getBoundingClientRect() : { left: W / 2, top: H / 2, width: 0, height: 0 };
     var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
-    var colors = ['#F2E14A', '#161B2E', '#156B42', '#E8836B', '#7A9CF0'];
+    var colors = (getComputedStyle(document.documentElement).getPropertyValue('--confetti') || '').split(',').map(function (c) { return c.trim(); }).filter(Boolean);
+    if (!colors.length) colors = ['#F2E14A', '#161B2E', '#156B42', '#E8836B', '#7A9CF0'];
     var parts = [];
     for (var i = 0; i < 110; i++) {
       var a = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.1, sp = 5 + Math.random() * 7;
@@ -741,6 +742,7 @@
   }
 
   /* ---------- Init ---------- */
+  window.QP_I18N = I18N; // web/ui.js builds language-stable labels from both dictionaries
   document.querySelectorAll('.lang [data-lang]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
   applyI18n();
   updateLessonMeta();
