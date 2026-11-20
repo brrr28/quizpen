@@ -5,7 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quizpen: turn lesson text into a quiz in seconds</title>
   <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with an answer key and a one-line explanation for each question. Join the Quizpen waitlist for teachers.">
-  <meta name="theme-color" content="#F6F6F2">
+  <meta name="theme-color" content="#F6F6F2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1220" media="(prefers-color-scheme: dark)">
+  <script>
+    /* Theme before first paint: saved choice (qp_theme), else the system setting. Sync on purpose. */
+    (function (d) {
+      var t = null;
+      try { t = localStorage.getItem('qp_theme'); } catch (e) { /* storage blocked */ }
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.setAttribute('data-theme', t);
+      d.className += ' js';
+      var m = document.querySelectorAll('meta[name="theme-color"]');
+      for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#0E1220' : '#F6F6F2');
+    })(document.documentElement);
+  </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <!-- Open Graph / Twitter. Replace og.png with an absolute URL after deploy for best scraper support. -->
@@ -78,6 +91,7 @@
   <script src="analytics.js" data-surface="landing" defer></script>
   <!-- end of analytics -->
   <script src="app.js" defer></script>
+  <script src="ui.js" defer></script>
   <!-- Student play mode (web/play/): preview as student, share with class -->
   <link rel="stylesheet" href="play/share.css">
   <script src="play/codec.js" defer></script>
@@ -120,6 +134,7 @@
         <button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button>
         <button type="button" data-lang="uk" aria-pressed="false" aria-label="Українська">УКР</button>
       </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark theme"></button>
       <button type="button" class="btn btn-ink btn-sm header-cta" data-scroll-join><span data-i18n="cta">Join Waitlist</span></button>
     </div>
   </header>
