@@ -58,7 +58,10 @@
       'demo.sub': 'Paste a paragraph from your lesson and get a quiz in seconds. No signup, and we don\'t store your text.',
       'demo.label': 'Lesson text',
       'demo.placeholder': 'Paste 200 to 3000 characters: a textbook page, your notes or an article.',
-      'demo.samples': 'No text at hand? Try a sample:',
+      'demo.tabSamples': 'Ready examples', 'demo.tabOwn': 'Your text',
+      'demo.langNote': 'The quiz comes out in the language of the text.',
+      'demo.show': 'Show the quiz',
+      'demo.stepsSample': ['Opening the example', 'Loading the ready quiz'],
       'demo.need': { one: '{n} more character needed', other: '{n} more characters needed' },
       'demo.ready': 'Ready to generate',
       'demo.generate': 'Generate quiz',
@@ -66,17 +69,21 @@
       'demo.working': 'Writing your quiz. This takes a few seconds.',
       'demo.too_short': 'Add a bit more text: the demo needs at least 200 characters.',
       'demo.too_long': 'That\'s over 3000 characters. Trim it to one or two paragraphs.',
-      'demo.fallback': 'The live demo is busy right now. Here is a ready-made quiz for this text.',
-      'demo.fallbackOwn': 'The live demo is busy right now. Here is a ready-made quiz on photosynthesis instead.',
-      'demo.failed': 'The live demo is busy right now. Please try again in a minute.',
-      'sample.photosynthesis': 'Biology: photosynthesis', 'sample.printing': 'History: the printing press', 'sample.magi': 'Literature: The Gift of the Magi',
+      'demo.busy': 'The live demo is busy right now. Try again in a minute or open a ready example.',
+      'demo.retry': 'Try again',
+      'ea.title': 'Quizzes from your own text open in early access',
+      'ea.text': 'Leave your email and we\'ll send you access first.',
+      'ea.already': 'You\'re already on the list. We\'ll email you first.',
+      'ea.done': 'Done. We\'ll email you as soon as your own-text quizzes are ready.',
+      'ea.meanwhile': 'Meanwhile, open a ready example',
       'quiz.region': 'Your quiz', 'quiz.emptyTitle': 'Your quiz will appear here',
       'quiz.emptySub': 'Five questions, four options each: one correct answer, three plausible wrong ones, and a one-line reason for the correct one.',
       'quiz.progress': 'Question {i} of {n}', 'quiz.right': 'Correct.', 'quiz.wrong': 'Not quite. The answer is {a}.',
       'quiz.next': 'Next question', 'quiz.finish': 'See my score', 'quiz.score': '{s} of {n} correct',
       'quiz.perfect': 'Full marks.', 'quiz.good': 'Nice work.', 'quiz.low': 'A good start.',
-      'quiz.noteLive': 'Every question, option and explanation was written from the text you pasted.',
-      'quiz.noteSample': 'This sample quiz was written in advance from the sample text.',
+      'quiz.noteLive': 'Claude just wrote this quiz from your text.',
+      'quiz.noteSample': 'Claude wrote this quiz from this text in advance. Want one from your own lesson? Open {link}.',
+      'quiz.ownLink': '“Your text”',
       'quiz.again': 'Try another text', 'quiz.cta': 'Want this for your class? Join the waitlist',
       'quiz.copy': 'Copy quiz', 'quiz.copied': 'Quiz copied as plain text: questions, options and answer key',
       'quiz.copyTitle': 'Quiz', 'quiz.keyTitle': 'Answer key',
@@ -147,7 +154,10 @@
       'demo.sub': 'Вставте абзац із уроку й отримайте тест за лічені секунди. Реєстрація не потрібна, і ваш текст ми не зберігаємо.',
       'demo.label': 'Текст уроку',
       'demo.placeholder': 'Вставте від 200 до 3000 символів: сторінку підручника, свій конспект або статтю.',
-      'demo.samples': 'Немає тексту під рукою? Візьміть приклад:',
+      'demo.tabSamples': 'Готові приклади', 'demo.tabOwn': 'Ваш текст',
+      'demo.langNote': 'Тест виходить мовою тексту.',
+      'demo.show': 'Показати тест',
+      'demo.stepsSample': ['Відкриваємо приклад', 'Завантажуємо готовий тест'],
       'demo.need': { one: 'ще {n} символ', few: 'ще {n} символи', many: 'ще {n} символів', other: 'ще {n} символу' },
       'demo.ready': 'Можна створювати',
       'demo.generate': 'Створити тест',
@@ -155,17 +165,21 @@
       'demo.working': 'Складаємо тест, зачекайте кілька секунд.',
       'demo.too_short': 'Додайте ще тексту: для демо потрібно щонайменше 200 символів.',
       'demo.too_long': 'Це понад 3000 символів. Скоротіть до одного-двох абзаців.',
-      'demo.fallback': 'Демо зараз перевантажене. Ось готовий тест до цього тексту.',
-      'demo.fallbackOwn': 'Демо зараз перевантажене. Ось натомість готовий тест про фотосинтез.',
-      'demo.failed': 'Демо зараз перевантажене. Спробуйте ще раз за хвилину.',
-      'sample.photosynthesis': 'Біологія: фотосинтез', 'sample.printing': 'Історія: друкарський верстат', 'sample.magi': 'Література: «Дари волхвів»',
+      'demo.busy': 'Живе демо зараз перевантажене. Спробуйте за хвилину або відкрийте готовий приклад.',
+      'demo.retry': 'Спробувати ще раз',
+      'ea.title': 'Генерація з вашого тексту відкривається в ранньому доступі',
+      'ea.text': 'Залиште email, і ми надішлемо доступ першим.',
+      'ea.already': 'Ви вже в списку. Напишемо вам першим.',
+      'ea.done': 'Готово. Напишемо вам, щойно тести з вашого тексту запрацюють.',
+      'ea.meanwhile': 'Поки що відкрийте готовий приклад',
       'quiz.region': 'Ваш тест', 'quiz.emptyTitle': 'Тут з\'явиться ваш тест',
       'quiz.emptySub': 'П\'ять питань, по чотири варіанти: одна правильна відповідь, три правдоподібні неправильні й пояснення в одне речення, чому правильна саме вона.',
       'quiz.progress': 'Питання {i} з {n}', 'quiz.right': 'Правильно.', 'quiz.wrong': 'Не зовсім. Правильна відповідь: {a}.',
       'quiz.next': 'Наступне питання', 'quiz.finish': 'Мій результат', 'quiz.score': '{s} з {n} правильно',
       'quiz.perfect': 'Усе правильно.', 'quiz.good': 'Гарний результат.', 'quiz.low': 'Непоганий початок.',
-      'quiz.noteLive': 'Усі питання, варіанти й пояснення складено з тексту, який ви вставили.',
-      'quiz.noteSample': 'Цей тест підготовлено заздалегідь за текстом прикладу.',
+      'quiz.noteLive': 'Claude щойно склав цей тест із вашого тексту.',
+      'quiz.noteSample': 'Цей тест Claude склав із цього тексту заздалегідь. Хочете тест зі свого уроку? Відкрийте {link}.',
+      'quiz.ownLink': '«Ваш текст»',
       'quiz.again': 'Спробувати інший текст', 'quiz.cta': 'Хочете такий тест для свого класу? Приєднуйтеся до списку',
       'quiz.copy': 'Копіювати тест', 'quiz.copied': 'Тест скопійовано як текст: питання, варіанти й відповіді',
       'quiz.copyTitle': 'Тест', 'quiz.keyTitle': 'Відповіді',
@@ -241,16 +255,14 @@
   function setLang(next) {
     if (next === lang) return;
     track('lang_switched', { from: lang, to: next }); // analytics
-    var prevSampleText = activeSample && samples ? sampleText(activeSample) : null;
     lang = next;
     store.set('qp_lang', lang);
     applyI18n();
     renderCounters();
     if (joined) renderThanks(joined, false);
     updateFinalCta();
-    if (activeSample && lessonEl.value === prevSampleText) lessonEl.value = sampleText(activeSample);
     updateLessonMeta();
-    if (quizState) renderQuiz();
+    demoLangChanged();
   }
 
   /* ---------- API ---------- */
@@ -339,54 +351,64 @@
   var attribution = readAttribution();
   var EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[^\s@.]{2,}$/;
 
-  function setJoinError(code) {
-    joinMsg.className = 'field-msg' + (code ? ' is-error' : '');
-    joinMsg.textContent = code ? t(code === 'empty' ? 'err.empty' : 'err.' + (I18N.en['err.' + code] ? code : 'server')) : '';
-    if (code) emailEl.setAttribute('aria-invalid', 'true'); else emailEl.removeAttribute('aria-invalid');
+  // ctx = { emailEl, btn, msgEl, hpEl?, via?, quiet?, onOk? }: the hero form or the inline early-access form.
+  var heroJoin = { emailEl: emailEl, btn: joinBtn, msgEl: joinMsg, hpEl: hpEl };
+  function setJoinError(code, ctx) {
+    ctx = ctx || heroJoin;
+    ctx.msgEl.className = 'field-msg' + (code ? ' is-error' : '');
+    ctx.msgEl.textContent = code ? t(code === 'empty' ? 'err.empty' : 'err.' + (I18N.en['err.' + code] ? code : 'server')) : '';
+    if (code) ctx.emailEl.setAttribute('aria-invalid', 'true'); else ctx.emailEl.removeAttribute('aria-invalid');
   }
   function validEmail(v) { return v.length <= 254 && EMAIL_RE.test(v); }
+  function bindEmailField(ctx) {
+    ctx.emailEl.addEventListener('blur', function () {
+      var v = ctx.emailEl.value.trim();
+      if (v && !validEmail(v)) setJoinError('invalid_email', ctx);
+    });
+    ctx.emailEl.addEventListener('input', function () { if (ctx.emailEl.hasAttribute('aria-invalid')) setJoinError(null, ctx); });
+  }
+  bindEmailField(heroJoin);
 
-  emailEl.addEventListener('blur', function () {
-    var v = emailEl.value.trim();
-    if (v && !validEmail(v)) setJoinError('invalid_email');
-  });
-  emailEl.addEventListener('input', function () { if (emailEl.hasAttribute('aria-invalid')) setJoinError(null); });
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+  function joinWith(ctx) {
     if (busyJoin) return;
-    var email = emailEl.value.trim();
-    if (!email) { setJoinError('empty'); emailEl.focus(); return; }
-    if (!validEmail(email)) { setJoinError('invalid_email'); emailEl.focus(); return; }
-    setJoinError(null);
+    var email = ctx.emailEl.value.trim();
+    if (!email) { setJoinError('empty', ctx); ctx.emailEl.focus(); return; }
+    if (!validEmail(email)) { setJoinError('invalid_email', ctx); ctx.emailEl.focus(); return; }
+    setJoinError(null, ctx);
     busyJoin = true;
-    track('signup_submitted', { lang: lang, has_ref: !!attribution.ref }); // analytics
-    joinBtn.disabled = true; joinBtn.classList.add('is-busy'); joinBtn.setAttribute('aria-busy', 'true');
-    joinBtn.querySelector('.btn-label').textContent = t('form.sending');
-    apiPost({ action: 'join', email: email, lang: lang, ref: attribution.ref, utm: attribution.utm, hp: hpEl.value, cid: getCid() }, 15000)
+    var sp = { lang: lang, has_ref: !!attribution.ref };
+    if (ctx.via) sp.via = ctx.via;
+    track('signup_submitted', sp); // analytics
+    var btn = ctx.btn;
+    btn.disabled = true; btn.classList.add('is-busy'); btn.setAttribute('aria-busy', 'true');
+    btn.querySelector('.btn-label').textContent = t('form.sending');
+    apiPost({ action: 'join', email: email, lang: lang, ref: attribution.ref, utm: attribution.utm, hp: ctx.hpEl ? ctx.hpEl.value : '', cid: getCid() }, 15000)
       .then(function (r) {
         if (r.ok) {
           joined = { position: r.position, total: r.total, refCode: r.refCode, referrals: r.referrals || 0, already: !!r.already, email: email, ts: Date.now() };
           track('signup_succeeded', { already: !!r.already, has_ref: !!attribution.ref, demo_used: demoT0 > 0 }); // analytics
           store.set('qp_joined', joined);
           if (typeof r.total === 'number') { total = r.total; renderCounters(); }
-          renderThanks(joined, true);
-        } else setJoinError(r.error || 'server');
+          renderThanks(joined, true, ctx.quiet);
+          if (ctx.onOk) ctx.onOk(); else refreshEarly();
+        } else setJoinError(r.error || 'server', ctx);
       })
-      .catch(function (err) { setJoinError(err.code === 'offline' ? 'offline' : 'server'); })
+      .catch(function (err) { setJoinError(err.code === 'offline' ? 'offline' : 'server', ctx); })
       .then(function () {
         busyJoin = false;
-        joinBtn.disabled = false; joinBtn.classList.remove('is-busy'); joinBtn.removeAttribute('aria-busy');
-        joinBtn.querySelector('.btn-label').textContent = t('cta');
+        btn.disabled = false; btn.classList.remove('is-busy'); btn.removeAttribute('aria-busy');
+        btn.querySelector('.btn-label').textContent = t('cta');
       });
-  });
+  }
+  form.addEventListener('submit', function (e) { e.preventDefault(); joinWith(heroJoin); });
 
   function refLink(code) {
     var base = location.origin && location.origin !== 'null' ? location.origin + location.pathname : location.href.split(/[?#]/)[0];
     return base + '?ref=' + encodeURIComponent(code || '');
   }
 
-  function renderThanks(j, isNew) {
+  // quiet: a signup from the demo panel updates the hero card without moving focus or confetti there.
+  function renderThanks(j, isNew, quiet) {
     var link = refLink(j.refCode);
     form.hidden = true;
     thanksEl.hidden = false;
@@ -400,7 +422,7 @@
     document.getElementById('share-wa').href = 'https://wa.me/?text=' + encodeURIComponent(msg + ' ' + link);
     document.getElementById('share-mail').href = 'mailto:?subject=' + encodeURIComponent(t('share.subject')) + '&body=' + encodeURIComponent(msg + '\n\n' + link);
     updateFinalCta();
-    if (isNew) {
+    if (isNew && !quiet) {
       thanksEl.classList.remove('is-new'); void thanksEl.offsetWidth; thanksEl.classList.add('is-new');
       document.getElementById('thanks-title').focus({ preventScroll: true });
       confetti(document.querySelector('.thanks-badge'));
@@ -461,6 +483,7 @@
     form.hidden = false;
     emailEl.value = '';
     updateFinalCta();
+    refreshEarly();
     emailEl.focus();
   });
 
@@ -489,39 +512,131 @@
   }
   document.querySelectorAll('[data-scroll-join]').forEach(function (b) { b.addEventListener('click', scrollToJoin); });
 
-  /* ---------- Demo ---------- */
+  /* ---------- Demo: two modes, ready examples and the visitor's own text ---------- */
   var demoForm = document.getElementById('demo-form');
   var lessonEl = document.getElementById('lesson');
   var genBtn = document.getElementById('gen-btn');
+  var showBtn = document.getElementById('show-btn');
   var lessonErr = document.getElementById('lesson-error');
+  var chipsEl = document.getElementById('sample-chips');
+  var sampleTextEl = document.getElementById('sample-text');
+  var tabsEl = document.getElementById('demo-tabs');
+  var tabEls = { samples: document.getElementById('tab-samples'), own: document.getElementById('tab-own') };
+  var paneEls = { samples: document.getElementById('pane-samples'), own: document.getElementById('pane-own') };
+  var MODES = ['samples', 'own'];
   var panel = document.getElementById('quiz-panel');
   var emptyEl = document.getElementById('quiz-empty');
   var bodyEl = document.getElementById('quiz-body');
   var statusEl = document.getElementById('quiz-status');
-  var samples = null, activeSample = null, quizState = null, busyQuiz = false;
+  var samples = null, sampleOrder = [], activeSample = null, quizState = null, busyQuiz = false;
+  // What the panel shows in each mode: null (empty) | {kind:'quiz', state} | {kind:'early'} | {kind:'busy'} | {kind:'loading'}.
+  var mode = 'samples', views = { samples: null, own: null };
 
   var samplesReady = fetch('data/samples.json').then(function (r) { return r.json(); }).then(function (d) {
     samples = {};
-    (d.samples || []).forEach(function (s) { samples[s.id] = s; });
-  }).catch(function () { samples = null; document.getElementById('samples').hidden = true; });
+    (d.samples || []).forEach(function (s) { samples[s.id] = s; sampleOrder.push(s.id); });
+    if (!sampleOrder.length) throw new Error('no samples');
+    activeSample = sampleOrder[0]; // preselected silently, so no sample_viewed
+    renderChips();
+    renderSampleText();
+  }).catch(function () {
+    // Without examples only the own-text mode is left.
+    samples = null;
+    tabsEl.hidden = true;
+    setMode('own');
+    paneEls.samples.hidden = true;
+  });
 
-  function sampleText(id) { return samples && samples[id] ? samples[id].text[lang] || samples[id].text.en : ''; }
+  function sampleLang(id) { return samples[id].lang || lang; }
+  function sampleText(id) { var s = samples[id]; return s.text[sampleLang(id)] || s.text.en || ''; }
+  function sampleQuiz(id) { var s = samples[id]; return s.quiz[sampleLang(id)] || s.quiz.en; }
 
-  function setChips() {
-    document.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c.getAttribute('data-sample') === activeSample)); });
+  function renderChips() {
+    var focused = document.activeElement && document.activeElement.closest ? document.activeElement.closest('.chip') : null;
+    var focusId = focused ? focused.getAttribute('data-sample') : null;
+    chipsEl.innerHTML = sampleOrder.map(function (id) {
+      var s = samples[id], label = s.label || {};
+      var tag = s.lang ? '<span class="chip-tag" aria-hidden="true">' + esc(s.lang.toUpperCase()) + '</span>' : '';
+      return '<button type="button" class="chip" data-sample="' + esc(id) + '" aria-pressed="' + (id === activeSample) + '">' +
+        '<span data-rsv="' + esc((label.en || id) + '\n' + (label.uk || label.en || id)) + '">' + esc(label[lang] || label.en || id) + '</span>' + tag + '</button>';
+    }).join('');
+    if (focusId) { var c = chipsEl.querySelector('.chip[data-sample="' + focusId + '"]'); if (c) c.focus({ preventScroll: true }); }
   }
-  document.querySelectorAll('.chip').forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      samplesReady.then(function () {
-        if (!samples) return;
-        activeSample = chip.getAttribute('data-sample');
-        lessonEl.value = sampleText(activeSample);
-        setChips();
-        setLessonError(null);
-        updateLessonMeta();
-      });
+  function renderSampleText() {
+    if (!samples || !activeSample) return;
+    sampleTextEl.lang = sampleLang(activeSample);
+    sampleTextEl.textContent = sampleText(activeSample);
+    sampleTextEl.scrollTop = 0;
+  }
+  chipsEl.addEventListener('click', function (e) {
+    var chip = e.target.closest('.chip');
+    if (!chip || !samples) return;
+    var id = chip.getAttribute('data-sample');
+    if (id === activeSample) return;
+    activeSample = id;
+    chipsEl.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+    renderSampleText();
+    track('sample_viewed', { sample: id }); // analytics
+    // The panel belongs to the example next to it: another example clears it.
+    if (views.samples) { views.samples = null; if (mode === 'samples') renderView(); }
+  });
+
+  // Ready examples: the quiz was written in advance, so no API call; a short honest "opening" step only.
+  showBtn.addEventListener('click', function () {
+    samplesReady.then(function () {
+      if (!samples || !activeSample) return;
+      var id = activeSample, t0 = Date.now();
+      demoT0 = t0; track('demo_started', { sample: id, lang: sampleLang(id) }); // analytics
+      var loading = { kind: 'loading', key: 'demo.stepsSample', every: 150, finish: true, t0: t0 };
+      views.samples = loading;
+      var done = function () {
+        if (views.samples === loading) startQuiz('samples', { quiz: sampleQuiz(id), i: 0, picks: [], source: 'sample', sample: id, t0: t0 }, true);
+      };
+      if (mode === 'samples') scrollToPanel();
+      if (REDUCED) { done(); return; }
+      if (mode === 'samples') renderView();
+      setTimeout(done, 450);
     });
   });
+
+  /* Tabs: roving tabindex, arrows/Home/End with automatic activation. */
+  function setMode(m) {
+    if (m === mode) return;
+    mode = m;
+    MODES.forEach(function (k) {
+      var on = k === m, tab = tabEls[k], pane = paneEls[k];
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      pane.classList.toggle('is-off', !on);
+      if (on) { pane.removeAttribute('inert'); pane.removeAttribute('aria-hidden'); }
+      else { pane.setAttribute('inert', ''); pane.setAttribute('aria-hidden', 'true'); }
+      if (on && !REDUCED) { pane.classList.remove('is-in'); void pane.offsetWidth; pane.classList.add('is-in'); }
+    });
+    renderView();
+  }
+  MODES.forEach(function (k) { tabEls[k].addEventListener('click', function () { setMode(k); }); });
+  tabsEl.addEventListener('keydown', function (e) {
+    var i = MODES.indexOf(mode), n = MODES.length, next = null;
+    if (e.key === 'ArrowRight') next = MODES[(i + 1) % n];
+    else if (e.key === 'ArrowLeft') next = MODES[(i - 1 + n) % n];
+    else if (e.key === 'Home') next = MODES[0];
+    else if (e.key === 'End') next = MODES[n - 1];
+    if (!next) return;
+    e.preventDefault();
+    setMode(next);
+    tabEls[next].focus();
+  });
+  // Links inside the panel ("Your text", "Ready examples"): switch the mode and put focus where the work starts.
+  function openMode(m) {
+    setMode(m);
+    var target = m === 'own' ? lessonEl : (chipsEl.querySelector('.chip[aria-pressed="true"]') || tabEls.samples);
+    var narrow = window.innerWidth < 980;
+    if (narrow) tabsEl.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
+    target.focus({ preventScroll: narrow });
+  }
+  function scrollToPanel() {
+    if (window.innerWidth < 980) panel.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
+  }
 
   function updateLessonMeta() {
     var n = lessonEl.value.trim().length;
@@ -532,7 +647,6 @@
     else { need.textContent = t('demo.ready'); need.className = 'is-ok'; }
   }
   lessonEl.addEventListener('input', function () {
-    if (activeSample && lessonEl.value !== sampleText(activeSample)) { activeSample = null; setChips(); }
     if (lessonEl.hasAttribute('aria-invalid')) setLessonError(null);
     updateLessonMeta();
   });
@@ -547,27 +661,12 @@
         x.options.every(function (o) { return typeof o === 'string'; }) && Number.isInteger(x.answer) && x.answer >= 0 && x.answer <= 3;
     });
   }
+  // Length bucket for analytics: the text itself is never sent.
+  function charsBucket(n) { return n < 500 ? '200-499' : n < 1000 ? '500-999' : n < 2000 ? '1000-1999' : '2000-3000'; }
 
-  var stepTimer = null;
-  function showLoading() {
-    emptyEl.hidden = true; bodyEl.hidden = false;
-    panel.setAttribute('aria-busy', 'true');
-    var steps = raw('demo.steps');
-    bodyEl.innerHTML = '<div class="skel"><ul class="skel-steps">' + steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') +
-      '</ul><div class="skel-bar q"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div></div>';
-    var lis = bodyEl.querySelectorAll('.skel-steps li'), i = 0;
-    var tick = function () {
-      lis.forEach(function (li, k) { li.className = k < i ? 'is-done' : (k === i ? 'is-now' : ''); });
-      if (i < lis.length - 1) i++;
-    };
-    tick();
-    stepTimer = setInterval(tick, 1100);
-    statusEl.textContent = t('demo.working');
-  }
-  function stopLoading() { clearInterval(stepTimer); panel.setAttribute('aria-busy', 'false'); }
-
-  demoForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+  // Your text: a live call; "disabled" opens early access, any other failure says honestly that the demo is busy.
+  demoForm.addEventListener('submit', function (e) { e.preventDefault(); submitOwn(); });
+  function submitOwn() {
     if (busyQuiz) return;
     var text = lessonEl.value.trim();
     if (text.length < MIN_CHARS) { setLessonError('demo.too_short'); lessonEl.focus(); return; }
@@ -575,65 +674,185 @@
     setLessonError(null);
     busyQuiz = true;
     genBtn.disabled = true; genBtn.classList.add('is-busy'); genBtn.setAttribute('aria-busy', 'true');
-    showLoading();
-    if (window.innerWidth < 980) panel.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
-    var started = Date.now(), usedSample = activeSample, quizLang = lang;
-    demoT0 = started; track('demo_started', { sample: usedSample || 'custom', lang: quizLang }); // analytics
+    var started = Date.now(), quizLang = lang;
+    var loading = { kind: 'loading', key: 'demo.steps', every: 1100, t0: started };
+    views.own = loading;
+    if (mode === 'own') { renderView(); scrollToPanel(); statusEl.textContent = t('demo.working'); }
+    demoT0 = started; track('demo_started', { sample: 'custom', lang: quizLang }); // analytics
     var minWait = function (v) { var left = 900 - (Date.now() - started); return left > 0 ? new Promise(function (r) { setTimeout(function () { r(v); }, left); }) : v; };
 
-    apiPost({ action: 'quiz', text: text, lang: quizLang, count: 5, cid: getCid(), sample: usedSample || 'custom' }, 30000)
+    apiPost({ action: 'quiz', text: text, lang: quizLang, count: 5, cid: getCid(), sample: 'custom' }, 30000)
       .then(function (r) { return r; }, function (err) { return { ok: false, error: err.code }; })
       .then(minWait)
       .then(function (r) {
-        if (r.ok && r.quiz && validQuiz(r.quiz)) return startQuiz(r.quiz, null, true);
-        if (r.error === 'too_short' || r.error === 'too_long') { resetPanel(); setLessonError('demo.' + r.error); lessonEl.focus(); return; }
-        return samplesReady.then(function () {
-          var id = usedSample || 'photosynthesis';
-          var q = samples && samples[id] && samples[id].quiz[quizLang];
-          if (q) startQuiz(q, usedSample ? 'demo.fallback' : 'demo.fallbackOwn', false);
-          else showPanelError();
-        });
+        if (views.own !== loading) return;
+        if (r.ok && r.quiz && validQuiz(r.quiz)) return startQuiz('own', { quiz: r.quiz, i: 0, picks: [], source: 'live', t0: started }, true);
+        if (r.error === 'too_short' || r.error === 'too_long') {
+          views.own = null;
+          if (mode === 'own') renderView();
+          setLessonError('demo.' + r.error);
+          if (mode === 'own') lessonEl.focus();
+          return;
+        }
+        if (r.error === 'disabled') {
+          views.own = { kind: 'early' };
+          track('early_access_shown', { chars: charsBucket(text.length) }); // analytics
+        } else {
+          views.own = { kind: 'busy' };
+          track('quiz_generated', { ok: false, ms: Date.now() - started, source: 'live' }); // analytics
+        }
+        if (mode === 'own') { renderView(); statusEl.textContent = t(views.own.kind === 'early' ? 'ea.title' : 'demo.busy'); }
       })
       .then(function () {
-        stopLoading();
         busyQuiz = false;
         genBtn.disabled = false; genBtn.classList.remove('is-busy'); genBtn.removeAttribute('aria-busy');
       });
+  }
+
+  function startQuiz(m, state, fresh) {
+    views[m] = { kind: 'quiz', state: state };
+    if (fresh) track('quiz_generated', { ok: true, ms: Date.now() - (state.t0 || demoT0), source: state.source }); // analytics
+    if (m !== mode) return; // kept for this mode and shown when the visitor comes back
+    renderView();
+    statusEl.textContent = t('quiz.ready', { n: state.quiz.questions.length });
+  }
+  function announce(state) {
+    /* ---------- Student play mode hook (web/play/share.js): announce the shown quiz ---------- */
+    document.dispatchEvent(new CustomEvent('quizpen:quiz', { detail: { quiz: state.quiz, lang: lang } }));
+    /* ---------- end of student play mode hook ---------- */
+  }
+
+  // Renders the view of the current mode (also after a tab switch or a language switch).
+  var stepTimer = null;
+  function renderView() {
+    clearInterval(stepTimer);
+    var v = views[mode];
+    quizState = v && v.kind === 'quiz' ? v.state : null;
+    panel.setAttribute('aria-busy', String(!!v && v.kind === 'loading'));
+    if (!v) { bodyEl.hidden = true; bodyEl.innerHTML = ''; emptyEl.hidden = false; ratchet(); return; }
+    emptyEl.hidden = true; bodyEl.hidden = false;
+    if (v.kind === 'quiz') { announce(v.state); renderQuiz(); return; }
+    if (v.kind === 'loading') renderLoading(v);
+    else if (v.kind === 'early') renderEarly(v);
+    else renderBusy();
+    ratchet();
+  }
+  function renderLoading(v) {
+    var steps = raw(v.key);
+    bodyEl.innerHTML = '<div class="skel"><ul class="skel-steps">' + steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') +
+      '</ul><div class="skel-bar q"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div><div class="skel-bar opt"></div></div>';
+    var lis = bodyEl.querySelectorAll('.skel-steps li'), max = v.finish ? lis.length : lis.length - 1;
+    var at = function () { return Math.min(max, Math.floor((Date.now() - v.t0) / v.every)); };
+    var tick = function () {
+      var i = at();
+      lis.forEach(function (li, k) { li.className = k < i ? 'is-done' : (k === i ? 'is-now' : ''); });
+      if (i >= max) clearInterval(stepTimer);
+    };
+    tick();
+    if (at() < max) stepTimer = setInterval(tick, v.every);
+  }
+  // A label for a button rendered after ui.js init: the data-rsv ghost holds every variant, so the width stays put.
+  function labelSpan(keys, cls) {
+    var vars = [];
+    keys.forEach(function (k) { ['en', 'uk'].forEach(function (l) { var v = I18N[l][k]; if (typeof v === 'string' && vars.indexOf(v) < 0) vars.push(v); }); });
+    return '<span class="' + cls + '" data-rsv="' + esc(vars.join('\n')) + '">' + esc(t(keys[0])) + '</span>';
+  }
+  function renderEarly(v) {
+    var prev = document.getElementById('ea-email'), typed = prev ? prev.value : '';
+    var inner;
+    if (v.done) inner = '<p class="ea-done" tabindex="-1">' + icon('i-check') + '<span>' + esc(t('ea.done')) + '</span></p>';
+    else if (joined) inner = '<p class="ea-done">' + icon('i-check') + '<span>' + esc(t('ea.already')) + '</span></p>';
+    else {
+      inner = '<p class="ea-text">' + esc(t('ea.text')) + '</p><form class="ea-form" id="ea-form" novalidate>' +
+        '<label for="ea-email" class="sr-only">' + esc(t('form.label')) + '</label><div class="join-row">' +
+        '<input id="ea-email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="' + esc(t('form.placeholder')) + '" aria-describedby="ea-msg">' +
+        '<button type="submit" class="btn btn-accent btn-lg join-btn" id="ea-btn">' + labelSpan(['cta', 'form.sending'], 'btn-label') + '<span class="spinner" aria-hidden="true"></span></button></div>' +
+        '<p id="ea-msg" class="field-msg" aria-live="polite"></p></form>';
+    }
+    bodyEl.innerHTML = '<div class="ea"><p class="ea-title">' + esc(t('ea.title')) + '</p>' + inner +
+      '<button type="button" class="link-btn" data-open-samples>' + esc(t('ea.meanwhile')) + '</button></div>';
+    var f = document.getElementById('ea-form');
+    if (!f) return;
+    var ctx = {
+      emailEl: document.getElementById('ea-email'), btn: document.getElementById('ea-btn'), msgEl: document.getElementById('ea-msg'),
+      via: 'early_access', quiet: true,
+      onOk: function () {
+        v.done = true;
+        if (views.own !== v || mode !== 'own') return;
+        renderView();
+        var d = bodyEl.querySelector('.ea-done');
+        if (d) d.focus({ preventScroll: true });
+      }
+    };
+    ctx.emailEl.value = typed;
+    bindEmailField(ctx);
+    f.addEventListener('submit', function (e) { e.preventDefault(); joinWith(ctx); });
+  }
+  // The hero form changed `joined` (signup or "Use a different email"): keep the early-access view in step.
+  function refreshEarly() {
+    var v = views.own;
+    if (!v || v.kind !== 'early') return;
+    if (!joined) v.done = false;
+    if (mode === 'own') renderView();
+  }
+  function renderBusy() {
+    bodyEl.innerHTML = '<div class="quiz-error demo-busy">' + icon('i-info') + '<p>' + esc(t('demo.busy')) + '</p>' +
+      '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-retry>' + icon('i-refresh') + labelSpan(['demo.retry'], 'btn-text') + '</button>' +
+      '<button type="button" class="btn btn-ghost" data-open-samples>' + labelSpan(['demo.tabSamples'], 'btn-text') + '</button></div></div>';
+  }
+  bodyEl.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-open-own], [data-open-samples], [data-retry]');
+    if (!b) return;
+    if (b.hasAttribute('data-retry')) submitOwn();
+    else openMode(b.hasAttribute('data-open-own') ? 'own' : 'samples');
   });
 
-  function resetPanel() { stopLoading(); quizState = null; bodyEl.hidden = true; bodyEl.innerHTML = ''; emptyEl.hidden = false; }
-  function showPanelError() {
-    track('quiz_generated', { ok: false, ms: Date.now() - demoT0, source: 'fallback' }); // analytics
-    quizState = null;
-    bodyEl.innerHTML = '<div class="quiz-error"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><p>' + esc(t('demo.failed')) + '</p></div>';
-    statusEl.textContent = t('demo.failed');
+  // Language switch: chips, the example text and a ready quiz follow it (answer keys match across en/uk).
+  function demoLangChanged() {
+    if (samples) {
+      renderChips();
+      renderSampleText();
+      var v = views.samples;
+      if (v && v.kind === 'quiz' && !samples[v.state.sample].lang) v.state.quiz = sampleQuiz(v.state.sample);
+    }
+    renderView();
   }
 
-  function startQuiz(quiz, noteKey, live) {
-    stopLoading();
-    quizState = { quiz: quiz, i: 0, picks: [], noteKey: noteKey, live: live };
-    track('quiz_generated', { ok: true, ms: Date.now() - demoT0, source: live ? 'live' : 'fallback' }); // analytics
-    /* ---------- Student play mode hook (web/play/share.js): announce the shown quiz ---------- */
-    document.dispatchEvent(new CustomEvent('quizpen:quiz', { detail: { quiz: quiz, lang: lang } }));
-    /* ---------- end of student play mode hook ---------- */
-    renderQuiz();
-    statusEl.textContent = (noteKey ? t(noteKey) + ' ' : '') + t('quiz.ready', { n: quiz.questions.length });
+  // No layout shift between views: while the width stays the same the panel never shrinks.
+  var ratchetW = 0, ratchetH = 0;
+  function ratchetReset() { ratchetW = panel.clientWidth; ratchetH = 0; panel.style.minHeight = ''; }
+  function ratchet() {
+    if (panel.clientWidth !== ratchetW) ratchetReset();
+    var h = panel.offsetHeight;
+    if (h > ratchetH) { ratchetH = h; panel.style.minHeight = h + 'px'; }
   }
+  window.addEventListener('resize', function () { if (panel.clientWidth !== ratchetW) ratchetReset(); });
 
   var KEYS = ['A', 'B', 'C', 'D'];
   function icon(id, cls) { return '<svg class="icon ' + (cls || '') + '" aria-hidden="true"><use href="#' + id + '"/></svg>'; }
 
+  // The note sits under the quiz: where this quiz came from, said plainly.
+  function noteHtml(s) {
+    var body;
+    if (s.source === 'live') body = esc(t('quiz.noteLive'));
+    else {
+      var parts = t('quiz.noteSample').split('{link}');
+      body = esc(parts[0]) + '<button type="button" class="link-btn" data-open-own>' + esc(t('quiz.ownLink')) + '</button>' + esc(parts[1] || '');
+    }
+    return '<p class="quiz-note">' + icon('i-info') + '<span>' + body + '</span></p>';
+  }
+
   function renderQuiz(focusSel) {
     var s = quizState, qs = s.quiz.questions, n = qs.length;
-    var note = s.noteKey ? '<p class="quiz-note">' + icon('i-info') + '<span>' + esc(t(s.noteKey)) + '</span></p>' : '';
+    var note = noteHtml(s);
     var bars = qs.map(function (q, k) {
       var p = s.picks[k];
       return '<i class="' + (p === undefined ? (k === s.i ? 'now' : '') : (p === q.answer ? 'right' : 'wrong')) + '"></i>';
     }).join('');
-    var head = note + '<div class="quiz-top"><p class="quiz-title">' + esc(s.quiz.title || '') + '</p>' +
+    var head = '<div class="quiz-top"><p class="quiz-title">' + esc(s.quiz.title || '') + '</p>' +
       (s.i < n ? '<p class="quiz-progress">' + esc(t('quiz.progress', { i: s.i + 1, n: n })) + '</p>' : '') + '</div><div class="quiz-bars" aria-hidden="true">' + bars + '</div>';
 
-    if (s.i >= n) { bodyEl.innerHTML = head + renderScore(); bindScore(); focusIn(focusSel || '.score-num'); return; }
+    if (s.i >= n) { bodyEl.innerHTML = head + renderScore() + note; bindScore(); ratchet(); focusIn(focusSel || '.score-num'); return; }
 
     var q = qs[s.i], pick = s.picks[s.i], answered = pick !== undefined;
     var opts = q.options.map(function (o, k) {
@@ -651,7 +870,7 @@
       fb = '<div class="feedback ' + (ok ? 'is-right' : 'is-wrong') + '" role="status"><strong>' + esc(ok ? t('quiz.right') : t('quiz.wrong', { a: KEYS[q.answer] })) + '</strong>' + esc(q.explain || '') + '</div>' +
         '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-next>' + esc(s.i === n - 1 ? t('quiz.finish') : t('quiz.next')) + icon('i-arrow') + '</button></div>';
     }
-    bodyEl.innerHTML = head + '<p class="quiz-q" tabindex="-1">' + esc(q.q) + '</p><ul class="opts">' + opts + '</ul>' + fb;
+    bodyEl.innerHTML = head + '<p class="quiz-q" tabindex="-1">' + esc(q.q) + '</p><ul class="opts">' + opts + '</ul>' + fb + note;
 
     bodyEl.querySelectorAll('.opt').forEach(function (b) {
       b.addEventListener('click', function (ev) {
@@ -664,6 +883,7 @@
     var next = bodyEl.querySelector('[data-next]');
     if (next) next.addEventListener('click', function () { s.i++; renderQuiz('.quiz-q'); });
     if (next && s.i === n - 1) next.addEventListener('click', function () { track('quiz_completed', { score: qs.filter(function (x, k) { return s.picks[k] === x.answer; }).length, questions: n }); }); // analytics
+    ratchet();
     focusIn(focusSel);
   }
   function focusIn(sel) { if (!sel) return; var el = bodyEl.querySelector(sel); if (el) el.focus({ preventScroll: false }); }
@@ -674,7 +894,7 @@
     var verdict = right === n ? t('quiz.perfect') : (right >= Math.ceil(n * 0.6) ? t('quiz.good') : t('quiz.low'));
     var dots = qs.map(function (q, k) { return '<i class="' + (s.picks[k] === q.answer ? 'right' : '') + '"></i>'; }).join('');
     return '<div class="score"><p class="score-num" tabindex="-1">' + right + '/' + n + '</p><p class="score-label">' + esc(verdict + ' ' + t('quiz.score', { s: right, n: n })) + '</p>' +
-      '<div class="score-dots" aria-hidden="true">' + dots + '</div><p class="score-note">' + esc(t(s.live ? 'quiz.noteLive' : 'quiz.noteSample')) + '</p>' +
+      '<div class="score-dots" aria-hidden="true">' + dots + '</div>' +
       '<div class="quiz-actions"><button type="button" class="btn btn-accent btn-lg" data-join>' + esc(t('quiz.cta')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-copy-quiz>' + icon('i-copy') + esc(t('quiz.copy')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-again>' + icon('i-refresh') + esc(t('quiz.again')) + '</button></div></div>';
@@ -695,9 +915,11 @@
     });
     bodyEl.querySelector('[data-copy-quiz]').addEventListener('click', function () { track('quiz_copied'); }); // analytics
     bodyEl.querySelector('[data-again]').addEventListener('click', function () {
-      resetPanel();
+      views[mode] = null;
+      renderView();
       document.getElementById('demo').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
-      setTimeout(function () { lessonEl.focus({ preventScroll: true }); lessonEl.select(); }, REDUCED ? 0 : 400);
+      var target = mode === 'own' ? lessonEl : (chipsEl.querySelector('.chip[aria-pressed="true"]') || tabEls.samples);
+      setTimeout(function () { target.focus({ preventScroll: true }); if (target === lessonEl) lessonEl.select(); }, REDUCED ? 0 : 400);
     });
   }
 
