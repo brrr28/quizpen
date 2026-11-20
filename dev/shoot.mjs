@@ -131,6 +131,22 @@ async function shots() {
   await showSample('photosynthesis', lang);
   await demoTop(true);
   await page.shot(resolve(SHOTS, 'demo-samples-375-dark.png'));
+
+  // The strict version (web/spec): the page at 1440 and 375, then the thank-you at 375.
+  for (const [w, h, mobile] of [[1440, 900, false], [375, 812, true]]) {
+    await page.viewport(w, h, mobile, mobile ? 2 : 1);
+    await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
+    await page.goto(BASE + 'spec/');
+    await page.waitFor(`document.getElementById('counter').textContent.length > 0`, 8000).catch(() => {});
+    await page.waitFor(`document.fonts.ready.then(() => true)`, 8000).catch(() => {});
+    await s.wait(400);
+    await page.shot(resolve(SHOTS, `spec-${w}.png`));
+  }
+  await page.type('#email', 'maria.spec@school.org');
+  await page.click('#btn');
+  await page.waitFor(`!document.getElementById('thanks').hidden`, 8000);
+  await s.wait(400);
+  await page.shot(resolve(SHOTS, 'spec-thanks-375.png'));
   console.log('shots written to', SHOTS);
 }
 
@@ -160,6 +176,9 @@ async function sections() {
 async function og() {
   await page.viewport(1200, 630, false, 1);
   await page.goto(BASE + 'dev/og.html');
+  // The template uses web fonts: shoot once they are in (a slow font request would give a Georgia picture).
+  await page.waitFor(`document.fonts.ready.then(() => document.fonts.check('600 60px Literata') && document.fonts.check('600 31px Caveat'))`, 10000)
+    .catch(() => console.warn('og: web fonts not confirmed, the picture may use local fonts'));
   await s.wait(300);
   await page.shot(resolve(REPO, 'web/og.png'));
   console.log('og.png written');

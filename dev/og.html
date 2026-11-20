@@ -3,51 +3,61 @@
 <head>
 <meta charset="utf-8">
 <title>Quizpen OG image template</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@500;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap">
 <style>
-  /* Template for web/og.png (1200x630), rendered by web/dev/shoot.mjs og */
+  /* Template for web/og.png (1200x630), rendered by web/dev/shoot.mjs og. The landing's worksheet: paper ruled
+     every 40px, the red margin line with punch holes, the headline in Literata and one graded question with
+     the right letter circled and ticked in red pen. Every line box is 40px (or 80px), so text sits on the ruling. */
   * { box-sizing: border-box; margin: 0; }
-  body { width: 1200px; height: 630px; overflow: hidden; background: #F6F6F2; color: #161B2E; font-family: Onest, sans-serif; }
-  .wrap { display: grid; grid-template-columns: 1fr 470px; gap: 56px; align-items: center; height: 100%; padding: 0 72px; }
-  .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 30px; letter-spacing: -0.02em; }
-  .logo { width: 44px; height: 44px; }
-  h1 { margin-top: 44px; font-size: 76px; line-height: 1.02; letter-spacing: -0.04em; font-weight: 800; }
-  mark { background: #F2E14A; color: inherit; padding: 0 6px; }
-  p.sub { margin-top: 26px; font-size: 25px; color: #474D64; line-height: 1.4; max-width: 560px; }
-  .tag { margin-top: 30px; display: inline-block; font-family: "JetBrains Mono", monospace; font-size: 18px; background: #161B2E; color: #F6F6F2; padding: 8px 14px; border-radius: 8px; }
-  .card { background: #FDFDFB; border: 1.5px solid #DFE0D9; border-radius: 16px; padding: 26px; box-shadow: 0 2px 4px rgba(22,27,46,.05), 0 18px 40px rgba(22,27,46,.10); transform: rotate(1.5deg); }
-  .top { display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: 15px; color: #5C627A; }
-  .bars { display: flex; gap: 5px; margin-top: 12px; }
-  .bars i { flex: 1; height: 5px; border-radius: 3px; background: #DFE0D9; }
-  .bars i.r { background: #156B42; }
-  .q { margin-top: 18px; font-size: 23px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; }
-  ul { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 9px; }
-  li { display: flex; align-items: center; gap: 12px; border: 1.5px solid #DFE0D9; border-radius: 10px; padding: 10px 12px; font-size: 18px; font-weight: 500; color: #5C627A; }
-  li b { width: 26px; height: 26px; border-radius: 6px; background: #EEEEE8; display: grid; place-items: center; font-family: "JetBrains Mono", monospace; font-size: 14px; color: #474D64; }
-  li.ok { border-color: #156B42; background: #E1F1E7; color: #161B2E; }
-  li.ok b { background: #156B42; color: #fff; }
-  .fb { margin-top: 12px; background: #E1F1E7; color: #0F4F31; border-radius: 10px; padding: 11px 14px; font-size: 16px; line-height: 1.35; }
+  :root { --paper: #FBF8F0; --ink: #1F2A44; --ink-2: #3B4256; --ink-3: #5E6470; --pen: #C8312B; --rule: #C9D9EC; --margin: #E58A8A; --hole: #EBE5D6; }
+  body {
+    position: relative; width: 1200px; height: 630px; overflow: hidden;
+    background: var(--paper) repeating-linear-gradient(to bottom, transparent 0 39px, var(--rule) 39px 40px) 0 -2px;
+    color: var(--ink); font-family: "PT Sans", sans-serif;
+  }
+  body::before { content: ""; position: absolute; top: 0; bottom: 0; left: 104px; border-left: 2px solid var(--margin); }
+  .holes { position: absolute; left: 38px; top: 110px; bottom: 110px; display: flex; flex-direction: column; justify-content: space-between; }
+  .holes i { display: block; width: 28px; height: 28px; border-radius: 50%; background: var(--hole); }
+  .wrap { position: absolute; inset: 0; display: grid; grid-template-columns: 480px 484px; gap: 52px; padding: 40px 0 0 144px; }
+  .brand { display: flex; align-items: center; gap: 12px; height: 40px; font: 600 30px/1 Literata, serif; }
+  .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 2px solid var(--ink); border-radius: 50%; font: 700 17px/1 "PT Sans", sans-serif; }
+  h1 { margin-top: 40px; font: 600 60px/80px Literata, serif; letter-spacing: -0.015em; }
+  .sub { margin-top: 40px; font: 400 24px/40px Literata, serif; color: var(--ink-2); }
+  .tag { display: inline-flex; align-items: center; height: 40px; margin-top: 40px; padding: 0 16px; background: var(--ink); color: var(--paper); font: 700 18px/1 "PT Sans", sans-serif; letter-spacing: 0.02em; }
+  .sheet { padding-top: 120px; }
+  .head { display: flex; align-items: baseline; justify-content: space-between; height: 40px; border-bottom: 2px solid var(--ink); }
+  .title { font: 600 22px/40px Literata, serif; }
+  .of { font: 700 14px/40px "PT Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .q { position: relative; margin-top: 40px; padding-left: 36px; font: 600 25px/40px Literata, serif; }
+  .q b { position: absolute; left: 0; font-weight: 600; }
+  ul { list-style: none; padding: 0 0 0 36px; }
+  li { position: relative; display: flex; align-items: center; gap: 16px; height: 40px; font: 400 20px/40px Literata, serif; color: var(--ink-3); white-space: nowrap; }
+  li .k { position: relative; display: grid; place-items: center; flex: none; width: 28px; height: 28px; border: 1.5px solid currentColor; border-radius: 50%; font: 700 14px/1 "PT Sans", sans-serif; }
+  li.ok { color: var(--ink); }
+  .loop { position: absolute; left: -13px; top: -11px; width: 54px; height: 47px; overflow: visible; }
+  .tick { width: 38px; height: 31px; margin-left: 8px; overflow: visible; }
+  .note { margin-top: 2px; padding-left: 36px; font: 600 31px/40px Caveat, cursive; color: var(--pen); rotate: -1.5deg; transform-origin: left center; }
 </style>
 </head>
 <body>
+<div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="wrap">
   <div>
-    <div class="brand"><img class="logo" src="../favicon.svg" alt="">Quizpen</div>
-    <h1>Paste a lesson.<br>Get a <mark>quiz</mark><br>before the bell.</h1>
-    <p class="sub">An AI assistant that turns any lesson text into a multiple-choice quiz with answers and explanations.</p>
-    <span class="tag">Live demo · Teacher waitlist</span>
+    <div class="brand"><span class="brand-mark">Q</span>Quizpen</div>
+    <h1>Paste a lesson.<br>Get a quiz<br>before the bell.</h1>
+    <p class="sub">Quizpen turns any lesson text into a multiple-choice quiz with an answer key.</p>
+    <span class="tag">Teacher waitlist &middot; Live demo</span>
   </div>
-  <div class="card">
-    <div class="top"><span>Photosynthesis: quick check</span><span>2 of 5</span></div>
-    <div class="bars"><i class="r"></i><i class="r"></i><i></i><i></i><i></i></div>
-    <p class="q">Why do most leaves look green?</p>
+  <div class="sheet">
+    <div class="head"><span class="title">Photosynthesis: quick check</span><span class="of">2 of 5</span></div>
+    <p class="q"><b>2.</b>Why do most leaves look green?</p>
     <ul>
-      <li><b>A</b>They absorb green light</li>
-      <li class="ok"><b>B</b>Chlorophyll reflects green light</li>
-      <li><b>C</b>Their cells hold green water</li>
-      <li><b>D</b>Sunlight is mostly green</li>
+      <li><span class="k">A</span>They absorb green light</li>
+      <li class="ok"><span class="k">B<svg class="loop" viewBox="0 0 46 40" fill="none" stroke="#C8312B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11"/></svg></span>Chlorophyll reflects green light<svg class="tick" viewBox="0 0 34 28" fill="none" stroke="#C8312B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg></li>
+      <li><span class="k">C</span>Their cells hold green water</li>
+      <li><span class="k">D</span>Sunlight is mostly green</li>
     </ul>
-    <p class="fb"><strong>Correct.</strong> Green light bounces off, so green is what reaches our eyes.</p>
+    <p class="note">Correct! Green light bounces off, so it is what we see.</p>
   </div>
 </div>
 </body>
