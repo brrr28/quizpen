@@ -1,5 +1,5 @@
 // Screenshots, OG image, flow recording and page weight from headless Chrome.
-// Usage: node web/dev/shoot.mjs shots|og|record|weight
+// Usage: node web/dev/shoot.mjs shots|sections|og|record|weight
 // The mock writes placeholder questions, so for pictures the quiz request is answered
 // with the prepared sample quiz (same shape as a live answer, see API.md).
 
@@ -134,6 +134,29 @@ async function shots() {
   console.log('shots written to', SHOTS);
 }
 
+// The lower sections (features, why, FAQ with the first answer open, the tear-off CTA) at 1440 and 375,
+// light and dark: each one whole, from 24px above its top to 24px below its bottom.
+async function sections() {
+  const lang = process.env.SHOT_LANG || 'en';
+  for (const [w, h, mobile] of [[1440, 900, false], [375, 812, true]]) {
+    for (const theme of ['light', 'dark']) {
+      await fresh(lang, w, h, mobile, theme);
+      // Sections below the first screen fade in on scroll (nav.js); a section taller than the viewport would be
+      // captured half revealed, so show them all, and shoot from the top so the sticky header covers nothing.
+      await page.eval(`document.querySelector('#faq details').open = true; document.querySelectorAll('.nav-reveal').forEach((e) => e.classList.add('is-in')); true`);
+      await s.wait(900);
+      await scrollTo('scrollTo(0, 0)');
+      for (const id of ['features', 'why', 'faq', 'final']) {
+        const r = await page.eval(`(() => { const b = document.getElementById('${id}').getBoundingClientRect(); return { y: b.top + scrollY, h: b.height }; })()`);
+        const clip = { x: 0, y: Math.max(0, Math.round(r.y) - 24), width: w, height: Math.ceil(r.h) + 48, scale: 1 };
+        const out = await page.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip });
+        writeFileSync(resolve(SHOTS, `section-${id}-${w}${theme === 'dark' ? '-dark' : ''}.png`), Buffer.from(out.data, 'base64'));
+      }
+    }
+  }
+  console.log('section shots written to', SHOTS);
+}
+
 async function og() {
   await page.viewport(1200, 630, false, 1);
   await page.goto(BASE + 'dev/og.html');
@@ -228,6 +251,7 @@ async function weight() {
 
 try {
   if (mode === 'shots') await shots();
+  else if (mode === 'sections') await sections();
   else if (mode === 'og') await og();
   else if (mode === 'record') await record();
   else if (mode === 'weight') await weight();
