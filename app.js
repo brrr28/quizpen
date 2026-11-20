@@ -390,17 +390,23 @@
     if (!email) { setJoinError('empty', ctx); ctx.emailEl.focus(); return; }
     if (!validEmail(email)) { setJoinError('invalid_email', ctx); ctx.emailEl.focus(); return; }
     setJoinError(null, ctx);
-    busyJoin = true;
     var sp = { lang: lang, has_ref: !!attribution.ref };
     if (ctx.via) sp.via = ctx.via;
     track('signup_submitted', sp); // analytics
+    sendJoin(ctx, { email: email, lang: lang, hp: ctx.hpEl ? ctx.hpEl.value : '' });
+  }
+
+  // p = { email, lang, hp }. A dropped connection (offline/network) keeps p as a pending signup,
+  // sent once when the browser is back online or on the next visit.
+  function sendJoin(ctx, p) {
+    busyJoin = true;
     var btn = ctx.btn;
     btn.disabled = true; btn.classList.add('is-busy'); btn.setAttribute('aria-busy', 'true');
     btn.querySelector('.btn-label').textContent = t('form.sending');
-    apiPost({ action: 'join', email: email, lang: lang, ref: attribution.ref, utm: attribution.utm, hp: ctx.hpEl ? ctx.hpEl.value : '', cid: getCid() }, 15000)
+    apiPost({ action: 'join', email: p.email, lang: p.lang, ref: attribution.ref, utm: attribution.utm, hp: p.hp || '', cid: getCid() }, 15000)
       .then(function (r) {
         if (r.ok) {
-          joined = { position: r.position, total: r.total, refCode: r.refCode, referrals: r.referrals || 0, already: !!r.already, email: email, ts: Date.now() };
+          joined = { position: r.position, total: r.total, refCode: r.refCode, referrals: r.referrals || 0, already: !!r.already, email: p.email, ts: Date.now() };
           track('signup_succeeded', { already: !!r.already, has_ref: !!attribution.ref, demo_used: demoT0 > 0 }); // analytics
           store.set('qp_joined', joined);
           if (typeof r.total === 'number') { total = r.total; renderCounters(); }
@@ -408,13 +414,51 @@
           if (ctx.onOk) ctx.onOk(); else refreshEarly();
         } else setJoinError(r.error || 'server', ctx);
       })
-      .catch(function (err) { setJoinError(err.code === 'offline' ? 'offline' : 'server', ctx); })
+      .catch(function (err) {
+        if (err.code === 'offline' || err.code === 'network') {
+          store.set(PENDING_KEY, p);
+          pendingCtx = ctx;
+          setJoinPending(ctx);
+        } else setJoinError('server', ctx);
+      })
       .then(function () {
         busyJoin = false;
         btn.disabled = false; btn.classList.remove('is-busy'); btn.removeAttribute('aria-busy');
         btn.querySelector('.btn-label').textContent = t('cta');
       });
   }
+
+  /* ---------- Pending signup (dropped connection) ---------- */
+  var PENDING_KEY = 'qp_join_pending';
+  var pendingCtx = null; // the form that queued it in this page life; the inline form may be re-rendered since
+  function setJoinPending(ctx) {
+    ctx.msgEl.className = 'field-msg is-pending';
+    ctx.msgEl.textContent = t('join.pending');
+    ctx.emailEl.removeAttribute('aria-invalid');
+  }
+  // Sends the pending signup once: it is cleared before the request and stored again only on a network failure.
+  function flushPendingJoin() {
+    var p = store.get(PENDING_KEY);
+    if (!p) return;
+    if (joined || typeof p.email !== 'string' || !validEmail(p.email)) { store.del(PENDING_KEY); return; }
+    if (busyJoin || navigator.onLine === false) return;
+    var ctx = pendingCtx && document.body.contains(pendingCtx.emailEl) ? pendingCtx : heroJoin;
+    pendingCtx = null;
+    store.del(PENDING_KEY);
+    if (!ctx.emailEl.value.trim()) ctx.emailEl.value = p.email;
+    setJoinError(null, ctx);
+    sendJoin(ctx, p);
+  }
+  // On load: send it now, or (still offline) show it in the hero form until the 'online' event.
+  function restorePendingJoin() {
+    var p = store.get(PENDING_KEY);
+    if (!p) return;
+    if (navigator.onLine !== false || joined) { flushPendingJoin(); return; }
+    if (typeof p.email === 'string' && !emailEl.value.trim()) emailEl.value = p.email;
+    pendingCtx = heroJoin;
+    setJoinPending(heroJoin);
+  }
+  window.addEventListener('online', flushPendingJoin);
   form.addEventListener('submit', function (e) { e.preventDefault(); joinWith(heroJoin); });
 
   function refLink(code) {
@@ -1013,6 +1057,7 @@
   applyI18n();
   updateLessonMeta();
   restoreJoined();
+  restorePendingJoin();
   loadStats();
   track('landing_viewed', { lang: lang, has_ref: !!attribution.ref }); // analytics
   sendVisit();
