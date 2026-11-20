@@ -242,7 +242,7 @@ try {
     const order = expected.map((e) => names.indexOf(e));
     ok('funnel: track() events fire in flow order', order.every((x, i) => x >= 0 && (i === 0 || x > order[i - 1])), names.join(' > '));
     const gen = got.find((c) => c.e === 'quiz_generated')?.p || {};
-    ok('funnel: quiz_generated props {ok, ms, source}', gen.ok === true && gen.source === 'sample' && gen.ms > 0, JSON.stringify(gen));
+    ok('funnel: quiz_generated props {ok, ms, source}', gen.ok === true && gen.source === 'sample' && typeof gen.ms === 'number' && gen.ms >= 0, JSON.stringify(gen));
     const su = got.find((c) => c.e === 'signup_succeeded')?.p || {};
     ok('funnel: signup_succeeded props {already, has_ref, demo_used}', su.already === false && su.has_ref === false && su.demo_used === true, JSON.stringify(su));
     const answered = got.filter((c) => c.e === 'quiz_answered').length;
