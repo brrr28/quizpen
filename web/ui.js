@@ -123,6 +123,14 @@
   function isHtml(el) { return el.hasAttribute('data-i18n-html'); }
   function norm(s) { return String(s).replace(/\s+/g, ' ').trim(); }
   function plain(s) { tpl.innerHTML = s; return norm(tpl.content.textContent); }
+  // The headline forces its line breaks with block .h1-line spans: its ghost keeps them as newlines
+  // (the CSS ghost is pre-line), so the reserved height follows the same breaks.
+  function plainLines(s) {
+    tpl.innerHTML = s;
+    var lines = tpl.content.querySelectorAll('.h1-line');
+    if (!lines.length) return plain(s);
+    return Array.prototype.map.call(lines, function (n) { return norm(n.textContent); }).join('\n');
+  }
 
   function makeHost(el) {
     var key = keyOf(el);
@@ -150,7 +158,7 @@
       var html = isHtml(el) || !!el.querySelector('[data-i18n-html]');
       LANGS.forEach(function (l) {
         var v = I18N[l] && I18N[l][k];
-        if (typeof v === 'string') el.setAttribute('data-rsv-' + l, html ? plain(v) : norm(v));
+        if (typeof v === 'string') el.setAttribute('data-rsv-' + l, html ? plainLines(v) : norm(v));
       });
     });
     // Width ghosts outside the label stacks (the footer note): one line per language. Stacks get theirs, with

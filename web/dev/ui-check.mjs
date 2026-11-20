@@ -14,7 +14,7 @@ const REPO = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const SHOTS = resolve(REPO, 'shots');
 mkdirSync(SHOTS, { recursive: true });
 const SAMPLES = JSON.parse(readFileSync(resolve(REPO, 'web/data/samples.json'), 'utf8')).samples;
-const BG = { light: 'rgb(246, 246, 242)', dark: 'rgb(14, 18, 32)' };
+const BG = { light: 'rgb(251, 248, 240)', dark: 'rgb(34, 37, 43)' };
 
 const results = [];
 const details = {};
