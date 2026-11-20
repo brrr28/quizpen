@@ -106,6 +106,7 @@
   /* ---------- Preview as student: the real player in an iframe ---------- */
   function openPreview() {
     if (!linkPromise) return;
+    if (window.qpAnalytics) window.qpAnalytics.track('student_preview_opened'); // analytics
     linkPromise.then(function (link) {
       var d = el('dialog', 'play-dialog play-preview');
       d.setAttribute('aria-label', t('previewTitle'));
@@ -178,6 +179,7 @@
 
   function openShare() {
     if (!linkPromise) return;
+    if (window.qpAnalytics) window.qpAnalytics.track('share_opened'); // analytics
     // Copy inside the click itself when the link is ready: some browsers allow clipboard only there.
     if (linkValue) buildShare(linkValue); else linkPromise.then(buildShare);
   }

@@ -23,11 +23,62 @@
   <meta name="twitter:description" content="Turn any lesson text into a multiple-choice quiz with answers and explanations. Join the teacher waitlist.">
   <meta name="twitter:image" content="https://pavloemilus.github.io/quizpen/og.png">
 
+  <!-- SEO (see ANALYTICS-SEO.md): canonical, language alternates, structured data -->
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://brrr28.github.io/quizpen/">
+  <link rel="alternate" hreflang="en" href="https://brrr28.github.io/quizpen/">
+  <link rel="alternate" hreflang="uk" href="https://brrr28.github.io/quizpen/?lang=uk">
+  <link rel="alternate" hreflang="x-default" href="https://brrr28.github.io/quizpen/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="uk_UA">
+  <!-- Google Search Console verification: replace this comment with the tag Search Console gives you, e.g.
+       <meta name="google-site-verification" content="TOKEN_FROM_SEARCH_CONSOLE"> -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://brrr28.github.io/quizpen/#website",
+        "url": "https://brrr28.github.io/quizpen/",
+        "name": "Quizpen",
+        "description": "Paste a paragraph from your lesson and get a multiple-choice quiz with answers and explanations.",
+        "inLanguage": ["en", "uk"]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://brrr28.github.io/quizpen/#app",
+        "name": "Quizpen",
+        "description": "An AI assistant for teachers that turns any lesson text into a multiple-choice quiz with answers and explanations.",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web",
+        "url": "https://brrr28.github.io/quizpen/",
+        "image": "https://brrr28.github.io/quizpen/og.png",
+        "inLanguage": ["en", "uk"],
+        "audience": { "@type": "EducationalAudience", "educationalRole": "teacher" },
+        "isPartOf": { "@id": "https://brrr28.github.io/quizpen/#website" },
+        "offers": {
+          "@type": "Offer",
+          "name": "Waitlist",
+          "description": "Free early access waitlist",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/PreOrder",
+          "url": "https://brrr28.github.io/quizpen/"
+        }
+      }
+    ]
+  }
+  </script>
+  <!-- end of SEO -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="config.js"></script>
+  <!-- Analytics (web/analytics.js): off until IDs are set in config.js; must stay before app.js -->
+  <script src="analytics.js" data-surface="landing" defer></script>
+  <!-- end of analytics -->
   <script src="app.js" defer></script>
   <!-- Student play mode (web/play/): preview as student, share with class -->
   <link rel="stylesheet" href="play/share.css">
