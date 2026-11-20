@@ -62,6 +62,7 @@ async function shots() {
   for (const [w, h, mobile] of [[1440, 900, false], [375, 812, true]]) {
     await fresh(lang, w, h, mobile);
     await scrollTo('scrollTo(0, 0)');
+    await s.wait(3200); // let the hero illustration finish its answer animation
     await page.shot(resolve(SHOTS, `hero-${w}.png`));
 
     await answerFirst(lang);
@@ -71,7 +72,7 @@ async function shots() {
     await page.shot(resolve(SHOTS, `demo-${w}.png`));
 
     await scrollTo('scrollTo(0, 0)');
-    await page.type('#email', 'maria.teacher@example.com');
+    await page.type('#email', `maria.${w}@school.org`);
     await page.click('#join-btn');
     await page.waitFor(`!document.getElementById('thanks').hidden`, 8000);
     await scrollTo(mobile ? `document.getElementById('thanks').scrollIntoView({ block: 'center' })` : 'scrollTo(0, 0)');

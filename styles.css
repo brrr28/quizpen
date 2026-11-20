@@ -48,6 +48,9 @@ html {
   scroll-padding-top: 24px;
 }
 
+/* clip, unlike hidden, also blocks programmatic sideways scroll (scrollIntoView) */
+#main { overflow-x: clip; }
+
 body {
   margin: 0;
   background: var(--paper);
@@ -213,7 +216,8 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Hero */
 .hero { padding: 20px 0 56px; }
-.hero-grid { display: grid; gap: 44px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; }
+.hero-grid > * { min-width: 0; }
 @media (min-width: 980px) {
   .hero { padding: 48px 0 96px; }
   .hero-grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 56px; align-items: center; }
@@ -252,7 +256,7 @@ a:hover { text-decoration-thickness: 2px; }
 .join-row { display: flex; flex-direction: column; gap: 10px; }
 @media (min-width: 520px) { .join-row { flex-direction: row; } }
 .join-row input {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
   height: 52px;
   padding: 0 16px;
@@ -283,6 +287,14 @@ a:hover { text-decoration-thickness: 2px; }
   font-variant-numeric: tabular-nums;
 }
 .counter .icon { color: var(--ink-2); }
+.try-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+  font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px;
+  text-underline-offset: 5px; text-decoration-color: var(--accent);
+  transition: text-decoration-color 160ms var(--ease-out);
+}
+.try-link:hover { text-decoration-color: var(--ink); }
+.try-link .icon { width: 18px; height: 18px; transform: rotate(90deg); }
 .counter:not(.is-ready) { visibility: hidden; }
 @media (prefers-reduced-motion: no-preference) {
   .counter.is-ready { animation: fade-up 400ms var(--ease-out) both; }
@@ -705,7 +717,8 @@ a:hover { text-decoration-thickness: 2px; }
 .brand-sm .brand-name { font-size: 1rem; color: var(--ink); }
 
 /* Confetti canvas */
-.confetti { position: fixed; inset: 0; pointer-events: none; z-index: var(--z-toast); }
+/* A canvas is a replaced element: inset alone does not stretch it, so size it explicitly. */
+.confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: var(--z-toast); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
