@@ -31,7 +31,7 @@ const CONFIG = {
     model: 'claude-haiku-5-5',
     // Thinking is on by default on this model and counts toward max_tokens;
     // Ukrainian text also needs more tokens than English, so leave headroom.
-    maxTokens: 3000,
+    maxTokens: 6000,
     // UrlFetchApp has no per-request timeout option (Google cuts it at about 60 s),
     // so we only skip the retry when the first attempt was already slow.
     retryBudgetMs: 15000,
