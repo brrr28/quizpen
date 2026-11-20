@@ -9,7 +9,7 @@
   var counter = document.getElementById('counter');
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var MESSAGES = {
-    invalid_email: 'Please enter a valid email address.',
+    invalid_email: 'That email doesn\'t look right. Check it for typos.',
     rate_limited: 'Too many attempts. Please try again in a few minutes.'
   };
 
@@ -44,10 +44,10 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var value = email.value.trim();
-    if (!EMAIL_RE.test(value)) { showError('Please enter a valid email address.'); email.focus(); return; }
+    if (!EMAIL_RE.test(value)) { showError('That email doesn\'t look right. Check it for typos.'); email.focus(); return; }
     showError('');
     btn.disabled = true;
-    btn.textContent = 'Sending...';
+    btn.textContent = 'Joining…';
     var done = function () { btn.disabled = false; btn.textContent = 'Join Waitlist'; };
     if (!API) { done(); showError('Signup is not connected yet. Please try again later.'); return; }
     var payload = { action: 'join', email: value, lang: 'en', ref: null, utm: {}, hp: document.getElementById('hp').value, cid: cid() };
