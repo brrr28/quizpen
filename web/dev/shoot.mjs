@@ -15,10 +15,17 @@ const SAMPLES = JSON.parse(readFileSync(resolve(REPO, 'web/data/samples.json'), 
 const mode = process.argv[2] || 'shots';
 mkdirSync(SHOTS, { recursive: true });
 
+// Fixed stand ports: next to another run the pictures would come from its server and browser tab.
+if (await fetch(BASE).then(() => true, () => false)) {
+  console.error('stand busy: ' + BASE + ' already answers (another check or shoot is running); try again when it ends');
+  process.exit(75);
+}
 const s = await startStand();
 const { page } = s;
 
-// Answer quiz requests with the sample quiz after a short "thinking" delay.
+// Answer quiz requests with the sample quiz after a short "thinking" delay;
+// with quizDisabled the answer is the backend's "disabled" (early access).
+let quizDisabled = false;
 async function interceptQuiz(delayMs = 1600) {
   await page.send('Fetch.enable', { patterns: [{ urlPattern: '*/api*', requestStage: 'Request' }] });
   page.on('Fetch.requestPaused', async (p) => {
@@ -26,7 +33,7 @@ async function interceptQuiz(delayMs = 1600) {
     try { body = JSON.parse(p.request.postData || '{}'); } catch { /* GET */ }
     if (body.action !== 'quiz') return page.send('Fetch.continueRequest', { requestId: p.requestId });
     const sample = SAMPLES.find((x) => x.id === body.sample) || SAMPLES[0];
-    const json = JSON.stringify({ ok: true, quiz: sample.quiz[body.lang === 'uk' ? 'uk' : 'en'] });
+    const json = JSON.stringify(quizDisabled ? { ok: false, error: 'disabled' } : { ok: true, quiz: sample.quiz[body.lang === 'uk' ? 'uk' : 'en'] });
     await s.wait(delayMs);
     await page.send('Fetch.fulfillRequest', {
       requestId: p.requestId, responseCode: 200,
@@ -36,20 +43,40 @@ async function interceptQuiz(delayMs = 1600) {
   });
 }
 
-async function fresh(lang, w, h, mobile) {
+// theme: 'dark' is saved as the visitor's choice (qp_theme) before the page loads.
+async function fresh(lang, w, h, mobile, theme) {
   await page.viewport(w, h, mobile, mobile ? 2 : 1);
   await page.goto(BASE + '?lang=' + lang);
-  await page.eval('localStorage.clear(); sessionStorage.clear(); true');
+  await page.eval(`localStorage.clear(); sessionStorage.clear(); ${theme ? `localStorage.setItem('qp_theme', '${theme}');` : ''} true`);
   await page.goto(BASE + '?lang=' + lang);
-  await page.waitFor(`document.querySelector('[data-counter].is-ready')`);
+  await page.waitFor(`document.querySelector('[data-counter].is-ready') && document.querySelector('#sample-chips .chip')`);
   await s.wait(300);
 }
 const scrollTo = (expr) => page.eval(`(() => { ${expr}; return true; })()`).then(() => s.wait(500));
+const demoTop = (mobile) => scrollTo(mobile
+  ? `document.getElementById('quiz-panel').scrollIntoView({ block: 'start' }); scrollBy(0, -12)`
+  : `document.getElementById('demo').scrollIntoView({ block: 'start' })`);
 
+// Ready examples: a chip, "Show" (the quiz is local, no API call), then the right answer to question 1.
+async function showSample(id, lang, answer = true) {
+  const sample = SAMPLES.find((x) => x.id === id);
+  await page.click(`.chip[data-sample="${id}"]`);
+  await s.wait(200);
+  await page.click('#show-btn');
+  await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 8000);
+  await s.wait(300);
+  if (answer) {
+    await page.click(`.opt[data-k="${(sample.quiz[sample.lang || lang] || sample.quiz.en).questions[0].answer}"]`);
+    await s.wait(500);
+  }
+}
+
+// Your text: paste the example text, generate; the live answer is the intercepted sample quiz.
 async function answerFirst(lang) {
   const sample = SAMPLES.find((x) => x.id === 'photosynthesis');
-  await page.click('.chip[data-sample="photosynthesis"]');
-  await page.waitFor(`document.getElementById('lesson').value.length > 200`);
+  await page.click('#tab-own');
+  await s.wait(300);
+  await page.type('#lesson', sample.text[lang] || sample.text.en);
   await page.click('#gen-btn');
   await page.waitFor(`document.querySelector('#quiz-body button.opt')`, 15000);
   await page.click(`.opt[data-k="${sample.quiz[lang].questions[0].answer}"]`);
@@ -65,10 +92,12 @@ async function shots() {
     await s.wait(3200); // let the hero illustration finish its answer animation
     await page.shot(resolve(SHOTS, `hero-${w}.png`));
 
+    await showSample('photosynthesis', lang);
+    await demoTop(mobile);
+    await page.shot(resolve(SHOTS, `demo-samples-${w}.png`));
+
     await answerFirst(lang);
-    await scrollTo(mobile
-      ? `document.getElementById('quiz-panel').scrollIntoView({ block: 'start' }); scrollBy(0, -12)`
-      : `document.getElementById('demo').scrollIntoView({ block: 'start' })`);
+    await demoTop(mobile);
     await page.shot(resolve(SHOTS, `demo-${w}.png`));
 
     await scrollTo('scrollTo(0, 0)');
@@ -79,6 +108,25 @@ async function shots() {
     await s.wait(2200);
     await page.shot(resolve(SHOTS, `thanks-${w}.png`));
   }
+
+  // Your text while the quiz API is off: the early-access panel with its inline email form.
+  quizDisabled = true;
+  await fresh(lang, 375, 812, true);
+  await page.click('#tab-own');
+  await s.wait(300);
+  const photo = SAMPLES.find((x) => x.id === 'photosynthesis');
+  await page.type('#lesson', photo.text[lang] || photo.text.en);
+  await page.click('#gen-btn');
+  await page.waitFor(`document.querySelector('#quiz-body .ea')`, 8000);
+  await demoTop(true);
+  await page.shot(resolve(SHOTS, 'demo-early-access-375.png'));
+  quizDisabled = false;
+
+  // Ready examples in the dark theme.
+  await fresh(lang, 375, 812, true, 'dark');
+  await showSample('photosynthesis', lang);
+  await demoTop(true);
+  await page.shot(resolve(SHOTS, 'demo-samples-375-dark.png'));
   console.log('shots written to', SHOTS);
 }
 
