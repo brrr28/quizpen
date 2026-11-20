@@ -1,6 +1,7 @@
 // Dev stand for headless checks: starts the backend mock, the static server and a
 // headless Chrome, and gives a tiny CDP client. Everything is stopped by stop().
-// Used by web/dev/check.mjs and web/dev/shoot.mjs. Node 22 (global WebSocket and fetch).
+// Used by web/dev/*-check.mjs and web/dev/shoot.mjs. Node 22 (global WebSocket and fetch).
+// QP_CHROME_PROFILE picks the Chrome profile folder (slow-check.mjs uses a fresh one per run).
 
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
