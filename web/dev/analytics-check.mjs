@@ -166,10 +166,10 @@ async function landingFlow(page) {
     await page.click('#quiz-body [data-next]');
   }
   await page.click('#quiz-body [data-copy-quiz]');
-  await page.clickText('Share with class');
+  await page.clickText('Share with your class');
   await page.waitFor(`!!document.querySelector('dialog[open]')`);
   await page.eval(`document.querySelectorAll('dialog[open]').forEach((d) => d.close())`);
-  await page.clickText('Preview as student');
+  await page.clickText('Preview as a student');
   const playLink = await page.waitFor(`document.querySelector('dialog[open] .play-frame')?.src || null`);
   await page.eval(`document.querySelectorAll('dialog[open]').forEach((d) => d.close())`);
   await page.eval(`(() => { const e = document.getElementById('email'); e.value = 'teacher@example.org'; e.dispatchEvent(new Event('input', { bubbles: true })); })()`);

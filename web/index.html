@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quizpen: turn lesson text into a quiz in seconds</title>
-  <meta name="description" content="Quizpen turns your lesson text into a multiple-choice quiz in the same language, with a one-sentence reason for each answer. Try a ready example and join the waitlist for teachers.">
-  <meta name="theme-color" content="#F6F6F2" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0E1220" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="Paste your lesson text and Quizpen writes a multiple-choice quiz in the same language. Each correct answer comes with a one-sentence reason. Try a ready example, then join the teacher waitlist.">
+  <meta name="theme-color" content="#FBF8F0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#22252B" media="(prefers-color-scheme: dark)">
   <script>
     /* Theme before first paint: saved choice (qp_theme), else the system setting. Sync on purpose. */
     (function (d) {
@@ -16,15 +16,15 @@
       d.setAttribute('data-theme', t);
       d.className += ' js';
       var m = document.querySelectorAll('meta[name="theme-color"]');
-      for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#0E1220' : '#F6F6F2');
+      for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#22252B' : '#FBF8F0');
       // Web fonts after the window load event, in one step: the stylesheet and every face (Latin and Cyrillic) load
       // first, then html.wf switches from the metric-matched fallbacks (styles.css). On a slow link their bytes stay
       // off the first paint and the scripts, and the text never reflows face by face as single files arrive.
       window.qpFontsCss = function () {
-        var f = document.fonts, all = [], w = ['400', '500', '600', '700', '800'];
+        var f = document.fonts, all = [];
+        var faces = ['400 1em Literata', '600 1em Literata', 'italic 400 1em Literata', '400 1em "PT Sans"', '700 1em "PT Sans"', '600 1em Caveat'];
         if (!f || !f.load || !window.Promise) { d.className += ' wf'; return; }
-        for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
-        all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
+        for (var j = 0; j < faces.length; j++) all.push(f.load(faces[j], 'aя'));
         Promise.all(all).then(function () {
           d.className += ' wf';
           // ui.js re-measures its reserved heights in the web fonts.
@@ -34,7 +34,7 @@
       var fonts = function () {
         var l = document.createElement('link');
         l.rel = 'stylesheet';
-        l.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap';
+        l.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap';
         l.onload = window.qpFontsCss;
         document.head.appendChild(l);
       };
@@ -42,14 +42,14 @@
     })(document.documentElement);
   </script>
   <!-- Without JS the browser loads the web fonts itself (display=swap); with JS the script above does it after load. -->
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap"></noscript>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap"></noscript>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <!-- Open Graph / Twitter. Replace og.png with an absolute URL after deploy for best scraper support. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Quizpen">
   <meta property="og:title" content="Quizpen: paste a lesson, get a quiz before the bell">
-  <meta property="og:description" content="An AI assistant for teachers. It turns lesson text into a multiple-choice quiz in the same language, with a reason for each correct answer. Try a ready example and join the waitlist.">
+  <meta property="og:description" content="AI quiz maker for teachers. Paste lesson text and get a multiple-choice quiz in the same language. Each correct answer comes with a reason. Try a ready example, then join the waitlist.">
   <meta property="og:image" content="https://brrr28.github.io/quizpen/og.png">
   <meta property="og:url" content="https://brrr28.github.io/quizpen/">
   <meta property="og:image:width" content="1200">
@@ -57,7 +57,7 @@
   <meta property="og:image:alt" content="Quizpen: a paragraph about photosynthesis turned into a multiple-choice question">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Quizpen: paste a lesson, get a quiz before the bell">
-  <meta name="twitter:description" content="Turn lesson text into a multiple-choice quiz in the same language, with a reason for each correct answer. Join the teacher waitlist.">
+  <meta name="twitter:description" content="Paste lesson text and get a multiple-choice quiz in the same language. Each correct answer comes with a reason. Join the teacher waitlist.">
   <meta name="twitter:image" content="https://brrr28.github.io/quizpen/og.png">
 
   <!-- SEO (see ANALYTICS-SEO.md): canonical, language alternates, structured data -->
@@ -77,14 +77,14 @@
         "@id": "https://brrr28.github.io/quizpen/#website",
         "url": "https://brrr28.github.io/quizpen/",
         "name": "Quizpen",
-        "description": "Paste lesson text and get a multiple-choice quiz in the same language, with an answer key and a reason for each correct answer.",
+        "description": "Paste lesson text and get a multiple-choice quiz in the same language. The answer key gives a reason for each correct answer.",
         "inLanguage": ["en", "uk"]
       },
       {
         "@type": "SoftwareApplication",
         "@id": "https://brrr28.github.io/quizpen/#app",
         "name": "Quizpen",
-        "description": "An AI assistant for teachers that turns lesson text into a multiple-choice quiz in the same language, with a one-sentence reason for each correct answer. Students take the quiz from a link without accounts.",
+        "description": "AI quiz maker for teachers. It turns lesson text into a multiple-choice quiz in the same language and gives a one-sentence reason for each correct answer. Students take the quiz from a link without accounts.",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Web",
         "url": "https://brrr28.github.io/quizpen/",
@@ -125,9 +125,6 @@
 <body>
   <!-- Icon sprite (Tabler Icons outline paths, MIT) -->
   <svg width="0" height="0" class="sprite" aria-hidden="true" focusable="false">
-    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9h1"/><path d="M9 13h6"/><path d="M9 17h6"/></symbol>
-    <symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/><path d="M11 6h9"/><path d="M11 12h9"/><path d="M11 18h9"/></symbol>
-    <symbol id="i-printer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2"/><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4"/><path d="M7 15a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z"/></symbol>
     <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></symbol>
@@ -138,7 +135,6 @@
     <symbol id="i-wand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21l15 -15l-3 -3l-15 15l3 3"/><path d="M15 6l3 3"/><path d="M9 3a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2"/><path d="M19 13a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></symbol>
     <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 9h.01"/><path d="M11 12h1v4h1"/></symbol>
   </svg>
 
@@ -147,7 +143,7 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="Quizpen">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
+        <span class="brand-mark" aria-hidden="true">Q</span>
         <span class="brand-name">Quizpen</span>
       </a>
       <nav class="nav" aria-label="Main">
@@ -166,18 +162,25 @@
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
+      <span class="sheet-holes" aria-hidden="true"><i></i><i></i><i></i></span>
       <div class="wrap hero-grid">
+        <div class="sheet-fields" aria-hidden="true">
+          <span data-i18n="sheet.name" data-rsv="Name&#10;Ім’я">Name</span><i class="f-name"></i>
+          <span data-i18n="sheet.class" data-rsv="Class&#10;Клас">Class</span><i class="f-class"></i>
+          <span data-i18n="sheet.date" data-rsv="Date&#10;Дата">Date</span><i class="f-date"></i>
+          <span class="f-score" data-i18n="sheet.score" data-rsv="Score&#10;Бали">Score</span><i class="f-score"></i><span class="f-score f-of">/ 10</span>
+        </div>
         <div class="hero-copy">
-          <p class="kicker" data-i18n="hero.kicker">An AI assistant for teachers</p>
-          <h1 id="hero-title" data-rsv-key="hero.title" data-rsv-en="Paste a lesson. Get a quiz before the bell." data-rsv-uk="Вставте текст уроку. Отримайте тест ще до дзвінка."><span data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</span></h1>
-          <p class="hero-sub" data-i18n="hero.sub" data-rsv-en="Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question." data-rsv-uk="Вставте будь-який текст, за яким ведете урок: параграф підручника, свій конспект чи статтю. Quizpen складе з нього тест із ключем відповідей і коротким поясненням до кожного питання.">Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.</p>
+          <p class="kicker" data-i18n="hero.kicker">AI quiz maker for teachers</p>
+          <h1 id="hero-title" data-rsv-key="hero.title" data-rsv-en="Paste a lesson.&#10;Get a quiz before the bell." data-rsv-uk="Вставте текст уроку.&#10;Отримайте тест ще до дзвінка."><span data-i18n-html="hero.title"><span class="h1-line">Paste a lesson.</span> <span class="h1-line">Get a quiz before the bell.</span></span></h1>
+          <p class="hero-sub" data-i18n="hero.sub" data-rsv-en="Start with a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it. The answer key explains each correct answer in one sentence." data-rsv-uk="Візьміть параграф підручника, свій конспект чи статтю. Quizpen складе з цього тексту тест із варіантами відповідей. Ключ пояснює кожну правильну відповідь одним реченням.">Start with a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it. The answer key explains each correct answer in one sentence.</p>
 
           <div class="join-slot" id="join-slot">
             <form id="join-form" class="join" novalidate>
               <label for="email" class="join-label" data-i18n="form.label">Email for early access</label>
               <div class="join-row">
                 <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="name@school.org" aria-describedby="join-msg join-note" data-i18n-attr="placeholder:form.placeholder">
-                <button type="submit" class="btn btn-accent btn-lg join-btn" id="join-btn">
+                <button type="submit" class="btn btn-ink btn-lg join-btn" id="join-btn">
                   <span class="btn-label" data-i18n="cta" data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span>
                   <span class="spinner" aria-hidden="true"></span>
                 </button>
@@ -192,7 +195,7 @@
 
             <div id="thanks" class="thanks" hidden>
               <div class="thanks-head">
-                <span class="thanks-badge" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                <span class="thanks-badge" aria-hidden="true"><svg width="34" height="28" viewBox="0 0 34 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path pathLength="1" d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg></span>
                 <div>
                   <h2 id="thanks-title" class="thanks-title" tabindex="-1"></h2>
                   <p id="thanks-body" class="thanks-body"></p>
@@ -215,31 +218,20 @@
             </div>
           </div>
 
-          <p class="counter" data-counter aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
+          <p class="counter" data-counter aria-live="polite"><svg class="counter-tally" width="34" height="18" viewBox="0 0 34 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 2.5 L4.6 16"/><path d="M10 2 L10.3 16.2"/><path d="M16 2.6 L15.7 15.8"/><path d="M21.8 2.2 L22.2 16"/><path d="M1.5 13.5 L31.5 4.5"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
           <a class="try-link" href="#demo"><span data-i18n="hero.try" data-rsv="Try a ready example, no signup&#10;Спробуйте готовий приклад, без реєстрації">Try a ready example, no signup</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
 
         <div class="hero-art" aria-hidden="true">
-          <div class="art-source">
-            <span class="art-label" data-i18n="art.label">Your lesson text</span>
-            <p data-i18n-html="art.source">Chlorophyll absorbs red and blue light and <mark class="hl hl-art">reflects green light</mark>, which is why most leaves look green.</p>
-            <span class="art-lines"><i></i><i></i><i></i></span>
-          </div>
-          <svg class="art-arrow" viewBox="0 0 80 70" fill="none"><path d="M8 6c30 2 52 18 56 50" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 6"/><path d="M54 48l10 10l8 -12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="art-quiz">
-            <div class="art-top">
-              <span data-i18n="art.progress">Question 2 of 5</span>
-              <span class="art-dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span>
-            </div>
-            <p class="art-q" data-i18n="art.q">Why do most leaves look green?</p>
-            <ul class="art-opts">
-              <li><b>A</b><span data-i18n="art.a">They absorb green light</span></li>
-              <li class="is-right"><b>B</b><span data-i18n="art.b">Chlorophyll reflects green light</span><svg class="icon art-tick"><use href="#i-check"/></svg></li>
-              <li><b>C</b><span data-i18n="art.c">Their cells hold green water</span></li>
-              <li><b>D</b><span data-i18n="art.d">Sunlight is mostly green</span></li>
-            </ul>
-            <p class="art-explain" data-i18n="art.explain">Chlorophyll reflects green, so green is what reaches our eyes.</p>
-          </div>
+          <p class="art-q"><span class="art-num">1.</span><span data-i18n="art.q">Why do most leaves look green?</span></p>
+          <ul class="art-opts">
+            <li><span class="art-letter">A</span><span data-i18n="art.a">They absorb green light</span></li>
+            <li class="is-right"><span class="art-letter">B<svg class="art-loop" viewBox="0 0 46 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path pathLength="1" d="M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11"/></svg></span><span data-i18n="art.b">Chlorophyll reflects green light</span><svg class="art-tick" viewBox="0 0 34 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path pathLength="1" d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg></li>
+            <li><span class="art-letter">C</span><span data-i18n="art.c">Their cells hold green water</span></li>
+            <li><span class="art-letter">D</span><span data-i18n="art.d">Sunlight is mostly green</span></li>
+          </ul>
+          <p class="art-why"><span data-i18n="art.explain">Chlorophyll reflects green, so green is what reaches our eyes.</span></p>
+          <p class="art-note"><svg class="art-arrow" viewBox="0 0 40 60" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M10 56 C26 42 28 24 20 6"/><path d="M12 15 L20 5 L29 13"/></svg><span data-i18n-html="art.note">the right answer<br>and why it's right</span></p>
         </div>
       </div>
     </section>
@@ -248,7 +240,7 @@
       <div class="wrap">
         <div class="demo-head">
           <h2 id="demo-title" data-i18n="demo.title">See it on a real lesson</h2>
-          <p data-i18n="demo.sub">Ready examples open at once and need no signup. Quizzes from your own text are in early access for now. We don't store your text.</p>
+          <p data-i18n="demo.sub">Pick a ready example to see the quiz right away. Quizzes from your own text are in early access for now. We don't store the text you paste.</p>
         </div>
         <div class="demo-tabs" id="demo-tabs" role="tablist" aria-labelledby="demo-title">
           <button type="button" class="demo-tab" role="tab" id="tab-samples" aria-controls="pane-samples" aria-selected="true" tabindex="0"><span data-i18n="demo.tabSamples" data-rsv="Ready examples&#10;Готові приклади">Ready examples</span></button>
@@ -258,10 +250,10 @@
           <div class="demo-input demo-panes">
             <div class="demo-pane" id="pane-samples" role="tabpanel" aria-labelledby="tab-samples">
               <div class="chips" id="sample-chips" role="group" aria-labelledby="tab-samples"></div>
-              <p class="demo-langnote" data-i18n="demo.langNote">The quiz comes out in the language of the text.</p>
+              <p class="demo-langnote" data-i18n="demo.langNote">The quiz comes out in the same language as the text.</p>
               <p class="demo-label" id="sample-text-label" data-i18n="demo.label">Lesson text</p>
               <div class="sample-text" id="sample-text" role="region" tabindex="0" aria-labelledby="sample-text-label"></div>
-              <button type="button" class="btn btn-accent btn-lg gen-btn" id="show-btn">
+              <button type="button" class="btn btn-ink btn-lg gen-btn" id="show-btn">
                 <span class="btn-label" data-i18n="demo.show" data-rsv="Show the quiz&#10;Показати тест">Show the quiz</span>
                 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
               </button>
@@ -269,13 +261,13 @@
             <div class="demo-pane is-off" id="pane-own" role="tabpanel" aria-labelledby="tab-own" inert aria-hidden="true">
               <form class="demo-form" id="demo-form" novalidate>
                 <label for="lesson" class="demo-label" data-i18n="demo.label">Lesson text</label>
-                <textarea id="lesson" name="lesson" maxlength="3000" rows="11" placeholder="Paste 200 to 3000 characters: a textbook page, your notes or an article." aria-describedby="lesson-meta lesson-error" data-i18n-attr="placeholder:demo.placeholder"></textarea>
+                <textarea id="lesson" name="lesson" maxlength="3000" rows="11" placeholder="Paste 200 to 3,000 characters from a textbook page, your notes or an article." aria-describedby="lesson-meta lesson-error" data-i18n-attr="placeholder:demo.placeholder"></textarea>
                 <div class="demo-meta" id="lesson-meta">
                   <span id="lesson-count" class="mono">0 / 3000</span>
                   <span id="lesson-need"></span>
                 </div>
                 <p id="lesson-error" class="field-msg is-error" aria-live="polite"></p>
-                <button type="submit" class="btn btn-accent btn-lg gen-btn" id="gen-btn">
+                <button type="submit" class="btn btn-ink btn-lg gen-btn" id="gen-btn">
                   <svg class="icon" aria-hidden="true"><use href="#i-wand"/></svg>
                   <span class="btn-label" data-i18n="demo.generate">Generate quiz</span>
                   <span class="spinner" aria-hidden="true"></span>
@@ -289,7 +281,7 @@
             <div class="quiz-empty" id="quiz-empty">
               <div class="empty-stack" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
               <p class="empty-title" data-i18n="quiz.emptyTitle">Your quiz will appear here</p>
-              <p class="empty-sub" data-i18n="quiz.emptySub">Five questions, four options each: one correct answer, three plausible wrong ones, and a one-line reason for the correct one.</p>
+              <p class="empty-sub" data-i18n="quiz.emptySub">Five questions with four options each. Three options are plausible but wrong. The right one comes with a one-line reason.</p>
             </div>
             <div class="quiz-body" id="quiz-body" hidden></div>
             <p class="sr-only" id="quiz-status" aria-live="polite"></p>
@@ -302,44 +294,44 @@
       <div class="wrap features-grid">
         <div class="features-head">
           <h2 id="features-title" data-i18n="features.title">What Quizpen does for you</h2>
-          <p data-i18n="features.sub">Start with the material you already teach from and finish with questions your students can answer.</p>
+          <p data-i18n="features.sub">Bring the text you already teach from. Quizpen turns it into questions for your class.</p>
         </div>
-        <ul class="feature-list">
+        <ol class="feature-list" role="list">
           <li class="feature">
-            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-file"/></svg></span>
+            <span class="feature-num" aria-hidden="true">1</span>
             <div>
               <h3 data-i18n="f1.t">From your text, in the same language</h3>
-              <p data-i18n="f1.d">Paste a textbook page, your notes or an article. Every question comes from that text. If the text is in Spanish, the quiz is in Spanish too.</p>
+              <p data-i18n="f1.d">Every question comes from the text you paste, so the quiz sticks to what you taught. Paste a text in Spanish and you get the quiz in Spanish.</p>
             </div>
           </li>
           <li class="feature">
-            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-checklist"/></svg></span>
+            <span class="feature-num" aria-hidden="true">2</span>
             <div>
               <h3 data-i18n="f2.t">An answer key you can check at a glance</h3>
-              <p data-i18n="f2.d">Each correct answer has a one-sentence reason from your text. The correct option sits under different letters, A to D, so students can't guess a pattern.</p>
+              <p data-i18n="f2.d">Each correct answer comes with a one-sentence reason that points back to your text. Right answers land on different letters, A to D, so students can't follow a pattern.</p>
             </div>
           </li>
           <li class="feature">
-            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-printer"/></svg></span>
+            <span class="feature-num" aria-hidden="true">3</span>
             <div>
               <h3 data-i18n="f3.t">Students open it from a link</h3>
-              <p data-i18n="f3.d">Send a link or show a QR code on the screen. Students take the quiz without accounts, and we collect no student data. Prefer paper? Copy the quiz in one click and print it as a worksheet.</p>
+              <p data-i18n="f3.d">Send a link or put the QR code up on the board. Students don't need accounts, and we collect no data about them. For paper, copy the quiz in one click and print it as a worksheet.</p>
             </div>
           </li>
-        </ul>
+        </ol>
       </div>
     </section>
 
     <section class="proof" id="why" aria-labelledby="proof-title">
-      <div class="wrap">
+      <div class="wrap proof-grid">
         <h2 id="proof-title" data-i18n="proof.title">Why we're building this</h2>
         <ol class="facts">
-          <li class="fact"><p><span data-i18n-html="proof.1"><strong>About 1 in 3 teachers</strong> in OECD countries already use AI in their work. In Singapore and the UAE it is up to 75%.</span><sup><a href="#src-1" aria-label="Source 1">1</a></sup></p></li>
-          <li class="fact"><p><span data-i18n-html="proof.2"><strong>66% of teachers</strong> think AI can give wrong or inappropriate recommendations. That is why every correct answer in Quizpen comes with a reason you can check against your text.</span><sup><a href="#src-2" aria-label="Source 2">2</a></sup></p></li>
-          <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practiced recalling it remembered more than students who read it again.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
+          <li class="fact"><p><span data-i18n-html="proof.1"><strong>About 1 in 3 teachers</strong> in OECD countries already use AI in their work. In Singapore and the UAE, up to 75% do.</span><sup><a href="#src-1" aria-label="Source 1">1</a></sup></p></li>
+          <li class="fact"><p><span data-i18n-html="proof.2"><strong>66% of teachers</strong> think AI can give wrong or inappropriate recommendations. That's why every correct answer in Quizpen comes with a reason you can check against your text.</span><sup><a href="#src-2" aria-label="Source 2">2</a></sup></p></li>
+          <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats rereading.</strong> A week after studying a text, students who practiced recalling it remembered more than those who reread it.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
         </ol>
         <div class="proof-foot">
-          <p class="counter counter-lg" data-counter><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
+          <p class="counter counter-lg" data-counter><svg class="counter-tally" width="34" height="18" viewBox="0 0 34 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 2.5 L4.6 16"/><path d="M10 2 L10.3 16.2"/><path d="M16 2.6 L15.7 15.8"/><path d="M21.8 2.2 L22.2 16"/><path d="M1.5 13.5 L31.5 4.5"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
           <ol class="sources">
             <li id="src-1" data-i18n-html="src.1"><a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">OECD, Results from TALIS 2024</a>, the Teaching and Learning International Survey.</li>
             <li id="src-2" data-i18n-html="src.2"><a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International, "Using artificial intelligence: takeaways from TALIS 2024"</a>.</li>
@@ -354,28 +346,28 @@
         <h2 id="faq-title" data-i18n="faq.title">Questions teachers ask</h2>
         <div class="faq-list">
           <details>
-            <summary><span data-i18n="faq.q1">When can I start using Quizpen?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a1">We're opening access in small groups, in the order teachers joined. We'll send one email when your spot opens.</p>
+            <summary><span data-i18n="faq.q1">When can I start using Quizpen?</span><svg class="faq-pm" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path class="faq-pm-v" d="M12 5v14"/></svg></summary>
+            <p data-i18n="faq.a1">We're opening access in small groups, in the order teachers joined. You'll get one email when it's your turn.</p>
           </details>
           <details>
-            <summary><span data-i18n="faq.q2">Will it cost anything?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <summary><span data-i18n="faq.q2">Will it cost anything?</span><svg class="faq-pm" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path class="faq-pm-v" d="M12 5v14"/></svg></summary>
             <p data-i18n="faq.a2">Early access is free for teachers on the waitlist. If we add paid plans later, you'll hear about it before anything changes.</p>
           </details>
           <details>
-            <summary><span data-i18n="faq.q3">Which subjects and languages does it work for?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a3">Any subject you teach from text: history, biology, geography, literature and more. The quiz comes out in the language of the text you paste. You can see it in the ready examples in Spanish and Polish.</p>
+            <summary><span data-i18n="faq.q3">Which subjects and languages does it work for?</span><svg class="faq-pm" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path class="faq-pm-v" d="M12 5v14"/></svg></summary>
+            <p data-i18n="faq.a3">Any subject you teach from text, such as history, biology, geography or literature. The quiz comes out in the language of the text you paste. Try the Spanish and Polish examples to see it.</p>
           </details>
           <details>
-            <summary><span data-i18n="faq.q4">How is this different from ChatGPT or Gemini?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a4">No prompt to write: paste the text and get the quiz. Next to each correct answer is a reason from your text. Students take the quiz from a link and need no accounts. You can use Quizpen alongside them: the quiz copies in one click.</p>
+            <summary><span data-i18n="faq.q4">How is this different from ChatGPT or Gemini?</span><svg class="faq-pm" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path class="faq-pm-v" d="M12 5v14"/></svg></summary>
+            <p data-i18n="faq.a4">You don't write a prompt. Paste the text and you get a finished quiz with a reason for each correct answer. Students take it from a link, no accounts needed. The quiz copies in one click, so you can use it alongside them.</p>
           </details>
           <details>
-            <summary><span data-i18n="faq.q5">Can I trust the answer key?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a5">AI can still make mistakes, so look the quiz over before class. The reason line makes this quick: it shows which part of your text each answer comes from.</p>
+            <summary><span data-i18n="faq.q5">Can I trust the answer key?</span><svg class="faq-pm" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path class="faq-pm-v" d="M12 5v14"/></svg></summary>
+            <p data-i18n="faq.a5">AI can still get things wrong, so look the quiz over before class. The reason line makes that quick. It shows which part of your text each answer comes from.</p>
           </details>
           <details>
-            <summary><span data-i18n="faq.q6">What happens to my text and my students' data?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
-            <p data-i18n="faq.a6">Your text goes to an AI model only to write the quiz, and we don't store it. Students don't create accounts, and we collect no student data. Paste lesson material and leave out student names and other personal details.</p>
+            <summary><span data-i18n="faq.q6">What happens to my text and my students' data?</span><svg class="faq-pm" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path class="faq-pm-v" d="M12 5v14"/></svg></summary>
+            <p data-i18n="faq.a6">Your text goes to an AI model only to write the quiz. We don't store it. Students don't create accounts, and we collect no data about them. Paste lesson material only, without student names or other personal details.</p>
           </details>
         </div>
       </div>
@@ -383,6 +375,7 @@
 
     <section class="final" id="final" aria-labelledby="final-title">
       <div class="wrap final-inner">
+        <svg class="final-cut" viewBox="0 0 30 18" width="30" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="5.5" cy="4.5" r="3.5"/><circle cx="5.5" cy="13.5" r="3.5"/><path d="M8.5 6.5 L27 14"/><path d="M8.5 11.5 L27 4"/></svg>
         <h2 id="final-title" data-i18n="final.title">Get Quizpen before your next unit starts.</h2>
         <button type="button" class="btn btn-ink btn-lg" data-scroll-join><span data-i18n="cta" data-cta-final data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       </div>
@@ -392,7 +385,7 @@
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <span class="brand brand-sm">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
+        <span class="brand-mark" aria-hidden="true">Q</span>
         <span class="brand-name">Quizpen</span>
       </span>
       <p data-i18n="footer.privacy" data-rsv="We use your email only to tell you about access.&#10;Вашу пошту використовуємо лише для листа про доступ.">We use your email only to tell you about access.</p>

@@ -2,7 +2,7 @@
    (localStorage qp_theme, same origin) or else the system setting. A separate file because the
    player's CSP allows no inline script. */
 (function (d) {
-  var KEY = 'qp_theme', COLOR = { light: '#F6F6F2', dark: '#0E1220' };
+  var KEY = 'qp_theme', COLOR = { light: '#FBF8F0', dark: '#22252B' };
   var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
   function saved() {
     try { var v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : null; } catch (e) { return null; }

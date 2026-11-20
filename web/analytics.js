@@ -160,13 +160,13 @@
   var TEXT = {
     en: {
       label: 'Analytics consent',
-      body: 'Help us improve this page: allow anonymous heatmaps and session replays{via}. Your email and lesson text are hidden in replays.',
+      body: 'We would like to use anonymous heatmaps and session replays{via} to improve this page. Your email and lesson text stay hidden in replays.',
       via: CLARITY ? ' via Microsoft Clarity' : ' via PostHog',
       yes: 'Allow analytics', no: 'No thanks', settings: 'Analytics settings'
     },
     uk: {
       label: 'Згода на аналітику',
-      body: 'Допоможіть нам покращити сторінку: дозвольте анонімні теплові карти й записи сесій{via}. Email і текст уроку в записах приховані.',
+      body: 'Ми хотіли б використовувати анонімні теплові карти й записи сесій{via}, щоб покращити сторінку. Вашу пошту й текст уроку в записах приховано.',
       via: CLARITY ? ' через Microsoft Clarity' : ' через PostHog',
       yes: 'Дозволити аналітику', no: 'Ні, дякую', settings: 'Налаштування аналітики'
     }

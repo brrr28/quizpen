@@ -1,39 +1,71 @@
+/* Quizpen strict version: the landing's worksheet, simpler. Paper, the red margin line, ink type, the email as
+   an answer line on the sheet, a square ink button, a red-pen tick on the thank-you. */
 :root {
-  --paper: #F6F6F2; --surface: #FDFDFB; --ink: #161B2E; --ink-2: #474D64; --ink-3: #5C627A;
-  --line-strong: #C7C9C0; --accent: #F2E14A; --accent-hover: #E6D332;
-  --right: #156B42; --right-bg: #E1F1E7; --right-line: #8FCBA8; --wrong: #A8372B;
-  --font: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
-  --r: 12px;
+  --paper: #FBF8F0; --ink: #1F2A44; --ink-2: #3B4256; --ink-3: #5E6470; --ink-hover: #2A3150;
+  --line-strong: #CCC3AE; --pen: #C8312B; --margin: #E58A8A; --right: #1D6B3A;
+  --font: "PT Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif: "Literata", Georgia, "Times New Roman", serif;
+  /* x of the red margin line and the gap from it to the text (the landing's values) */
+  --sheet-line: 28px; --sheet-gap: 16px;
 }
+@media (min-width: 640px) { :root { --sheet-line: 48px; --sheet-gap: 32px; } }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.55 var(--font); -webkit-text-size-adjust: 100%; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 40px 16px 24px; }
-.brand { margin: 0 0 24px; font-weight: 800; letter-spacing: -0.01em; }
-h1 { margin: 0 0 16px; font-size: clamp(2rem, 7vw, 3rem); line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; }
-.lede { margin: 0 0 24px; font-size: 1.125rem; color: var(--ink-2); }
-.features { margin: 0 0 32px; padding-left: 1.2em; }
-.features li { margin-bottom: 6px; }
-label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
-.row { display: flex; gap: 8px; }
-input[type=email] { flex: 1; min-width: 0; height: 48px; padding: 0 14px; font: inherit; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--r); }
-input[aria-invalid=true] { border-color: var(--wrong); }
-button { height: 48px; padding: 0 20px; font: 600 1rem var(--font); color: var(--ink); background: var(--accent); border: 0; border-radius: var(--r); cursor: pointer; white-space: nowrap; }
-button:hover:not(:disabled) { background: var(--accent-hover); }
-button:disabled { opacity: 0.6; cursor: progress; }
+html { background: var(--paper); }
+body {
+  position: relative; max-width: 760px; min-height: 100vh; margin: 0 auto;
+  color: var(--ink); font: 400 1rem/1.55 var(--font); -webkit-text-size-adjust: 100%;
+}
+body::before { content: ""; position: absolute; top: 0; bottom: 0; left: var(--sheet-line); border-left: 1.5px solid var(--margin); pointer-events: none; }
+.wrap, .foot { padding-left: calc(var(--sheet-line) + var(--sheet-gap)); padding-right: 20px; }
+.wrap { padding-top: 32px; padding-bottom: 24px; }
+.brand { display: flex; align-items: center; gap: 10px; margin: 0 0 32px; font: 600 1.25rem/1 var(--serif); }
+.brand::before {
+  content: "Q"; content: "Q" / "";
+  display: inline-grid; place-items: center; width: 30px; height: 30px;
+  border: 1.5px solid var(--ink); border-radius: 50%; font-size: 0.85rem;
+}
+h1 { margin: 0 0 16px; font: 600 clamp(2rem, 7vw, 3rem)/1.12 var(--serif); letter-spacing: -0.01em; text-wrap: balance; }
+.lede { margin: 0 0 24px; font-family: var(--serif); font-size: 1.125rem; color: var(--ink-2); }
+/* Three features as a numbered list with circled numbers */
+.features { counter-reset: f; list-style: none; margin: 0 0 36px; padding: 0; }
+.features li { counter-increment: f; position: relative; margin-bottom: 10px; padding-left: 38px; }
+.features li::before {
+  content: counter(f); position: absolute; left: 0; top: 0;
+  display: grid; place-items: center; width: 24px; height: 24px;
+  border: 1.25px solid var(--ink); border-radius: 50%; font-size: 0.8rem; font-weight: 700; line-height: 1;
+}
+label { display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.row { display: flex; align-items: flex-end; gap: 12px; }
+/* The email is an answer line: no box, an ink rule under the text */
+input[type=email] {
+  flex: 1; min-width: 0; height: 48px; padding: 0 2px;
+  font: 400 1.0625rem var(--serif); color: var(--ink);
+  background: transparent; border: 0; border-bottom: 1.5px solid var(--ink); border-radius: 0;
+}
+input[type=email]::placeholder { color: var(--ink-3); opacity: 1; }
+input[aria-invalid=true] { border-bottom-color: var(--pen); border-bottom-width: 2px; }
+button { height: 48px; padding: 0 22px; font: 700 1rem var(--font); color: var(--paper); background: var(--ink); border: 0; border-radius: 0; cursor: pointer; white-space: nowrap; }
+button:hover:not(:disabled) { background: var(--ink-hover); }
+button:disabled { opacity: 0.7; cursor: progress; }
 :focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.error { min-height: 1.4em; margin: 8px 0 0; color: var(--wrong); font-size: 0.9rem; }
-.thanks { margin: 0; padding: 16px; font-size: 1.125rem; font-weight: 600; color: var(--right); background: var(--right-bg); border: 1px solid var(--right-line); border-radius: var(--r); }
+.error { min-height: 1.4em; margin: 8px 0 0; color: var(--pen); font-size: 0.9rem; }
+/* Thank-you: a note on the sheet with a red-pen tick */
+.thanks { position: relative; margin: 0; padding: 6px 0 6px 36px; font: 600 1.25rem/1.4 var(--serif); color: var(--ink); }
+.thanks::before {
+  content: ""; position: absolute; left: 8px; top: 9px; width: 10px; height: 20px;
+  border: solid var(--pen); border-width: 0 3px 3px 0; transform: rotate(40deg);
+}
+.thanks:focus { outline: none; }
 .thanks[hidden], form[hidden] { display: none; }
-.counter { margin: 12px 0 32px; font: 500 0.85rem var(--mono); color: var(--ink-3); }
-.proof { margin: 0; padding-top: 20px; border-top: 1px solid var(--line-strong); font-size: 0.9rem; color: var(--ink-2); }
+.counter { margin: 12px 0 36px; font-size: 0.875rem; font-variant-numeric: tabular-nums; color: var(--ink-3); }
+.proof { margin: 0; padding-top: 16px; border-top: 1px solid var(--line-strong); font-size: 0.9rem; color: var(--ink-2); }
 .proof strong { color: var(--ink); }
-a { color: inherit; }
-.foot { max-width: 640px; margin: 0 auto; padding: 8px 16px 40px; font-size: 0.85rem; color: var(--ink-3); }
+a { color: inherit; text-underline-offset: 3px; }
+.foot { padding-top: 8px; padding-bottom: 40px; font-size: 0.875rem; color: var(--ink-3); }
 @media (max-width: 480px) {
-  .row { flex-direction: column; }
+  .row { flex-direction: column; align-items: stretch; }
   input[type=email] { flex: none; }
-  button { width: 100%; }
+  button { width: 100%; margin-top: 8px; }
 }
 @media (min-width: 900px) { .wrap { padding-top: 96px; } }
