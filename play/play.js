@@ -104,6 +104,25 @@
     PATHS[name].forEach(function (d) { var p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); svg.appendChild(p); });
     return svg;
   }
+  // Red pen marks drawn by hand (the landing's loop and tick paths): [viewBox, stroke width, path].
+  var PEN = {
+    tick: ['0 0 34 28', 3, 'M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2'],
+    loop: ['0 0 46 40', 2.2, 'M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11'],
+    score: ['0 0 168 108', 2.5, 'M99 12 C51 5 13 24 16 54 C20 84 69 101 113 92 C150 84 162 57 146 34 C133 16 102 8 69 15 C55 18 44 23 38 30']
+  };
+  function penMark(name, cls) {
+    var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'), p = document.createElementNS(NS, 'path');
+    svg.setAttribute('viewBox', PEN[name][0]);
+    svg.setAttribute('class', 'pen ' + cls);
+    svg.setAttribute('stroke-width', String(PEN[name][1]));
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    // pathLength 1 lets CSS draw the stroke in (stroke-dasharray 1).
+    p.setAttribute('pathLength', '1');
+    p.setAttribute('d', PEN[name][2]);
+    svg.appendChild(p);
+    return svg;
+  }
   function show(screen, focusEl) {
     app.textContent = '';
     app.appendChild(screen);
@@ -186,8 +205,9 @@
 
     list.querySelectorAll('.opt').forEach(function (b, j) {
       b.disabled = true;
-      if (j === q.answer) { b.classList.add('is-right'); b.appendChild(icon('check', 'opt-mark')); }
-      else if (j === k) { b.classList.add('is-wrong'); b.appendChild(icon('x', 'opt-mark')); }
+      // The right letter is circled and ticked in red pen; a wrong pick is struck out (play.css).
+      if (j === q.answer) { b.classList.add('is-right'); b.firstChild.appendChild(penMark('loop', 'opt-loop')); b.appendChild(penMark('tick', 'opt-tick')); }
+      else if (j === k) b.classList.add('is-wrong');
       else b.classList.add('is-dim');
       if (j === k) b.classList.add('is-picked');
     });
@@ -232,7 +252,8 @@
     add(s,
       stars,
       msg,
-      h('p', 'final-score', r.right + '/' + r.n),
+      // The mark circled in red pen; the loop has no text, so textContent stays "right/n".
+      add(h('p', 'final-score'), h('span', null, r.right + '/' + r.n), penMark('score', 'final-loop')),
       h('p', 'final-sub', t('score', { s: r.right, n: r.n })),
       state.best >= 2 ? add(h('p', 'final-best'), icon('bolt'), h('span', null, t('best', { n: state.best }))) : null,
       add(h('div', 'actions'),
