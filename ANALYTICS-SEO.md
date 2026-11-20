@@ -1,60 +1,60 @@
-# Аналитика и SEO Quizpen
+# Quizpen analytics and SEO
 
-Сайт: https://brrr28.github.io/quizpen/ . Код: `web/analytics.js` (подключён в `web/index.html` и `web/spec/index.html`), ключи в `web/config.js`.
+Site: https://brrr28.github.io/quizpen/ . Code: `web/analytics.js` (included in `web/index.html` and `web/spec/index.html`), keys in `web/config.js`.
 
-## Что собираем и зачем
+## What is collected and why
 
-**PostHog (EU, eu.i.posthog.com)** — воронка: сколько учителей доходят от лендинга до записи в список и помогает ли демо.
-Без cookies и localStorage (persistence `memory`): у каждой загрузки страницы свой анонимный id, профилей нет, IP можно отбросить в настройках проекта. Автосбор кликов выключен, считаются только наши события.
+**PostHog (EU, eu.i.posthog.com)** is used for the funnel: how many teachers get from the landing page to the waitlist, and whether the demo helps.
+No cookies and no localStorage (persistence `memory`): every page load gets its own anonymous id, there are no profiles, and IP capture can be discarded in the project settings. Autocapture of clicks is off; only our own events are counted.
 
-| Событие | Когда | Свойства |
+| Event | When | Properties |
 |---|---|---|
-| `landing_viewed` | открыт лендинг или spec | `lang`, `has_ref` |
-| `demo_started` | нажали «Создать тест» | `sample` (id готового примера или `custom`), `lang` |
-| `quiz_generated` | тест показан или ошибка | `ok`, `ms`, `source` (`live` / `fallback`) |
-| `quiz_answered`, `quiz_completed` | ответ на вопрос, конец теста | `index`, `correct` / `score`, `questions` |
-| `quiz_copied`, `share_opened`, `student_preview_opened` | копирование теста, «Поделиться с классом», «Превью для ученика» | — |
-| `signup_submitted`, `signup_succeeded` | отправка и успех записи | `has_ref`, `already`, `demo_used` |
-| `referral_link_copied`, `referral_shared` | своя реферальная ссылка | `channel` |
-| `lang_switched`, `theme_toggled`, `consent_chosen` | язык, тема, выбор по аналитике | `from`/`to`, `theme`, `choice` |
+| `landing_viewed` | landing or spec page opened | `lang`, `has_ref` |
+| `demo_started` | "Create quiz" pressed | `sample` (id of a ready example, or `custom`), `lang` |
+| `quiz_generated` | quiz shown or an error | `ok`, `ms`, `source` (`live` / `fallback`) |
+| `quiz_answered`, `quiz_completed` | a question answered, quiz finished | `index`, `correct` / `score`, `questions` |
+| `quiz_copied`, `share_opened`, `student_preview_opened` | quiz copied, "Share with class", "Student preview" | none |
+| `signup_submitted`, `signup_succeeded` | signup sent and succeeded | `has_ref`, `already`, `demo_used` |
+| `referral_link_copied`, `referral_shared` | the user's own referral link | `channel` |
+| `lang_switched`, `theme_toggled`, `consent_chosen` | language, theme, analytics choice | `from`/`to`, `theme`, `choice` |
 
-Никогда не уходят: почта, текст урока, текст теста, реферальный код, `?ref=` и `#…` из адреса (вычищаются перед отправкой).
+Never sent: email, lesson text, quiz text, referral code, and `?ref=` and `#...` from the URL (they are stripped before sending).
 
-**Microsoft Clarity** — тепловые карты и записи сессий, только после согласия. Поля почты, урока, теста, ссылок и окна «Поделиться» замаскированы.
+**Microsoft Clarity** provides heatmaps and session recordings, only after consent. The email, lesson, quiz, link and "Share" dialog fields are masked.
 
-**Страница ученика (`web/play/`) не шлёт ничего**: там написано, что ответы никуда не отправляются, поэтому `analytics.js` туда не подключён, и CSP страницы блокирует любые запросы. Превью в iframe тоже молчит.
+**The student page (`web/play/`) sends nothing.** It states that answers are not sent anywhere, so `analytics.js` is not included there and the page CSP blocks any requests. The iframe preview is silent too.
 
-## Согласие
+## Consent
 
-- Без ключей в `config.js` ничего не грузится.
-- Do Not Track, Global Privacy Control или «экономия трафика» в браузере — не грузится ничего, даже PostHog.
-- PostHog-события идут сразу (анонимно, без cookies). Clarity и записи сессий PostHog — только после «Allow analytics».
-- Плашка EN/UA внизу, выбор хранится 365 дней (`localStorage.qp_consent`). Отозвать: кнопка «Analytics settings» / «Налаштування аналітики» в подвале.
-- Страница `spec/` — только PostHog, без плашки и без Clarity.
+- Without keys in `config.js`, nothing is loaded.
+- With Do Not Track, Global Privacy Control or the browser's data-saver mode on, nothing is loaded, not even PostHog.
+- PostHog events are sent immediately (anonymous, no cookies). Clarity and PostHog session recordings load only after "Allow analytics".
+- The EN/UA banner sits at the bottom; the choice is stored for 365 days (`localStorage.qp_consent`). To revoke it, use the "Analytics settings" / "Налаштування аналітики" button in the footer.
+- The `spec/` page uses PostHog only, with no banner and no Clarity.
 
-## Воронка в PostHog
+## Funnel in PostHog
 
-eu.posthog.com → Product analytics → New insight → **Funnels**:
+eu.posthog.com -> Product analytics -> New insight -> **Funnels**:
 1. `landing_viewed`
 2. `demo_started`
-3. `quiz_generated` (фильтр `ok = true`)
+3. `quiz_generated` (filter `ok = true`)
 4. `signup_succeeded`
 
-Фильтр `surface = landing` (или `spec` для второго варианта страницы). Окно конверсии — 1 час. Так как id живёт одну загрузку страницы, воронка считает путь внутри одного визита.
-Демо против без демо: Breakdown по `demo_used` на `signup_succeeded`, или две воронки `landing_viewed → signup_succeeded` с шагом-исключением `demo_started` и `landing_viewed → demo_started → signup_succeeded`.
-В настройках проекта включить «Discard client IP data».
+Filter `surface = landing` (or `spec` for the second page variant). Conversion window: 1 hour. Since the id lives for one page load, the funnel counts the path within a single visit.
+Demo vs no demo: Breakdown by `demo_used` on `signup_succeeded`, or two funnels: `landing_viewed -> signup_succeeded` with `demo_started` as an exclusion step, and `landing_viewed -> demo_started -> signup_succeeded`.
+In the project settings, enable "Discard client IP data".
 
-## Тепловые карты Clarity
+## Clarity heatmaps
 
-clarity.microsoft.com → проект Quizpen → **Heatmaps** → страница `brrr28.github.io/quizpen/`; записи — **Recordings**. Данные только от тех, кто нажал «Allow analytics». Маскирование в проекте — Balanced.
+clarity.microsoft.com -> project Quizpen -> **Heatmaps** -> page `brrr28.github.io/quizpen/`; recordings are under **Recordings**. Data comes only from visitors who pressed "Allow analytics". Masking in the project is set to Balanced.
 
-## Search Console и sitemap
+## Search Console and sitemap
 
-- Владение подтверждено HTML-файлом `web/googlecc0c4bdfc53fdacd.html` (лежит на main и gh-pages). **Не удалять** — иначе подтверждение слетит.
-- На странице: canonical, hreflang en / uk / x-default, robots `index,follow`, JSON-LD (WebSite + EducationalApplication, цена 0). `?lang=uk` — свой canonical. `spec/` и `play/` — `noindex,follow`.
-- Sitemap: `https://brrr28.github.io/quizpen/sitemap.xml` (обе языковые версии). После выкладки: Search Console → Sitemaps → добавить `sitemap.xml`; URL Inspection → Request indexing для `/` и `/?lang=uk`.
-- robots.txt не нужен и невозможен: сайт проекта GitHub Pages не может отдать `/robots.txt` в корне домена.
+- Ownership is verified by the HTML file `web/googlecc0c4bdfc53fdacd.html` (present on main and gh-pages). **Do not delete it**, or the verification will be lost.
+- On the page: canonical, hreflang en / uk / x-default, robots `index,follow`, JSON-LD (WebSite + EducationalApplication, price 0). `?lang=uk` has its own canonical. `spec/` and `play/` are `noindex,follow`.
+- Sitemap: `https://brrr28.github.io/quizpen/sitemap.xml` (both language versions). After a release: Search Console -> Sitemaps -> add `sitemap.xml`; URL Inspection -> Request indexing for `/` and `/?lang=uk`.
+- robots.txt is neither needed nor possible: a GitHub Pages project site cannot serve `/robots.txt` at the domain root.
 
-## Проверка
+## Check
 
-`node web/dev/analytics-check.mjs` (через `heavy-run`): свой сервер, headless Chrome, запросы к PostHog и Clarity перехватываются и никуда не уходят, ключи подменяются пустыми или тестовыми.
+`node web/dev/analytics-check.mjs`: starts its own server and headless Chrome; requests to PostHog and Clarity are intercepted and go nowhere, and the keys are replaced with empty or test ones.
