@@ -319,7 +319,9 @@ a:hover { text-decoration-thickness: 2px; }
   transition: text-decoration-color 160ms var(--ease-out);
 }
 .try-link:hover { text-decoration-color: var(--ink); }
-.try-link .icon { width: 18px; height: 18px; transform: rotate(90deg); }
+/* The arrow leads the text (like the counter icon), so it never drifts when the label changes language or wraps. */
+.try-link { align-items: flex-start; }
+.try-link .icon { width: 18px; height: 18px; transform: rotate(90deg); order: -1; flex: none; margin-top: calc((1lh - 18px) / 2); }
 .counter:not(.is-ready) { visibility: hidden; }
 @media (prefers-reduced-motion: no-preference) {
   .counter.is-ready { animation: fade-up 400ms var(--ease-out) both; }
@@ -906,7 +908,9 @@ html.theme-fade .tt * { transition: transform 280ms var(--ease-out), opacity 200
    width of the longest one, the same width the ui.js stack gets later. */
 [data-rsv] { display: inline-flex; flex-direction: column; align-items: center; }
 /* Header nav links keep ::after for the current-section underline (nav.css), so their ghost is ::before. */
-[data-rsv]:not(.nav a)::after, .nav a[data-rsv]::before { content: attr(data-rsv); white-space: pre; height: 0; overflow: hidden; visibility: hidden; }
+/* The second content value gives the ghost empty alternative text, so screen readers never read it
+   (browsers without that syntax keep the first value). */
+[data-rsv]:not(.nav a)::after, .nav a[data-rsv]::before { content: attr(data-rsv); content: attr(data-rsv) / ""; white-space: pre; height: 0; overflow: hidden; visibility: hidden; }
 /* The footer note may wrap on a phone: its ghost wraps too and only sets the width of the longer language
    (element-qualified to outrank the white-space: pre of the generic ghost above). */
 .site-footer p[data-rsv] { align-items: stretch; }
@@ -919,8 +923,8 @@ html.theme-fade .tt * { transition: transform 280ms var(--ease-out), opacity 200
    the height of the taller language at any width. */
 [data-rsv-en] { display: flex; }
 [data-rsv-en]::before, [data-rsv-en]::after { order: -1; flex: none; width: 100%; margin-right: -100%; visibility: hidden; }
-[data-rsv-en]::before { content: attr(data-rsv-en); }
-[data-rsv-en]::after { content: attr(data-rsv-uk); }
+[data-rsv-en]::before { content: attr(data-rsv-en); content: attr(data-rsv-en) / ""; }
+[data-rsv-en]::after { content: attr(data-rsv-uk); content: attr(data-rsv-uk) / ""; }
 /* The headline (text in an inner span, so the <mark> stays inline): each ghost is set in its own language's size
    and measure (the UK headline is smaller and wider), so the box holds the taller real layout in either language. */
 .hero h1[data-rsv-en]::before, .hero h1[data-rsv-en]::after { letter-spacing: -0.035em; }
