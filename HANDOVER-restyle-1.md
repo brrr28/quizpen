@@ -8,15 +8,22 @@ Brief: tokens, fonts, header/rail/drawer, hero, thanks, footer, consent bar, met
 - web/index.html head: meta description fixed; theme-color #FBF8F0 / #22252B (metas and the inline script); fonts script loads faces ['400 1em Literata','600 1em Literata','italic 400 1em Literata','400 1em "PT Sans"','700 1em "PT Sans"','600 1em Caveat'] from
   https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap (also in <noscript>).
 
+## Step 1b (items 1-2 below): DONE, commits e3879e2 (markup) + "Worksheet design, step 1b ..." (styles)
+- index.html: plain h1, circled Q brand (header + footer), .sheet-holes (first child of .hero), .sheet-fields, graded hero-art (art-q/art-num, art-opts with art-letter, art-loop + art-tick pathLength=1, art-why, art-note with up arrow), tally svg in BOTH counters (hero + .counter-lg), red tick in thanks-badge.
+- styles.css: fallbacks, tokens light/dark (dark --shadow-1 override removed, flat everywhere), --serif/--hand/--mono=UI font, --lh/--sheet-line/--sheet-gap/--ruling, margin line on .site-header::before/.hero::before (z-index 1), holes >=640, hero 2 columns >=1100 (1fr + 440px, not 400: at 400 the UK question wrapped and left a blank ruled line), ruled hero >=1100 with 32px rhythm (kicker/label/note/counter/try 32, h1 64, join-row 64 with input bottom on the rule), hero-art full-bleed ruled below 1100, h1 ghosts width 100%, header/lang ring/theme toggle/brand, input as an underlined line (serif), thanks flat/square + pen-draw tick, share/ref square, footer top rule (--rule), kicker/join-label small caps pencil.
+- Shots looked at (1440 EN light, 1440 dark, 1440 UK, 375 hero, 375 art, 375 thanks): rules under text lines, margin line continuous header->hero, no 375 overflow (scrollWidth 375).
+- Not fixed, for the orchestrator: (a) EN h1 at 1440 breaks "Paste a lesson. Get a / quiz before the bell." (mock: break after "lesson."); a fix needs a <br> or nbsp in hero.title (app.js + index.html) and newline support in the h1 ghosts (ui.js plain() collapses it), so it was left. (b) Reserved heights (UK ghosts) leave blank ruled lines under the EN h1/sub/try-link; by design. (c) Join button stays yellow btn-accent (step 2 decides). (d) Header height kept 64/72px (not the mock's 96). (e) burger background and the right rail dots are nav.css (item "nav.css" below).
+- Last two CSS tweaks (art li font 1rem <640 with tick padding only on B; no extra top margin on the art below 1100) were shot but those pictures were not reviewed (context cap): first look of the next agent = hero art at 375.
+
 ## Left (in this order)
-1. index.html body (NOT yet changed, currently inconsistent with the dictionaries):
+1. DONE (see above). index.html body:
    - h1 span: drop `<mark class="hl">quiz</mark>` (plain text, same as dictionary).
    - brand (header + footer): replace svg.brand-mark with `<span class="brand-mark" aria-hidden="true">Q</span>` (circled Q, 30px, 1.5px ink ring, PT Sans 700 14px; name in Literata 600 ~23px).
    - add first child of `.wrap.hero-grid`: `<div class="sheet-fields" aria-hidden="true">` with spans `data-i18n="sheet.name" data-rsv="Name&#10;Ім’я"` (etc.) and `<i>` blanks; Score + "/ 10" hidden below 640.
    - replace `.hero-art` content (keep `.hero-art` + aria-hidden, ui.js stacks `.hero-art [data-i18n]`): `p.art-q` (span.art-num "1." + span data-i18n="art.q"), `ul.art-opts` 4 li with `span.art-letter` A-D + span data-i18n art.a-d; li.is-right B gets red loop svg (path from mock, pathLength="1") inside the letter and a red tick svg (absolute at li right end); `p.art-why` span data-i18n="art.explain" (Literata italic, pencil); `p.art-note` span data-i18n-html="art.note" (Caveat 600 ~30px/32px, red pen) with a small red arrow svg pointing up to the reason.
    - counter: replace `<svg class="icon"><use href="#i-users"/></svg>` with the tally svg from the mock (class counter-tally, stroke currentColor).
    - thanks-badge: replace the i-check icon with an inline hand-drawn red tick (mock tick path), no background.
-2. web/styles.css:
+2. DONE except nav.css and consent.css parts of the last bullet (they move to the next agent with items 3-5). web/styles.css:
    - @font-face fallbacks (replace Onest/JetBrains ones). Measured in headless Chrome against EN+UK hero texts (ratio web/local; vertical metrics from canvas fontBoundingBox):
      - "Literata Fallback" 400: local Georgia, size-adjust 107.4%, ascent 109.9%, descent 28.9%, line-gap 0%
      - "Literata Fallback" 600: local "Georgia Bold", size-adjust 95.6%, ascent 123.4%, descent 32.4%

@@ -488,9 +488,11 @@ a:hover { text-decoration-thickness: 2px; }
 .art-opts { list-style: none; margin: 0; padding: 0; }
 .art-opts li {
   position: relative; display: flex; align-items: flex-start;
-  min-height: var(--lh); padding-right: 44px;
-  font-size: 1.0625rem; line-height: var(--lh);
+  min-height: var(--lh);
+  font-size: 1rem; line-height: var(--lh);
 }
+.art-opts li.is-right { padding-right: 44px; }
+@media (min-width: 640px) { .art-opts li { font-size: 1.0625rem; } }
 .art-letter {
   position: relative; flex: none; display: inline-grid; place-items: center;
   width: 24px; height: 24px; margin: 5px 14px 0 2px;
@@ -513,7 +515,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* Below 1100px the hero is one column and only the graded question is ruled, edge to edge */
 @media (max-width: 1099px) {
   .hero-art {
-    margin: var(--lh) calc(-1 * max(var(--gutter), env(safe-area-inset-right))) 0 calc(-1 * (var(--sheet-line) + var(--sheet-gap)));
+    margin: 0 calc(-1 * max(var(--gutter), env(safe-area-inset-right))) 0 calc(-1 * (var(--sheet-line) + var(--sheet-gap)));
     padding: var(--lh) max(var(--gutter), env(safe-area-inset-right)) var(--lh) calc(var(--sheet-line) + var(--sheet-gap));
     background-image: var(--ruling);
   }
