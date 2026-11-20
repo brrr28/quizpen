@@ -97,9 +97,9 @@ try {
   await page.viewport(375, 812, true, 2);
   for (const lang of ['en', 'uk']) {
     await page.open(BASE + '?lang=' + lang);
-    await page.click('.chip[data-sample="photosynthesis"]');
-    await page.waitFor(`document.getElementById('lesson').value.length > 200`);
-    await page.click('#gen-btn');
+    // Ready examples are the default mode, photosynthesis is preselected: the quiz opens without an API call.
+    await page.waitFor(`document.querySelector('#sample-chips .chip[aria-pressed="true"]') ? true : null`);
+    await page.click('#show-btn');
     await page.waitFor(`(() => { const t = document.querySelector('.play-tools'); return t && !t.hidden; })()`, 15000);
     ok(`${lang}: landing tools shown with the quiz`, true);
     await page.click('.play-tools .btn-ink');
