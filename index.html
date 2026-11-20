@@ -17,28 +17,27 @@
       d.className += ' js';
       var m = document.querySelectorAll('meta[name="theme-color"]');
       for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#0E1220' : '#F6F6F2');
-      // Called by the fonts stylesheet once it has loaded: fetch every weight (Latin and Cyrillic) and switch from
-      // the fallbacks in one step (html.wf), so text never reflows face by face as single files arrive.
-      // The font files are fetched only after the window load event: on a slow link they would otherwise take the
-      // bandwidth of the render-blocking styles and the scripts and delay the first paint and the ready state.
+      // Web fonts after the window load event, in one step: the stylesheet and every face (Latin and Cyrillic) load
+      // first, then html.wf switches from the metric-matched fallbacks (styles.css). On a slow link their bytes stay
+      // off the first paint and the scripts, and the text never reflows face by face as single files arrive.
       window.qpFontsCss = function () {
-        var f = document.fonts, w = ['400', '500', '600', '700', '800'];
+        var f = document.fonts, all = [], w = ['400', '500', '600', '700', '800'];
         if (!f || !f.load || !window.Promise) { d.className += ' wf'; return; }
-        var go = function () {
-          var all = [];
-          for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
-          all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
-          Promise.all(all).then(function () { d.className += ' wf'; }, function () { /* keep the fallbacks */ });
-        };
-        if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+        for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
+        all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
+        Promise.all(all).then(function () { d.className += ' wf'; }, function () { /* keep the fallbacks */ });
       };
+      var fonts = function () {
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap';
+        l.onload = window.qpFontsCss;
+        document.head.appendChild(l);
+      };
+      if (document.readyState === 'complete') fonts(); else window.addEventListener('load', fonts);
     })(document.documentElement);
   </script>
-  <!-- Web fonts never block the first paint: the stylesheet loads as print media and switches to all on load;
-       until every face has arrived, metric-matched local fallbacks (styles.css, "Onest Fallback") hold the layout. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all';qpFontsCss()">
+  <!-- Without JS the browser loads the web fonts itself (display=swap); with JS the script above does it after load. -->
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap"></noscript>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
