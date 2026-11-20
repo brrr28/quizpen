@@ -8,7 +8,8 @@
    Bump VERSION when the shell list changes; content updates arrive through revalidation anyway. */
 'use strict';
 
-var VERSION = 'v1';
+// Bump on every deploy so returning visitors get a fresh, consistent shell.
+var VERSION = '2026-11-20a';
 var CACHE = 'qp-shell-' + VERSION;
 var NAV_TIMEOUT_MS = 3000;
 var SHELL = [
