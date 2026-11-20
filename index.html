@@ -17,13 +17,22 @@
       d.className += ' js';
       var m = document.querySelectorAll('meta[name="theme-color"]');
       for (var i = 0; i < m.length; i++) m[i].setAttribute('content', t === 'dark' ? '#0E1220' : '#F6F6F2');
+      // Called by the fonts stylesheet once it has loaded: fetch every weight (Latin and Cyrillic) and switch from
+      // the fallbacks in one step (html.wf), so text never reflows face by face as single files arrive.
+      window.qpFontsCss = function () {
+        var f = document.fonts, all = [], w = ['400', '500', '600', '700', '800'];
+        if (!f || !f.load || !window.Promise) { d.className += ' wf'; return; }
+        for (var j = 0; j < w.length; j++) all.push(f.load(w[j] + ' 1em Onest', 'aя'));
+        all.push(f.load('500 1em "JetBrains Mono"', 'aя'), f.load('700 1em "JetBrains Mono"', 'aя'));
+        Promise.all(all).then(function () { d.className += ' wf'; }, function () { /* keep the fallbacks */ });
+      };
     })(document.documentElement);
   </script>
   <!-- Web fonts never block the first paint: the stylesheet loads as print media and switches to all on load;
-       until the fonts arrive, metric-matched local fallbacks (styles.css, "Onest Fallback") hold the layout. -->
+       until every face has arrived, metric-matched local fallbacks (styles.css, "Onest Fallback") hold the layout. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all';qpFontsCss()">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap"></noscript>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -133,8 +142,8 @@
         <span class="brand-name">Quizpen</span>
       </a>
       <nav class="nav" aria-label="Main">
-        <a href="#demo" data-i18n="nav.demo">Try the demo</a>
-        <a href="#faq" data-i18n="nav.faq">Questions</a>
+        <a href="#demo" data-i18n="nav.demo" data-rsv="Try the demo&#10;Спробувати демо">Try the demo</a>
+        <a href="#faq" data-i18n="nav.faq" data-rsv="Questions&#10;Питання">Questions</a>
       </nav>
       <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
         <button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button>
@@ -151,7 +160,7 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <p class="kicker" data-i18n="hero.kicker">An AI assistant for teachers</p>
-          <h1 id="hero-title" data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</h1>
+          <h1 id="hero-title" data-rsv-key="hero.title" data-rsv-en="Paste a lesson. Get a quiz before the bell." data-rsv-uk="Вставте текст уроку. Отримайте тест ще до дзвінка."><span data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</span></h1>
           <p class="hero-sub" data-i18n="hero.sub" data-rsv-en="Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question." data-rsv-uk="Вставте будь-який текст, за яким ведете урок: параграф підручника, свій конспект чи статтю. Quizpen складе з нього тест із ключем відповідей і коротким поясненням до кожного питання.">Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.</p>
 
           <div class="join-slot" id="join-slot">
@@ -377,7 +386,7 @@
         <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
         <span class="brand-name">Quizpen</span>
       </span>
-      <p data-i18n="footer.privacy">We use your email only to tell you about access.</p>
+      <p data-i18n="footer.privacy" data-rsv="We use your email only to tell you about access.&#10;Вашу пошту використовуємо лише для листа про доступ.">We use your email only to tell you about access.</p>
       <p>&copy; 2026 Quizpen</p>
     </div>
   </footer>

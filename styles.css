@@ -33,8 +33,10 @@
   --night-text: #F1F1EC;
   --night-muted: #B9BDCD;
 
-  --font: "Onest", "Onest Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --font-fb: "Onest Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono-fb: "JetBrains Mono Fallback", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --font: var(--font-fb);
+  --mono: var(--mono-fb);
 
   --r-sm: 8px;
   --r: 12px;
@@ -50,6 +52,8 @@
 
 @media (min-width: 640px) { :root { --gutter: 28px; } }
 @media (min-width: 1100px) { :root { --gutter: 48px; } }
+/* Web fonts in one switch once all faces are loaded (index.html, qpFontsCss); without JS the browser swaps itself. */
+html.wf, html:not(.js) { --font: "Onest", var(--font-fb); --mono: "JetBrains Mono", var(--mono-fb); }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -254,14 +258,15 @@ a:hover { text-decoration-thickness: 2px; }
   border-radius: 6px;
   background: var(--tint);
 }
+.hero { --h1-en: clamp(2.4rem, 1.35rem + 3.6vw, 3.9rem); --h1-uk: clamp(2.2rem, 1.3rem + 3.2vw, 3.6rem); }
 .hero h1 {
-  font-size: clamp(2.4rem, 1.35rem + 3.6vw, 3.9rem);
+  font-size: var(--h1-en);
   line-height: 1.04;
   letter-spacing: -0.035em;
   font-weight: 800;
   max-width: 15ch;
 }
-.hero h1:lang(uk) { max-width: 17ch; font-size: clamp(2.2rem, 1.3rem + 3.2vw, 3.6rem); }
+.hero h1:lang(uk) { max-width: 17ch; font-size: var(--h1-uk); }
 .hero-sub {
   margin-top: 20px;
   font-size: 1.12rem;
@@ -900,13 +905,22 @@ html.theme-fade .tt * { transition: transform 280ms var(--ease-out), opacity 200
 /* Labels: a hidden zero-height ghost holds every variant (data-rsv, one per line), so the label already has the
    width of the longest one, the same width the ui.js stack gets later. */
 [data-rsv] { display: inline-flex; flex-direction: column; align-items: center; }
-[data-rsv]::after { content: attr(data-rsv); white-space: pre; height: 0; overflow: hidden; visibility: hidden; }
+/* Header nav links keep ::after for the current-section underline (nav.css), so their ghost is ::before. */
+[data-rsv]:not(.nav a)::after, .nav a[data-rsv]::before { content: attr(data-rsv); white-space: pre; height: 0; overflow: hidden; visibility: hidden; }
+/* The footer note may wrap on a phone: its ghost wraps too and only sets the width of the longer language. */
+.site-footer [data-rsv] { align-items: stretch; }
+.site-footer [data-rsv]::after { white-space: pre-line; }
 /* Blocks: both language texts as hidden flex items with a zero outer width (they push no text), so the box has
    the height of the taller language at any width. */
 [data-rsv-en] { display: flex; }
 [data-rsv-en]::before, [data-rsv-en]::after { order: -1; flex: none; width: 100%; margin-right: -100%; visibility: hidden; }
 [data-rsv-en]::before { content: attr(data-rsv-en); }
 [data-rsv-en]::after { content: attr(data-rsv-uk); }
+/* The headline (text in an inner span, so the <mark> stays inline): each ghost is set in its own language's size
+   and measure (the UK headline is smaller and wider), so the box holds the taller real layout in either language. */
+.hero h1[data-rsv-en]::before, .hero h1[data-rsv-en]::after { letter-spacing: -0.035em; }
+.hero h1[data-rsv-en]::before { font-size: var(--h1-en); width: min(15ch, 100cqw); margin-right: calc(-1 * min(15ch, 100cqw)); }
+.hero h1[data-rsv-en]::after { font-size: var(--h1-uk); width: min(17ch, 100cqw); margin-right: calc(-1 * min(17ch, 100cqw)); }
 /* The counter may take two lines: keep the icon on the first one. */
 .counter { align-items: flex-start; }
 .counter .icon { margin-top: 2px; margin-top: calc((1lh - 20px) / 2); }
