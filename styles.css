@@ -907,9 +907,14 @@ html.theme-fade .tt * { transition: transform 280ms var(--ease-out), opacity 200
 [data-rsv] { display: inline-flex; flex-direction: column; align-items: center; }
 /* Header nav links keep ::after for the current-section underline (nav.css), so their ghost is ::before. */
 [data-rsv]:not(.nav a)::after, .nav a[data-rsv]::before { content: attr(data-rsv); white-space: pre; height: 0; overflow: hidden; visibility: hidden; }
-/* The footer note may wrap on a phone: its ghost wraps too and only sets the width of the longer language. */
-.site-footer [data-rsv] { align-items: stretch; }
-.site-footer [data-rsv]::after { white-space: pre-line; }
+/* The footer note may wrap on a phone: its ghost wraps too and only sets the width of the longer language
+   (element-qualified to outrank the white-space: pre of the generic ghost above). */
+.site-footer p[data-rsv] { align-items: stretch; }
+.site-footer p[data-rsv]::after { white-space: pre-line; }
+/* The "try" link text box has the width of the longer language (wrapped like the text), so the arrow after it
+   stays in place when the language changes. */
+.try-link > span[data-rsv] { align-items: stretch; }
+.try-link > span[data-rsv]::after { white-space: pre-line; }
 /* Blocks: both language texts as hidden flex items with a zero outer width (they push no text), so the box has
    the height of the taller language at any width. */
 [data-rsv-en] { display: flex; }
