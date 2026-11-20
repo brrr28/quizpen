@@ -1,7 +1,7 @@
 // Local mock of the Apps Script backend: same contract as backend/Code.gs (see API.md).
 // Node 22, no packages, in-memory store. Usage: MOCK_OK=1 node backend/mock-server.mjs
 // Env: PORT (default 8787), MOCK_QUIZ_DELAY_MS (default 1200), MOCK_QUIZ_DISABLED=1.
-// Mock-only: GET ?action=debug returns the in-memory visit and demo-run counters.
+// Mock-only: GET ?action=debug returns the in-memory visit, demo-run and join-request counters.
 
 import http from 'node:http';
 import { randomInt } from 'node:crypto';
