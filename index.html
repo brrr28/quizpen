@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quizpen: turn lesson text into a quiz in seconds</title>
+  <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with answers and explanations. Join the Quizpen waitlist for teachers.">
+  <meta name="theme-color" content="#F6F6F2">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Open Graph / Twitter. Replace og.png with an absolute URL after deploy for best scraper support. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Quizpen">
+  <meta property="og:title" content="Quizpen: paste a lesson, get a quiz before the bell">
+  <meta property="og:description" content="An AI assistant for teachers that turns any lesson text into a multiple-choice quiz with answers and explanations. Try the live demo and join the waitlist.">
+  <meta property="og:image" content="og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Quizpen: a paragraph about photosynthesis turned into a multiple-choice question">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Quizpen: paste a lesson, get a quiz before the bell">
+  <meta name="twitter:description" content="Turn any lesson text into a multiple-choice quiz with answers and explanations. Join the teacher waitlist.">
+  <meta name="twitter:image" content="og.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- Icon sprite (Tabler Icons outline paths, MIT) -->
+  <svg width="0" height="0" class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9h1"/><path d="M9 13h6"/><path d="M9 17h6"/></symbol>
+    <symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/><path d="M11 6h9"/><path d="M11 12h9"/><path d="M11 18h9"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2"/><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4"/><path d="M7 15a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"/></symbol>
+    <symbol id="i-telegram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/></symbol>
+    <symbol id="i-wand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21l15 -15l-3 -3l-15 15l3 3"/><path d="M15 6l3 3"/><path d="M9 3a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2"/><path d="M19 13a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 9h.01"/><path d="M11 12h1v4h1"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="Quizpen">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
+        <span class="brand-name">Quizpen</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#demo" data-i18n="nav.demo">Try the demo</a>
+        <a href="#faq" data-i18n="nav.faq">Questions</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
+        <button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button>
+        <button type="button" data-lang="uk" aria-pressed="false" aria-label="Українська">УКР</button>
+      </div>
+      <button type="button" class="btn btn-ink btn-sm header-cta" data-scroll-join><span data-i18n="cta">Join Waitlist</span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="kicker" data-i18n="hero.kicker">An AI assistant for teachers</p>
+          <h1 id="hero-title" data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</h1>
+          <p class="hero-sub" data-i18n="hero.sub">Quizpen turns the text you teach from into a multiple-choice quiz with answers and a short explanation for each.</p>
+
+          <div class="join-slot" id="join-slot">
+            <form id="join-form" class="join" novalidate>
+              <label for="email" class="join-label" data-i18n="form.label">Email for early access</label>
+              <div class="join-row">
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="name@school.org" aria-describedby="join-msg join-note" data-i18n-attr="placeholder:form.placeholder">
+                <button type="submit" class="btn btn-accent btn-lg join-btn" id="join-btn">
+                  <span class="btn-label" data-i18n="cta">Join Waitlist</span>
+                  <span class="spinner" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="hp" aria-hidden="true">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+              </div>
+              <p id="join-msg" class="field-msg" aria-live="polite"></p>
+              <p id="join-note" class="join-note" data-i18n="form.note">One email when your access is ready. Unsubscribe in one click.</p>
+            </form>
+
+            <div id="thanks" class="thanks" hidden>
+              <div class="thanks-head">
+                <span class="thanks-badge" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                <div>
+                  <h2 id="thanks-title" class="thanks-title" tabindex="-1"></h2>
+                  <p id="thanks-body" class="thanks-body"></p>
+                </div>
+              </div>
+              <p class="thanks-lead" data-i18n="thanks.share">Know a colleague who writes quizzes at night? Send them your link.</p>
+              <div class="ref-row">
+                <label for="ref-link" class="sr-only" data-i18n="thanks.linkLabel">Your invite link</label>
+                <input id="ref-link" class="ref-input" type="text" readonly>
+                <button type="button" class="btn btn-ink copy-btn" id="copy-btn"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="thanks.copy">Copy link</span></button>
+              </div>
+              <div class="share-row">
+                <a class="share-btn" id="share-tg" href="#" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-telegram"/></svg>Telegram</a>
+                <a class="share-btn" id="share-wa" href="#" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>
+                <a class="share-btn" id="share-mail" href="#"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="share.email">Email</span></a>
+              </div>
+              <p class="ref-count" id="ref-count"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span></span></p>
+              <p class="sr-only" id="copy-status" aria-live="polite"></p>
+              <button type="button" class="link-btn" id="reset-btn" data-i18n="thanks.reset">Use a different email</button>
+            </div>
+          </div>
+
+          <p class="counter" data-counter aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text"></span></p>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-source">
+            <span class="art-label" data-i18n="art.label">Your lesson text</span>
+            <p data-i18n-html="art.source">Chlorophyll absorbs red and blue light and <mark class="hl hl-art">reflects green light</mark>, which is why most leaves look green.</p>
+            <span class="art-lines"><i></i><i></i><i></i></span>
+          </div>
+          <svg class="art-arrow" viewBox="0 0 80 70" fill="none"><path d="M8 6c30 2 52 18 56 50" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 6"/><path d="M54 48l10 10l8 -12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="art-quiz">
+            <div class="art-top">
+              <span data-i18n="art.progress">Question 2 of 5</span>
+              <span class="art-dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span>
+            </div>
+            <p class="art-q" data-i18n="art.q">Why do most leaves look green?</p>
+            <ul class="art-opts">
+              <li><b>A</b><span data-i18n="art.a">They absorb green light</span></li>
+              <li class="is-right"><b>B</b><span data-i18n="art.b">Chlorophyll reflects green light</span><svg class="icon art-tick"><use href="#i-check"/></svg></li>
+              <li><b>C</b><span data-i18n="art.c">Their cells hold green water</span></li>
+              <li><b>D</b><span data-i18n="art.d">Sunlight is mostly green</span></li>
+            </ul>
+            <p class="art-explain" data-i18n="art.explain">Chlorophyll reflects green, so green is what reaches our eyes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo" id="demo" aria-labelledby="demo-title">
+      <div class="wrap">
+        <div class="demo-head">
+          <h2 id="demo-title" data-i18n="demo.title">Try it on your own lesson</h2>
+          <p data-i18n="demo.sub">Paste a paragraph from your lesson and get a quiz in seconds.</p>
+        </div>
+        <div class="demo-grid">
+          <form class="demo-input" id="demo-form" novalidate>
+            <label for="lesson" class="demo-label" data-i18n="demo.label">Lesson text</label>
+            <textarea id="lesson" name="lesson" maxlength="3000" rows="11" placeholder="Paste 200 to 3000 characters: a textbook page, your notes or an article." aria-describedby="lesson-meta lesson-error" data-i18n-attr="placeholder:demo.placeholder"></textarea>
+            <div class="demo-meta" id="lesson-meta">
+              <span id="lesson-count" class="mono">0 / 3000</span>
+              <span id="lesson-need"></span>
+            </div>
+            <p id="lesson-error" class="field-msg is-error" aria-live="polite"></p>
+            <div class="samples" id="samples">
+              <p class="samples-label" id="samples-label" data-i18n="demo.samples">No text at hand? Try a sample:</p>
+              <div class="chips" role="group" aria-labelledby="samples-label">
+                <button type="button" class="chip" data-sample="photosynthesis" aria-pressed="false" data-i18n="sample.photosynthesis">Biology: photosynthesis</button>
+                <button type="button" class="chip" data-sample="printing" aria-pressed="false" data-i18n="sample.printing">History: the printing press</button>
+                <button type="button" class="chip" data-sample="magi" aria-pressed="false" data-i18n="sample.magi">Literature: The Gift of the Magi</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-accent btn-lg gen-btn" id="gen-btn">
+              <svg class="icon" aria-hidden="true"><use href="#i-wand"/></svg>
+              <span class="btn-label" data-i18n="demo.generate">Generate quiz</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <div class="quiz-panel" id="quiz-panel" aria-busy="false" aria-labelledby="quiz-panel-title" role="region">
+            <h3 id="quiz-panel-title" class="sr-only" data-i18n="quiz.region">Your quiz</h3>
+            <div class="quiz-empty" id="quiz-empty">
+              <div class="empty-stack" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <p class="empty-title" data-i18n="quiz.emptyTitle">Your quiz will appear here</p>
+              <p class="empty-sub" data-i18n="quiz.emptySub">Five questions, four options each, with a one-line explanation for every answer.</p>
+            </div>
+            <div class="quiz-body" id="quiz-body" hidden></div>
+            <p class="sr-only" id="quiz-status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features" aria-labelledby="features-title">
+      <div class="wrap features-grid">
+        <div class="features-head">
+          <h2 id="features-title" data-i18n="features.title">What Quizpen does for you</h2>
+          <p data-i18n="features.sub">Built around the way teachers already plan: start from the material, end with something students can answer.</p>
+        </div>
+        <ul class="feature-list">
+          <li class="feature">
+            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-file"/></svg></span>
+            <div>
+              <h3 data-i18n="f1.t">Works from the text you already teach</h3>
+              <p data-i18n="f1.d">Paste a textbook page, your own notes or an article. Every question comes from that text, so the quiz matches your lesson.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-checklist"/></svg></span>
+            <div>
+              <h3 data-i18n="f2.t">An answer key that explains itself</h3>
+              <p data-i18n="f2.d">Each question has one correct answer and a one-sentence reason. You check the key at a glance, and students see why they got it wrong.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-printer"/></svg></span>
+            <div>
+              <h3 data-i18n="f3.t">Ready for the board or for paper</h3>
+              <p data-i18n="f3.d">Run the quiz on screen as a warm-up, or print it as a worksheet for the last ten minutes of class.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="proof" id="why" aria-labelledby="proof-title">
+      <div class="wrap">
+        <h2 id="proof-title" data-i18n="proof.title">Why we're building this</h2>
+        <ol class="facts">
+          <li class="fact"><p><span data-i18n-html="proof.1"><strong>About 4 hours a week</strong> is how long a typical lower secondary teacher spends marking and correcting student work.</span><sup><a href="#src-1" aria-label="Source 1">1</a></sup></p></li>
+          <li class="fact"><p><span data-i18n-html="proof.2"><strong>5.9 hours a week</strong> is the time teachers who use AI tools at least weekly say they save.</span><sup><a href="#src-2" aria-label="Source 2">2</a></sup></p></li>
+          <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practised recalling it remembered more than students who read it again.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
+        </ol>
+        <div class="proof-foot">
+          <p class="counter counter-lg" data-counter><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text"></span></p>
+          <ol class="sources">
+            <li id="src-1" data-i18n-html="src.1"><a href="https://www.oecd.org/en/publications/talis-2018-results-volume-i_1d0bc92a-en.html" target="_blank" rel="noopener noreferrer">OECD, TALIS 2018 Results</a>, OECD average for lower secondary teachers, as summarised by <a href="https://rd.acer.org/article/snapshot-of-australian-teachers-and-principals" target="_blank" rel="noopener noreferrer">ACER</a>.</li>
+            <li id="src-2" data-i18n-html="src.2"><a href="https://news.gallup.com/poll/691967/three-teachers-weekly-saving-six-weeks-year.aspx" target="_blank" rel="noopener noreferrer">Gallup and Walton Family Foundation, 2025</a>. Survey of 2,232 US public school teachers; time saved is self-reported.</li>
+            <li id="src-3" data-i18n-html="src.3"><a href="https://doi.org/10.1111/j.1467-9280.2006.01693.x" target="_blank" rel="noopener noreferrer">Roediger and Karpicke, "Test-Enhanced Learning"</a>, Psychological Science, 2006.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-grid">
+        <h2 id="faq-title" data-i18n="faq.title">Questions teachers ask</h2>
+        <div class="faq-list">
+          <details>
+            <summary><span data-i18n="faq.q1">When can I start using Quizpen?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p data-i18n="faq.a1">We're letting teachers in small groups, in the order they joined. We'll send one email when your spot opens.</p>
+          </details>
+          <details>
+            <summary><span data-i18n="faq.q2">Will it cost anything?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p data-i18n="faq.a2">Early access is free for teachers on the waitlist. If we add paid plans later, you'll hear about it before anything changes.</p>
+          </details>
+          <details>
+            <summary><span data-i18n="faq.q3">Which subjects and languages does it work for?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p data-i18n="faq.a3">Any subject you teach from text: science, history, literature, geography and more. The demo above works in English and Ukrainian.</p>
+          </details>
+          <details>
+            <summary><span data-i18n="faq.q4">What happens to the text I paste?</span><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p data-i18n="faq.a4">It's sent to an AI model only to write your quiz. Paste lesson material and leave out student names or other personal details.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" aria-labelledby="final-title">
+      <div class="wrap final-inner">
+        <h2 id="final-title" data-i18n="final.title">Get Quizpen before your next unit starts.</h2>
+        <button type="button" class="btn btn-ink btn-lg" data-scroll-join><span data-i18n="cta" data-cta-final>Join Waitlist</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span class="brand brand-sm">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
+        <span class="brand-name">Quizpen</span>
+      </span>
+      <p data-i18n="footer.privacy">We use your email only to tell you about access.</p>
+      <p>&copy; 2026 Quizpen</p>
+    </div>
+  </footer>
+</body>
+</html>
