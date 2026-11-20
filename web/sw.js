@@ -9,7 +9,7 @@
 'use strict';
 
 // Bump on every deploy so returning visitors get a fresh, consistent shell.
-var VERSION = '2026-11-21a';
+var VERSION = '2026-11-21b';
 var CACHE = 'qp-shell-' + VERSION;
 var NAV_TIMEOUT_MS = 3000;
 var SHELL = [
@@ -72,7 +72,8 @@ function fromNetworkFirst(event, req) {
 
 function fromCacheThenRevalidate(event, req) {
   return caches.open(CACHE).then(function (cache) {
-    return cache.match(req).then(function (hit) {
+    // ignoreSearch: pages ask for versioned URLs (?v=...), the precache holds the plain ones of this same version.
+    return cache.match(req, { ignoreSearch: true }).then(function (hit) {
       var net = fetch(req);
       // The refresh runs in the background; the clone is taken before the page reads the body.
       event.waitUntil(net.then(function (res) {
