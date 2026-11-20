@@ -45,7 +45,12 @@ html:not(.js) .nav-burger { display: none; }
     transform: translateY(-50%);
   }
 }
-.nav-rail-links { list-style: none; margin: 0; padding: 6px 0; display: flex; flex-direction: column; gap: 2px; }
+/* A paper pill behind the dots keeps them visible over the dark demo band too. */
+.nav-rail-links {
+  list-style: none; margin: 0; padding: 6px 0; display: flex; flex-direction: column; gap: 2px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent); border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--line); backdrop-filter: blur(6px);
+}
 .nav-rail-link {
   position: relative; display: grid; place-items: center;
   width: 24px; height: 28px; text-decoration: none; color: var(--ink); border-radius: 999px;
