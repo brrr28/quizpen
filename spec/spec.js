@@ -8,6 +8,7 @@
   var thanks = document.getElementById('thanks');
   var counter = document.getElementById('counter');
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function track(name, props) { if (window.qpAnalytics) window.qpAnalytics.track(name, props); } // analytics hook (../analytics.js)
   var MESSAGES = {
     invalid_email: 'Please enter a valid email address.',
     rate_limited: 'Too many attempts. Please try again in a few minutes.'
@@ -47,6 +48,7 @@
     if (!EMAIL_RE.test(value)) { showError('Please enter a valid email address.'); email.focus(); return; }
     showError('');
     btn.disabled = true;
+    track('signup_submitted', { lang: 'en', has_ref: false }); // analytics
     btn.textContent = 'Sending...';
     var done = function () { btn.disabled = false; btn.textContent = 'Join Waitlist'; };
     if (!API) { done(); showError('Signup is not connected yet. Please try again later.'); return; }
@@ -58,6 +60,7 @@
       .then(function (r) {
         clearTimeout(timer);
         if (r && r.ok) {
+          track('signup_succeeded', { already: !!r.already, has_ref: false }); // analytics
           form.hidden = true;
           thanks.hidden = false;
           thanks.textContent = r.already ? "You're already on the list at #" + r.position + '.' : "You're #" + r.position + ' on the waitlist';
@@ -75,5 +78,6 @@
       });
   });
 
+  track('landing_viewed', { lang: 'en', has_ref: false }); // analytics
   loadStats();
 })();

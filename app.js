@@ -6,6 +6,11 @@
   var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var MIN_CHARS = 200, MAX_CHARS = 3000, REFRESH_MS = 6 * 3600 * 1000;
 
+  /* ---------- Analytics hook (web/analytics.js): a no-op until IDs are set in config.js ---------- */
+  var demoT0 = 0;
+  function track(name, props) { if (window.qpAnalytics) window.qpAnalytics.track(name, props); }
+  /* ---------- end of analytics hook ---------- */
+
   // localStorage wrapper: storage can be blocked or throw in private modes.
   var store = {
     get: function (k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
@@ -235,6 +240,7 @@
 
   function setLang(next) {
     if (next === lang) return;
+    track('lang_switched', { from: lang, to: next }); // analytics
     var prevSampleText = activeSample && samples ? sampleText(activeSample) : null;
     lang = next;
     store.set('qp_lang', lang);
@@ -354,12 +360,14 @@
     if (!validEmail(email)) { setJoinError('invalid_email'); emailEl.focus(); return; }
     setJoinError(null);
     busyJoin = true;
+    track('signup_submitted', { lang: lang, has_ref: !!attribution.ref }); // analytics
     joinBtn.disabled = true; joinBtn.classList.add('is-busy'); joinBtn.setAttribute('aria-busy', 'true');
     joinBtn.querySelector('.btn-label').textContent = t('form.sending');
     apiPost({ action: 'join', email: email, lang: lang, ref: attribution.ref, utm: attribution.utm, hp: hpEl.value, cid: getCid() }, 15000)
       .then(function (r) {
         if (r.ok) {
           joined = { position: r.position, total: r.total, refCode: r.refCode, referrals: r.referrals || 0, already: !!r.already, email: email, ts: Date.now() };
+          track('signup_succeeded', { already: !!r.already, has_ref: !!attribution.ref, demo_used: demoT0 > 0 }); // analytics
           store.set('qp_joined', joined);
           if (typeof r.total === 'number') { total = r.total; renderCounters(); }
           renderThanks(joined, true);
@@ -443,6 +451,8 @@
     }, function () { /* the field stays selectable for manual copy */ });
   });
   document.getElementById('ref-link').addEventListener('focus', function () { this.select(); });
+  document.getElementById('copy-btn').addEventListener('click', function () { track('referral_link_copied'); }); // analytics
+  ['tg', 'wa', 'mail'].forEach(function (c) { document.getElementById('share-' + c).addEventListener('click', function () { track('referral_shared', { channel: c }); }); }); // analytics
 
   document.getElementById('reset-btn').addEventListener('click', function () {
     store.del('qp_joined');
@@ -568,6 +578,7 @@
     showLoading();
     if (window.innerWidth < 980) panel.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
     var started = Date.now(), usedSample = activeSample, quizLang = lang;
+    demoT0 = started; track('demo_started', { sample: usedSample || 'custom', lang: quizLang }); // analytics
     var minWait = function (v) { var left = 900 - (Date.now() - started); return left > 0 ? new Promise(function (r) { setTimeout(function () { r(v); }, left); }) : v; };
 
     apiPost({ action: 'quiz', text: text, lang: quizLang, count: 5, cid: getCid(), sample: usedSample || 'custom' }, 30000)
@@ -592,6 +603,7 @@
 
   function resetPanel() { stopLoading(); quizState = null; bodyEl.hidden = true; bodyEl.innerHTML = ''; emptyEl.hidden = false; }
   function showPanelError() {
+    track('quiz_generated', { ok: false, ms: Date.now() - demoT0, source: 'fallback' }); // analytics
     quizState = null;
     bodyEl.innerHTML = '<div class="quiz-error"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><p>' + esc(t('demo.failed')) + '</p></div>';
     statusEl.textContent = t('demo.failed');
@@ -600,6 +612,7 @@
   function startQuiz(quiz, noteKey, live) {
     stopLoading();
     quizState = { quiz: quiz, i: 0, picks: [], noteKey: noteKey, live: live };
+    track('quiz_generated', { ok: true, ms: Date.now() - demoT0, source: live ? 'live' : 'fallback' }); // analytics
     /* ---------- Student play mode hook (web/play/share.js): announce the shown quiz ---------- */
     document.dispatchEvent(new CustomEvent('quizpen:quiz', { detail: { quiz: quiz, lang: lang } }));
     /* ---------- end of student play mode hook ---------- */
@@ -643,12 +656,14 @@
     bodyEl.querySelectorAll('.opt').forEach(function (b) {
       b.addEventListener('click', function (ev) {
         s.picks[s.i] = Number(b.getAttribute('data-k'));
+        track('quiz_answered', { index: s.i, correct: s.picks[s.i] === q.answer }); // analytics
         // Keyboard activation (detail 0) moves focus to the next step; mouse clicks keep focus calm.
         renderQuiz(ev.detail === 0 ? '[data-next]' : null);
       });
     });
     var next = bodyEl.querySelector('[data-next]');
     if (next) next.addEventListener('click', function () { s.i++; renderQuiz('.quiz-q'); });
+    if (next && s.i === n - 1) next.addEventListener('click', function () { track('quiz_completed', { score: qs.filter(function (x, k) { return s.picks[k] === x.answer; }).length, questions: n }); }); // analytics
     focusIn(focusSel);
   }
   function focusIn(sel) { if (!sel) return; var el = bodyEl.querySelector(sel); if (el) el.focus({ preventScroll: false }); }
@@ -678,6 +693,7 @@
     bodyEl.querySelector('[data-copy-quiz]').addEventListener('click', function () {
       copyText(quizAsText(quizState.quiz)).then(function () { toast(t('quiz.copied')); }, function () { /* ignore */ });
     });
+    bodyEl.querySelector('[data-copy-quiz]').addEventListener('click', function () { track('quiz_copied'); }); // analytics
     bodyEl.querySelector('[data-again]').addEventListener('click', function () {
       resetPanel();
       document.getElementById('demo').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
@@ -730,5 +746,6 @@
   updateLessonMeta();
   restoreJoined();
   loadStats();
+  track('landing_viewed', { lang: lang, has_ref: !!attribution.ref }); // analytics
   sendVisit();
 })();
