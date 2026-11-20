@@ -147,7 +147,7 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="Quizpen">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
+        <span class="brand-mark" aria-hidden="true">Q</span>
         <span class="brand-name">Quizpen</span>
       </a>
       <nav class="nav" aria-label="Main">
@@ -166,10 +166,17 @@
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
+      <span class="sheet-holes" aria-hidden="true"><i></i><i></i><i></i></span>
       <div class="wrap hero-grid">
+        <div class="sheet-fields" aria-hidden="true">
+          <span data-i18n="sheet.name" data-rsv="Name&#10;Ім’я">Name</span><i class="f-name"></i>
+          <span data-i18n="sheet.class" data-rsv="Class&#10;Клас">Class</span><i class="f-class"></i>
+          <span data-i18n="sheet.date" data-rsv="Date&#10;Дата">Date</span><i class="f-date"></i>
+          <span class="f-score" data-i18n="sheet.score" data-rsv="Score&#10;Бали">Score</span><i class="f-score"></i><span class="f-score f-of">/ 10</span>
+        </div>
         <div class="hero-copy">
           <p class="kicker" data-i18n="hero.kicker">An AI assistant for teachers</p>
-          <h1 id="hero-title" data-rsv-key="hero.title" data-rsv-en="Paste a lesson. Get a quiz before the bell." data-rsv-uk="Вставте текст уроку. Отримайте тест ще до дзвінка."><span data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</span></h1>
+          <h1 id="hero-title" data-rsv-key="hero.title" data-rsv-en="Paste a lesson. Get a quiz before the bell." data-rsv-uk="Вставте текст уроку. Отримайте тест ще до дзвінка."><span data-i18n-html="hero.title">Paste a lesson. Get a quiz before the bell.</span></h1>
           <p class="hero-sub" data-i18n="hero.sub" data-rsv-en="Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question." data-rsv-uk="Вставте будь-який текст, за яким ведете урок: параграф підручника, свій конспект чи статтю. Quizpen складе з нього тест із ключем відповідей і коротким поясненням до кожного питання.">Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.</p>
 
           <div class="join-slot" id="join-slot">
@@ -192,7 +199,7 @@
 
             <div id="thanks" class="thanks" hidden>
               <div class="thanks-head">
-                <span class="thanks-badge" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                <span class="thanks-badge" aria-hidden="true"><svg width="34" height="28" viewBox="0 0 34 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path pathLength="1" d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg></span>
                 <div>
                   <h2 id="thanks-title" class="thanks-title" tabindex="-1"></h2>
                   <p id="thanks-body" class="thanks-body"></p>
@@ -215,31 +222,20 @@
             </div>
           </div>
 
-          <p class="counter" data-counter aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
+          <p class="counter" data-counter aria-live="polite"><svg class="counter-tally" width="34" height="18" viewBox="0 0 34 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 2.5 L4.6 16"/><path d="M10 2 L10.3 16.2"/><path d="M16 2.6 L15.7 15.8"/><path d="M21.8 2.2 L22.2 16"/><path d="M1.5 13.5 L31.5 4.5"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
           <a class="try-link" href="#demo"><span data-i18n="hero.try" data-rsv="Try a ready example, no signup&#10;Спробуйте готовий приклад, без реєстрації">Try a ready example, no signup</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
 
         <div class="hero-art" aria-hidden="true">
-          <div class="art-source">
-            <span class="art-label" data-i18n="art.label">Your lesson text</span>
-            <p data-i18n-html="art.source">Chlorophyll absorbs red and blue light and <mark class="hl hl-art">reflects green light</mark>, which is why most leaves look green.</p>
-            <span class="art-lines"><i></i><i></i><i></i></span>
-          </div>
-          <svg class="art-arrow" viewBox="0 0 80 70" fill="none"><path d="M8 6c30 2 52 18 56 50" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 6"/><path d="M54 48l10 10l8 -12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="art-quiz">
-            <div class="art-top">
-              <span data-i18n="art.progress">Question 2 of 5</span>
-              <span class="art-dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span>
-            </div>
-            <p class="art-q" data-i18n="art.q">Why do most leaves look green?</p>
-            <ul class="art-opts">
-              <li><b>A</b><span data-i18n="art.a">They absorb green light</span></li>
-              <li class="is-right"><b>B</b><span data-i18n="art.b">Chlorophyll reflects green light</span><svg class="icon art-tick"><use href="#i-check"/></svg></li>
-              <li><b>C</b><span data-i18n="art.c">Their cells hold green water</span></li>
-              <li><b>D</b><span data-i18n="art.d">Sunlight is mostly green</span></li>
-            </ul>
-            <p class="art-explain" data-i18n="art.explain">Chlorophyll reflects green, so green is what reaches our eyes.</p>
-          </div>
+          <p class="art-q"><span class="art-num">1.</span><span data-i18n="art.q">Why do most leaves look green?</span></p>
+          <ul class="art-opts">
+            <li><span class="art-letter">A</span><span data-i18n="art.a">They absorb green light</span></li>
+            <li class="is-right"><span class="art-letter">B<svg class="art-loop" viewBox="0 0 46 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path pathLength="1" d="M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11"/></svg></span><span data-i18n="art.b">Chlorophyll reflects green light</span><svg class="art-tick" viewBox="0 0 34 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path pathLength="1" d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg></li>
+            <li><span class="art-letter">C</span><span data-i18n="art.c">Their cells hold green water</span></li>
+            <li><span class="art-letter">D</span><span data-i18n="art.d">Sunlight is mostly green</span></li>
+          </ul>
+          <p class="art-why"><span data-i18n="art.explain">Chlorophyll reflects green, so green is what reaches our eyes.</span></p>
+          <p class="art-note"><svg class="art-arrow" viewBox="0 0 40 60" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M10 56 C26 42 28 24 20 6"/><path d="M12 15 L20 5 L29 13"/></svg><span data-i18n-html="art.note">every answer comes<br>with its reason</span></p>
         </div>
       </div>
     </section>
@@ -339,7 +335,7 @@
           <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practiced recalling it remembered more than students who read it again.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
         </ol>
         <div class="proof-foot">
-          <p class="counter counter-lg" data-counter><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
+          <p class="counter counter-lg" data-counter><svg class="counter-tally" width="34" height="18" viewBox="0 0 34 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 2.5 L4.6 16"/><path d="M10 2 L10.3 16.2"/><path d="M16 2.6 L15.7 15.8"/><path d="M21.8 2.2 L22.2 16"/><path d="M1.5 13.5 L31.5 4.5"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
           <ol class="sources">
             <li id="src-1" data-i18n-html="src.1"><a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">OECD, Results from TALIS 2024</a>, the Teaching and Learning International Survey.</li>
             <li id="src-2" data-i18n-html="src.2"><a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International, "Using artificial intelligence: takeaways from TALIS 2024"</a>.</li>
@@ -392,7 +388,7 @@
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <span class="brand brand-sm">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8" fill="#161B2E"/><circle cx="11" cy="11" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="11" r="4.6" fill="#F2E14A"/><circle cx="11" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/><circle cx="21" cy="21" r="3.4" fill="none" stroke="#F6F6F2" stroke-width="2"/></svg>
+        <span class="brand-mark" aria-hidden="true">Q</span>
         <span class="brand-name">Quizpen</span>
       </span>
       <p data-i18n="footer.privacy" data-rsv="We use your email only to tell you about access.&#10;Вашу пошту використовуємо лише для листа про доступ.">We use your email only to tell you about access.</p>
