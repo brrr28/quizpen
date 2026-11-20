@@ -140,12 +140,15 @@
 }
 .sample-text:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 2px; }
 
-/* No layout shift when the first question replaces the placeholder: the panel starts at the height of a
-   question screen from 640 up (622px, measured with the longest sample quizzes). Below 640 it starts at 600px:
-   the panel sits under the form there, so its growth moves only content that is off screen.
-   app.js keeps the panel from shrinking afterwards (a ratchet reset on width change). */
+/* No layout shift when the first question replaces the placeholder: from 640 up the panel starts at the height
+   of the tallest first-question screen of all samples, EN and UK (measured with min-height off: 708px at 640,
+   the narrowest single-column width; 736px at 980 and 1100 in the two-column grid; 716px from 1280, where the
+   reason moves to the margin column). Below 640 it starts at 600px: the panel sits under the form there, so its
+   growth moves only content that is off screen. app.js keeps the panel from shrinking afterwards (a ratchet
+   reset on width change). */
 .quiz-panel { display: flex; flex-direction: column; min-height: 600px; }
-@media (min-width: 640px) { .quiz-panel { min-height: 622px; } }
+@media (min-width: 640px) { .quiz-panel { min-height: 708px; } }
+@media (min-width: 980px) { .quiz-panel { min-height: 736px; } }
 .quiz-empty { flex: 1 1 auto; }
 .quiz-body:has(> .ea, > .demo-busy) { flex: 1 1 auto; display: flex; flex-direction: column; }
 .quiz-body > .ea, .quiz-body > .demo-busy { flex: 1 1 auto; }
