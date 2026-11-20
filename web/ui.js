@@ -305,6 +305,8 @@
     document.addEventListener('click', onLangClick, true);
     reserve();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
+    // index.html switches to the web fonts after the load event (html.wf): measure again in them.
+    document.addEventListener('qp:fonts', reserve);
     var lastW = window.innerWidth, timer = 0;
     window.addEventListener('resize', function () {
       if (window.innerWidth === lastW) return;
