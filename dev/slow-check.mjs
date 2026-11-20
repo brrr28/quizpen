@@ -27,7 +27,7 @@ const OWN_TEXT = 'The Dnipro is one of the longest rivers in Europe. It starts i
   'boats, grain and timber for more than a thousand years.';
 const MOCK = 'http://127.0.0.1:8787/';
 const TXT = {
-  bannerUk: 'Ви офлайн. Готові приклади працюють і без інтернету.',
+  bannerUk: 'Немає інтернету. Готові приклади працюють і без нього.',
   bannerEn: 'You\'re offline. Ready examples still work.',
   pendingEn: 'No connection. We\'ll send your email as soon as you\'re back online.',
   slowEn: 'Slow connection. Still working on it.',

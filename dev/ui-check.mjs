@@ -14,7 +14,10 @@ const REPO = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const SHOTS = resolve(REPO, 'shots');
 mkdirSync(SHOTS, { recursive: true });
 const SAMPLES = JSON.parse(readFileSync(resolve(REPO, 'web/data/samples.json'), 'utf8')).samples;
-const BG = { light: 'rgb(246, 246, 242)', dark: 'rgb(14, 18, 32)' };
+// Page colours: the landing is on the worksheet paper (#FBF8F0 / #22252B). The quiz player (web/play) is the
+// same printed sheet for students since the step 3 restyle, so it paints the same paper in both themes.
+const BG = { light: 'rgb(251, 248, 240)', dark: 'rgb(34, 37, 43)' };
+const PLAYER_BG = { light: 'rgb(251, 248, 240)', dark: 'rgb(34, 37, 43)' };
 
 const results = [];
 const details = {};
@@ -129,14 +132,14 @@ const CONTRAST = `(() => {
   return { rows, rings };
 })()`;
 
-async function themeOnLoad(label, url, opts, expect) {
+async function themeOnLoad(label, url, opts, expect, bgs = BG) {
   await media(opts.system);
   await load(url, opts);
   await settle(200);
   const r = await page.eval(`({ paint: __paint, log: __themeLog, now: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.body).backgroundColor })`);
   const painted = r.paint.filter((p) => p.bg && p.bg !== 'rgba(0, 0, 0, 0)');
-  const wrong = r.paint.some((p) => p.th !== expect) || r.log.some((v) => v !== expect) || painted.some((p) => p.bg !== BG[expect]);
-  ok(`${label}: ${expect} from the first frame`, !wrong && r.now === expect && r.bg === BG[expect], `frames ${r.paint.map((p) => p.th + ':' + (p.bg || '-')).join(' | ')}; attr log ${r.log.join(',')}`);
+  const wrong = r.paint.some((p) => p.th !== expect) || r.log.some((v) => v !== expect) || painted.some((p) => p.bg !== bgs[expect]);
+  ok(`${label}: ${expect} from the first frame`, !wrong && r.now === expect && r.bg === bgs[expect], `frames ${r.paint.map((p) => p.th + ':' + (p.bg || '-')).join(' | ')}; attr log ${r.log.join(',')}`);
 }
 
 async function viewportRun(w, h, mobile) {
@@ -242,9 +245,9 @@ await themeOnLoad('landing, saved light over system dark', BASE + '?lang=en', { 
   const token = await page.eval(`QuizpenCodec.encode(${JSON.stringify(quiz.quiz.en)}, 'en')`);
   const PLAY = BASE + 'play/?lang=en#q=' + token;
   const pbg = async () => page.eval(`({ th: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.body).backgroundColor })`);
-  await themeOnLoad('player, saved dark over system light', PLAY, { system: 'light', saved: 'dark' }, 'dark');
-  await themeOnLoad('player, saved light over system dark', PLAY, { system: 'dark', saved: 'light' }, 'light');
-  await themeOnLoad('player, system dark', PLAY, { system: 'dark' }, 'dark');
+  await themeOnLoad('player, saved dark over system light', PLAY, { system: 'light', saved: 'dark' }, 'dark', PLAYER_BG);
+  await themeOnLoad('player, saved light over system dark', PLAY, { system: 'dark', saved: 'light' }, 'light', PLAYER_BG);
+  await themeOnLoad('player, system dark', PLAY, { system: 'dark' }, 'dark', PLAYER_BG);
   await media('light');
   await load(PLAY, { saved: 'dark', w: 375, h: 812, mobile: true });
   await settle(900);

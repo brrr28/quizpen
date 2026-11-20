@@ -21,12 +21,12 @@
   var I18N = {
     en: {
       'meta.title': 'Quizpen: turn lesson text into a quiz in seconds',
-      'meta.desc': 'Quizpen turns your lesson text into a multiple-choice quiz in the same language, with a one-sentence reason for each answer. Try a ready example and join the waitlist for teachers.',
+      'meta.desc': 'Paste your lesson text and Quizpen writes a multiple-choice quiz in the same language. Each correct answer comes with a one-sentence reason. Try a ready example, then join the teacher waitlist.',
       'skip': 'Skip to content', 'nav.demo': 'Try the demo', 'nav.faq': 'Questions', 'lang.label': 'Language',
       'cta': 'Join Waitlist', 'cta.joined': 'You\'re on the list',
-      'hero.kicker': 'An AI assistant for teachers',
-      'hero.title': 'Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.',
-      'hero.sub': 'Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.',
+      'hero.kicker': 'AI quiz maker for teachers',
+      'hero.title': '<span class="h1-line">Paste a lesson.</span> <span class="h1-line">Get a quiz before the bell.</span>',
+      'hero.sub': 'Start with a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it. The answer key explains each correct answer in one sentence.',
       'form.label': 'Email for early access', 'form.placeholder': 'name@school.org',
       'form.note': 'One email when your access is ready. Unsubscribe in one click.',
       'form.sending': 'Joining',
@@ -43,26 +43,26 @@
       'hero.try': 'Try a ready example, no signup',
       'thanks.title': 'You\'re #{n} on the waitlist',
       'thanks.body': 'We\'ll email {email} when your access is ready.',
-      'thanks.already': 'You were already on the list, so your spot is saved.',
+      'thanks.already': 'You\'re already on the list. Your spot is saved.',
       'thanks.share': 'Know a colleague who writes quizzes at night? Send them your link.',
       'thanks.linkLabel': 'Your invite link', 'thanks.copy': 'Copy link', 'thanks.copied': 'Copied',
       'thanks.copiedSr': 'Link copied to clipboard', 'thanks.reset': 'Use a different email',
       'thanks.refs': { one: '<strong>{n} colleague</strong> joined via your link', other: '<strong>{n} colleagues</strong> joined via your link' },
       'share.email': 'Email',
-      'share.text': 'I joined the Quizpen waitlist. It turns lesson text into a quiz in seconds:',
-      'share.subject': 'A quiz from any lesson text in seconds',
-      'art.label': 'Your lesson text',
-      'art.source': 'Chlorophyll absorbs red and blue light and <mark class="hl hl-art">reflects green light</mark>, which is why most leaves look green.',
-      'art.progress': 'Question 2 of 5', 'art.q': 'Why do most leaves look green?',
+      'share.text': 'I joined the Quizpen waitlist. It turns a lesson into a quiz in seconds:',
+      'share.subject': 'Turn any lesson into a quiz in seconds',
+      'art.q': 'Why do most leaves look green?',
       'art.a': 'They absorb green light', 'art.b': 'Chlorophyll reflects green light',
       'art.c': 'Their cells hold green water', 'art.d': 'Sunlight is mostly green',
       'art.explain': 'Chlorophyll reflects green, so green is what reaches our eyes.',
+      'art.note': 'the right answer<br>and why it\'s right',
+      'sheet.name': 'Name', 'sheet.class': 'Class', 'sheet.date': 'Date', 'sheet.score': 'Score',
       'demo.title': 'See it on a real lesson',
-      'demo.sub': 'Ready examples open at once and need no signup. Quizzes from your own text are in early access for now. We don\'t store your text.',
+      'demo.sub': 'Pick a ready example to see the quiz right away. Quizzes from your own text are in early access for now. We don\'t store the text you paste.',
       'demo.label': 'Lesson text',
-      'demo.placeholder': 'Paste 200 to 3000 characters: a textbook page, your notes or an article.',
+      'demo.placeholder': 'Paste 200 to 3,000 characters from a textbook page, your notes or an article.',
       'demo.tabSamples': 'Ready examples', 'demo.tabOwn': 'Your text',
-      'demo.langNote': 'The quiz comes out in the language of the text.',
+      'demo.langNote': 'The quiz comes out in the same language as the text.',
       'demo.show': 'Show the quiz',
       'demo.stepsSample': ['Opening the example', 'Loading the ready quiz'],
       'demo.need': { one: '{n} more character needed', other: '{n} more characters needed' },
@@ -70,66 +70,66 @@
       'demo.generate': 'Generate quiz',
       'demo.steps': ['Reading your text', 'Picking the key facts', 'Writing answer options'],
       'demo.working': 'Writing your quiz. This takes a few seconds.',
-      'demo.too_short': 'Add a bit more text: the demo needs at least 200 characters.',
-      'demo.too_long': 'That\'s over 3000 characters. Trim it to one or two paragraphs.',
+      'demo.too_short': 'Add a bit more text. The demo needs at least 200 characters.',
+      'demo.too_long': 'That\'s over 3,000 characters. Trim it to one or two paragraphs.',
       'demo.busy': 'The live demo is busy right now. Try again in a minute or open a ready example.',
       'demo.retry': 'Try again',
-      'ea.title': 'Quizzes from your own text open in early access',
-      'ea.text': 'Leave your email and we\'ll send you access first.',
-      'ea.already': 'You\'re already on the list. We\'ll email you first.',
-      'ea.done': 'Done. We\'ll email you as soon as your own-text quizzes are ready.',
-      'ea.meanwhile': 'Meanwhile, open a ready example',
+      'ea.title': 'Quizzes from your own text are in early access',
+      'ea.text': 'Leave your email and we\'ll let you know when your access opens.',
+      'ea.already': 'You\'re already on the list. We\'ll email you when your access opens.',
+      'ea.done': 'Done. We\'ll email you when you can make quizzes from your own text.',
+      'ea.meanwhile': 'In the meantime, try a ready example',
       'quiz.region': 'Your quiz', 'quiz.emptyTitle': 'Your quiz will appear here',
-      'quiz.emptySub': 'Five questions, four options each: one correct answer, three plausible wrong ones, and a one-line reason for the correct one.',
+      'quiz.emptySub': 'Five questions with four options each. Three options are plausible but wrong. The right one comes with a one-line reason.',
       'quiz.progress': 'Question {i} of {n}', 'quiz.right': 'Correct.', 'quiz.wrong': 'Not quite. The answer is {a}.',
       'quiz.next': 'Next question', 'quiz.finish': 'See my score', 'quiz.score': '{s} of {n} correct',
       'quiz.perfect': 'Full marks.', 'quiz.good': 'Nice work.', 'quiz.low': 'A good start.',
       'quiz.noteLive': 'Claude just wrote this quiz from your text.',
-      'quiz.noteSample': 'Claude wrote this quiz from this text in advance. Want one from your own lesson? Open {link}.',
+      'quiz.noteSample': 'Claude wrote this quiz from the example text ahead of time. Want one from your own lesson? Open {link}.',
       'quiz.ownLink': '“Your text”',
       'quiz.again': 'Try another text', 'quiz.cta': 'Want this for your class? Join the waitlist',
       'quiz.copy': 'Copy quiz', 'quiz.copied': 'Quiz copied as plain text: questions, options and answer key',
       'quiz.copyTitle': 'Quiz', 'quiz.keyTitle': 'Answer key',
       'quiz.ready': 'Quiz ready: {n} questions.',
       'features.title': 'What Quizpen does for you',
-      'features.sub': 'Start with the material you already teach from and finish with questions your students can answer.',
+      'features.sub': 'Bring the text you already teach from. Quizpen turns it into questions for your class.',
       'f1.t': 'From your text, in the same language',
-      'f1.d': 'Paste a textbook page, your notes or an article. Every question comes from that text. If the text is in Spanish, the quiz is in Spanish too.',
+      'f1.d': 'Every question comes from the text you paste, so the quiz sticks to what you taught. Paste a text in Spanish and you get the quiz in Spanish.',
       'f2.t': 'An answer key you can check at a glance',
-      'f2.d': 'Each correct answer has a one-sentence reason from your text. The correct option sits under different letters, A to D, so students can\'t guess a pattern.',
+      'f2.d': 'Each correct answer comes with a one-sentence reason that points back to your text. Right answers land on different letters, A to D, so students can\'t follow a pattern.',
       'f3.t': 'Students open it from a link',
-      'f3.d': 'Send a link or show a QR code on the screen. Students take the quiz without accounts, and we collect no student data. Prefer paper? Copy the quiz in one click and print it as a worksheet.',
+      'f3.d': 'Send a link or put the QR code up on the board. Students don\'t need accounts, and we collect no data about them. For paper, copy the quiz in one click and print it as a worksheet.',
       'proof.title': 'Why we\'re building this',
-      'proof.1': '<strong>About 1 in 3 teachers</strong> in OECD countries already use AI in their work. In Singapore and the UAE it is up to 75%.',
-      'proof.2': '<strong>66% of teachers</strong> think AI can give wrong or inappropriate recommendations. That is why every correct answer in Quizpen comes with a reason you can check against your text.',
-      'proof.3': '<strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practiced recalling it remembered more than students who read it again.',
+      'proof.1': '<strong>About 1 in 3 teachers</strong> in OECD countries already use AI in their work. In Singapore and the UAE, up to 75% do.',
+      'proof.2': '<strong>66% of teachers</strong> think AI can give wrong or inappropriate recommendations. That\'s why every correct answer in Quizpen comes with a reason you can check against your text.',
+      'proof.3': '<strong>Quizzing beats rereading.</strong> A week after studying a text, students who practiced recalling it remembered more than those who reread it.',
       'src.1': '<a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">OECD, Results from TALIS 2024</a>, the Teaching and Learning International Survey.',
       'src.2': '<a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International, "Using artificial intelligence: takeaways from TALIS 2024"</a>.',
       'src.3': '<a href="https://doi.org/10.1111/j.1467-9280.2006.01693.x" target="_blank" rel="noopener noreferrer">Roediger and Karpicke, "Test-Enhanced Learning"</a>, Psychological Science, 2006.',
       'faq.title': 'Questions teachers ask',
       'faq.q1': 'When can I start using Quizpen?',
-      'faq.a1': 'We\'re opening access in small groups, in the order teachers joined. We\'ll send one email when your spot opens.',
+      'faq.a1': 'We\'re opening access in small groups, in the order teachers joined. You\'ll get one email when it\'s your turn.',
       'faq.q2': 'Will it cost anything?',
       'faq.a2': 'Early access is free for teachers on the waitlist. If we add paid plans later, you\'ll hear about it before anything changes.',
       'faq.q3': 'Which subjects and languages does it work for?',
-      'faq.a3': 'Any subject you teach from text: history, biology, geography, literature and more. The quiz comes out in the language of the text you paste. You can see it in the ready examples in Spanish and Polish.',
+      'faq.a3': 'Any subject you teach from text, such as history, biology, geography or literature. The quiz comes out in the language of the text you paste. Try the Spanish and Polish examples to see it.',
       'faq.q4': 'How is this different from ChatGPT or Gemini?',
-      'faq.a4': 'No prompt to write: paste the text and get the quiz. Next to each correct answer is a reason from your text. Students take the quiz from a link and need no accounts. You can use Quizpen alongside them: the quiz copies in one click.',
+      'faq.a4': 'You don\'t write a prompt. Paste the text and you get a finished quiz with a reason for each correct answer. Students take it from a link, no accounts needed. The quiz copies in one click, so you can use it alongside them.',
       'faq.q5': 'Can I trust the answer key?',
-      'faq.a5': 'AI can still make mistakes, so look the quiz over before class. The reason line makes this quick: it shows which part of your text each answer comes from.',
+      'faq.a5': 'AI can still get things wrong, so look the quiz over before class. The reason line makes that quick. It shows which part of your text each answer comes from.',
       'faq.q6': 'What happens to my text and my students\' data?',
-      'faq.a6': 'Your text goes to an AI model only to write the quiz, and we don\'t store it. Students don\'t create accounts, and we collect no student data. Paste lesson material and leave out student names and other personal details.',
+      'faq.a6': 'Your text goes to an AI model only to write the quiz. We don\'t store it. Students don\'t create accounts, and we collect no data about them. Paste lesson material only, without student names or other personal details.',
       'final.title': 'Get Quizpen before your next unit starts.',
       'footer.privacy': 'We use your email only to tell you about access.'
     },
     uk: {
       'meta.title': 'Quizpen: тест із тексту уроку за лічені секунди',
-      'meta.desc': 'Quizpen складає з тексту вашого уроку тест із варіантами відповідей тією ж мовою, з поясненням в одне речення до кожної відповіді. Спробуйте готовий приклад і приєднуйтеся до списку очікування для вчителів.',
+      'meta.desc': 'Вставте текст уроку, і Quizpen складе тест із варіантами відповідей тією ж мовою. До кожної правильної відповіді буде пояснення в одне речення. Спробуйте готовий приклад і приєднуйтеся до списку очікування для вчителів.',
       'skip': 'Перейти до змісту', 'nav.demo': 'Спробувати демо', 'nav.faq': 'Питання', 'lang.label': 'Мова',
       'cta': 'Приєднатися до списку', 'cta.joined': 'Ви вже в списку',
-      'hero.kicker': 'ШІ-помічник для вчителів',
-      'hero.title': 'Вставте текст уроку. Отримайте <mark class="hl">тест</mark> ще до дзвінка.',
-      'hero.sub': 'Вставте будь-який текст, за яким ведете урок: параграф підручника, свій конспект чи статтю. Quizpen складе з нього тест із ключем відповідей і коротким поясненням до кожного питання.',
+      'hero.kicker': 'ШІ-генератор тестів для вчителів',
+      'hero.title': '<span class="h1-line">Вставте текст уроку.</span> <span class="h1-line">Отримайте тест ще до дзвінка.</span>',
+      'hero.sub': 'Візьміть параграф підручника, свій конспект чи статтю. Quizpen складе з цього тексту тест із варіантами відповідей. Ключ пояснює кожну правильну відповідь одним реченням.',
       'form.label': 'Пошта для раннього доступу', 'form.placeholder': 'imia@shkola.ua',
       'form.note': 'Один лист, коли доступ буде готовий. Відписатися можна одним кліком.',
       'form.sending': 'Додаємо',
@@ -137,75 +137,75 @@
       'err.invalid_email': 'Схоже, в адресі помилка. Перевірте її, будь ласка.',
       'err.rate_limited': 'Забагато спроб із цього пристрою. Зачекайте хвилину й спробуйте ще раз.',
       'err.server': 'Не вдалося зберегти пошту. Спробуйте ще раз за хвилину.',
-      'err.offline': 'Немає з\'єднання. Перевірте інтернет і спробуйте ще раз.',
-      'join.pending': 'Немає з\'єднання. Надішлемо ваш email, щойно з\'явиться інтернет.',
-      'net.offline': 'Ви офлайн. Готові приклади працюють і без інтернету.',
-      'demo.slow': 'Повільне з\'єднання. Ще працюємо.',
+      'err.offline': 'Немає з’єднання. Перевірте інтернет і спробуйте ще раз.',
+      'join.pending': 'Немає з’єднання. Надішлемо вашу адресу, щойно з’явиться інтернет.',
+      'net.offline': 'Немає інтернету. Готові приклади працюють і без нього.',
+      'demo.slow': 'Повільне з’єднання. Ще працюємо.',
       'counter': { one: '{n} вчитель уже приєднався', few: '{n} вчителі вже приєдналися', many: '{n} вчителів уже приєдналися', other: '{n} вчителя вже приєдналися' },
       'counter.first': 'Станьте одним із перших учителів, які спробують Quizpen',
       'hero.try': 'Спробуйте готовий приклад, без реєстрації',
       'thanks.title': 'Ви №{n} у списку очікування',
       'thanks.body': 'Ми напишемо на {email}, щойно доступ буде готовий.',
-      'thanks.already': 'Ви вже були в списку, тож ваше місце збережене.',
+      'thanks.already': 'Ви вже в списку. Ваше місце збережено.',
       'thanks.share': 'Знаєте колегу, який складає тести вечорами? Надішліть йому своє посилання.',
       'thanks.linkLabel': 'Ваше посилання-запрошення', 'thanks.copy': 'Копіювати', 'thanks.copied': 'Скопійовано',
-      'thanks.copiedSr': 'Посилання скопійовано', 'thanks.reset': 'Записати іншу пошту',
+      'thanks.copiedSr': 'Посилання скопійовано', 'thanks.reset': 'Вказати іншу пошту',
       'thanks.refs': { one: '<strong>{n} колега</strong> приєднався за вашим посиланням', few: '<strong>{n} колеги</strong> приєдналися за вашим посиланням', many: '<strong>{n} колег</strong> приєдналися за вашим посиланням', other: '<strong>{n} колеги</strong> приєдналися за вашим посиланням' },
       'share.email': 'Пошта',
-      'share.text': 'Я в списку очікування Quizpen. Він робить тест із тексту уроку за лічені секунди:',
+      'share.text': 'Я в списку очікування Quizpen. Він складає тест із тексту уроку за лічені секунди:',
       'share.subject': 'Тест із тексту уроку за кілька секунд',
-      'art.label': 'Текст вашого уроку',
-      'art.source': 'Хлорофіл поглинає червоне й синє світло та <mark class="hl hl-art">відбиває зелене</mark>, тому більшість листків здаються зеленими.',
-      'art.progress': 'Питання 2 з 5', 'art.q': 'Чому більшість листків здаються зеленими?',
+      'art.q': 'Чому більшість листків здаються зеленими?',
       'art.a': 'Вони поглинають зелене світло', 'art.b': 'Хлорофіл відбиває зелене світло',
       'art.c': 'Їхні клітини містять зелену воду', 'art.d': 'Сонячне світло переважно зелене',
       'art.explain': 'Хлорофіл відбиває зелене світло, тому до наших очей доходить саме воно.',
-      'demo.title': 'Подивіться на справжньому уроці',
-      'demo.sub': 'Готові приклади відкриваються одразу й без реєстрації. Тести з вашого тексту поки що в ранньому доступі. Ваш текст ми не зберігаємо.',
+      'art.note': 'правильна відповідь<br>і чому саме вона',
+      'sheet.name': 'Ім’я', 'sheet.class': 'Клас', 'sheet.date': 'Дата', 'sheet.score': 'Бали',
+      'demo.title': 'Спробуйте на справжньому уроці',
+      'demo.sub': 'Оберіть готовий приклад, і тест з’явиться одразу. Тести з вашого тексту поки що в ранньому доступі. Вставлений текст ми не зберігаємо.',
       'demo.label': 'Текст уроку',
-      'demo.placeholder': 'Вставте від 200 до 3000 символів: сторінку підручника, свій конспект або статтю.',
+      'demo.placeholder': 'Вставте від 200 до 3000 символів з підручника, конспекту чи статті.',
       'demo.tabSamples': 'Готові приклади', 'demo.tabOwn': 'Ваш текст',
-      'demo.langNote': 'Тест виходить мовою тексту.',
+      'demo.langNote': 'Тест буде тією ж мовою, що й текст.',
       'demo.show': 'Показати тест',
       'demo.stepsSample': ['Відкриваємо приклад', 'Завантажуємо готовий тест'],
       'demo.need': { one: 'ще {n} символ', few: 'ще {n} символи', many: 'ще {n} символів', other: 'ще {n} символу' },
-      'demo.ready': 'Можна створювати',
+      'demo.ready': 'Можна створювати тест',
       'demo.generate': 'Створити тест',
       'demo.steps': ['Читаємо текст', 'Вибираємо головні факти', 'Пишемо варіанти відповідей'],
-      'demo.working': 'Складаємо тест, зачекайте кілька секунд.',
-      'demo.too_short': 'Додайте ще тексту: для демо потрібно щонайменше 200 символів.',
+      'demo.working': 'Складаємо тест. Це займе кілька секунд.',
+      'demo.too_short': 'Додайте ще трохи тексту. Для демо потрібно щонайменше 200 символів.',
       'demo.too_long': 'Це понад 3000 символів. Скоротіть до одного-двох абзаців.',
-      'demo.busy': 'Живе демо зараз перевантажене. Спробуйте за хвилину або відкрийте готовий приклад.',
+      'demo.busy': 'Демо зараз перевантажене. Спробуйте за хвилину або відкрийте готовий приклад.',
       'demo.retry': 'Спробувати ще раз',
-      'ea.title': 'Генерація з вашого тексту відкривається в ранньому доступі',
-      'ea.text': 'Залиште email, і ми надішлемо доступ першим.',
-      'ea.already': 'Ви вже в списку. Напишемо вам першим.',
-      'ea.done': 'Готово. Напишемо вам, щойно тести з вашого тексту запрацюють.',
-      'ea.meanwhile': 'Поки що відкрийте готовий приклад',
-      'quiz.region': 'Ваш тест', 'quiz.emptyTitle': 'Тут з\'явиться ваш тест',
-      'quiz.emptySub': 'П\'ять питань, по чотири варіанти: одна правильна відповідь, три правдоподібні неправильні й пояснення в одне речення, чому правильна саме вона.',
+      'ea.title': 'Тести з вашого тексту поки в ранньому доступі',
+      'ea.text': 'Залиште пошту, і ми напишемо, щойно доступ відкриється для вас.',
+      'ea.already': 'Ви вже в списку. Напишемо, щойно доступ відкриється для вас.',
+      'ea.done': 'Готово. Напишемо, щойно ви зможете складати тести зі свого тексту.',
+      'ea.meanwhile': 'А поки спробуйте готовий приклад',
+      'quiz.region': 'Ваш тест', 'quiz.emptyTitle': 'Тут з’явиться ваш тест',
+      'quiz.emptySub': 'П’ять питань, у кожному чотири варіанти. Три з них правдоподібні, але неправильні. Правильний має пояснення в одне речення.',
       'quiz.progress': 'Питання {i} з {n}', 'quiz.right': 'Правильно.', 'quiz.wrong': 'Не зовсім. Правильна відповідь: {a}.',
       'quiz.next': 'Наступне питання', 'quiz.finish': 'Мій результат', 'quiz.score': '{s} з {n} правильно',
       'quiz.perfect': 'Усе правильно.', 'quiz.good': 'Гарний результат.', 'quiz.low': 'Непоганий початок.',
       'quiz.noteLive': 'Claude щойно склав цей тест із вашого тексту.',
-      'quiz.noteSample': 'Цей тест Claude склав із цього тексту заздалегідь. Хочете тест зі свого уроку? Відкрийте {link}.',
+      'quiz.noteSample': 'Цей тест Claude склав заздалегідь із тексту прикладу. Хочете тест зі свого уроку? Відкрийте {link}.',
       'quiz.ownLink': '«Ваш текст»',
       'quiz.again': 'Спробувати інший текст', 'quiz.cta': 'Хочете такий тест для свого класу? Приєднуйтеся до списку',
-      'quiz.copy': 'Копіювати тест', 'quiz.copied': 'Тест скопійовано як текст: питання, варіанти й відповіді',
-      'quiz.copyTitle': 'Тест', 'quiz.keyTitle': 'Відповіді',
+      'quiz.copy': 'Копіювати тест', 'quiz.copied': 'Тест скопійовано як текст: питання, варіанти й ключ відповідей',
+      'quiz.copyTitle': 'Тест', 'quiz.keyTitle': 'Ключ відповідей',
       'quiz.ready': 'Тест готовий: питань {n}.',
       'features.title': 'Що Quizpen робить за вас',
-      'features.sub': 'Ви починаєте з матеріалу, за яким уже готуєтеся до уроку, і отримуєте питання, на які учні можуть відповісти.',
+      'features.sub': 'Ви берете текст, за яким уже ведете урок, а Quizpen робить із нього питання для класу.',
       'f1.t': 'З вашого тексту і тією ж мовою',
-      'f1.d': 'Вставте параграф підручника, свій конспект чи статтю. Усі питання беруться з цього тексту. Якщо текст іспанською, тест теж буде іспанською.',
-      'f2.t': 'Ключ, який легко звірити',
-      'f2.d': 'До кожної правильної відповіді є пояснення в одне речення з вашого тексту. Правильний варіант стоїть під різними літерами, від A до D, тож учні не вгадають закономірність.',
+      'f1.d': 'Усі питання беруться з тексту, який ви вставили, тож тест не виходить за межі пройденого. Якщо текст іспанською, то й тест буде іспанською.',
+      'f2.t': 'Ключ відповідей, який легко перевірити',
+      'f2.d': 'Кожна правильна відповідь має пояснення в одне речення, яке спирається на ваш текст. Правильні відповіді стоять під різними літерами, від A до D, тож учні не вгадають їх за шаблоном.',
       'f3.t': 'Учні відкривають тест за посиланням',
-      'f3.d': 'Надішліть посилання або покажіть QR-код на екрані. Учні проходять тест без акаунтів, а ми не збираємо жодних даних про них. Зручніше на папері? Скопіюйте тест одним кліком і роздрукуйте для самостійної роботи.',
+      'f3.d': 'Надішліть посилання або виведіть QR-код на екран. Учням не потрібні акаунти, а ми не збираємо про них жодних даних. Для паперового варіанта скопіюйте тест одним кліком і роздрукуйте для самостійної роботи.',
       'proof.title': 'Чому ми це робимо',
       'proof.1': '<strong>Приблизно кожен третій учитель</strong> у країнах ОЕСР уже використовує ШІ в роботі. У Сінгапурі та ОАЕ таких до 75%.',
       'proof.2': '<strong>66% учителів</strong> вважають, що ШІ може давати хибні або недоречні рекомендації. Тому кожна правильна відповідь у Quizpen має пояснення, яке легко звірити з вашим текстом.',
-      'proof.3': '<strong>Тест працює краще за перечитування.</strong> Через тиждень після вивчення тексту учні, які пробували відтворити його з пам\'яті, пам\'ятали більше, ніж ті, хто просто перечитав.',
+      'proof.3': '<strong>Тест працює краще за перечитування.</strong> Через тиждень після вивчення тексту учні, які відтворювали його з пам’яті, пригадали більше, ніж ті, хто його просто перечитував.',
       'src.1': '<a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">ОЕСР, Results from TALIS 2024</a>, Міжнародне дослідження викладання та навчання.',
       'src.2': '<a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International, «Using artificial intelligence: takeaways from TALIS 2024»</a>.',
       'src.3': '<a href="https://doi.org/10.1111/j.1467-9280.2006.01693.x" target="_blank" rel="noopener noreferrer">Roediger і Karpicke, «Test-Enhanced Learning»</a>, Psychological Science, 2006.',
@@ -213,15 +213,15 @@
       'faq.q1': 'Коли я зможу користуватися Quizpen?',
       'faq.a1': 'Ми відкриваємо доступ невеликими групами, у порядку реєстрації. Коли настане ваша черга, надішлемо один лист.',
       'faq.q2': 'Це платно?',
-      'faq.a2': 'Ранній доступ безкоштовний для вчителів зі списку очікування. Якщо згодом з\'являться платні тарифи, ми попередимо заздалегідь.',
+      'faq.a2': 'Ранній доступ безкоштовний для вчителів зі списку очікування. Якщо згодом з’являться платні тарифи, ми попередимо заздалегідь.',
       'faq.q3': 'Для яких предметів і мов це працює?',
-      'faq.a3': 'Для будь-якого предмета, де працюють із текстом: історія, біологія, географія, література та інші. Тест виходить мовою тексту, який ви вставили. Це видно на готових прикладах іспанською та польською.',
+      'faq.a3': 'Для будь-якого предмета, де працюють із текстом: історія, біологія, географія, література тощо. Тест виходить тією ж мовою, що й текст, який ви вставили. Це видно на готових прикладах іспанською та польською.',
       'faq.q4': 'Чим це відрізняється від ChatGPT чи Gemini?',
-      'faq.a4': 'Запит писати не треба: вставте текст і отримайте тест. Біля кожної правильної відповіді є пояснення з вашого тексту. Учні проходять тест за посиланням і без акаунтів. Quizpen можна використовувати разом із ними: тест копіюється одним кліком.',
+      'faq.a4': 'Запит писати не треба. Вставляєте текст і отримуєте готовий тест із поясненням до кожної правильної відповіді. Учні проходять його за посиланням, без акаунтів. Quizpen можна використовувати й разом із ними, бо тест копіюється одним кліком.',
       'faq.q5': 'Чи можна довіряти ключу відповідей?',
-      'faq.a5': 'ШІ все ще може помилятися, тому перегляньте тест перед уроком. Пояснення це прискорює: воно показує, з якого місця вашого тексту взято кожну відповідь.',
+      'faq.a5': 'ШІ все ще може помилятися, тому перегляньте тест перед уроком. З поясненнями це швидко. Вони показують, з якого місця вашого тексту взято кожну відповідь.',
       'faq.q6': 'Що буде з моїм текстом і даними учнів?',
-      'faq.a6': 'Текст надсилаємо моделі ШІ лише для того, щоб скласти тест, і ми його не зберігаємо. Учні не створюють акаунтів, і ми не збираємо їхніх даних. Вставляйте матеріал уроку без імен учнів та інших особистих даних.',
+      'faq.a6': 'Ваш текст надсилаємо моделі ШІ лише для того, щоб скласти тест. Ми його не зберігаємо. Учні не створюють акаунтів, і ми не збираємо про них жодних даних. Вставляйте лише матеріал уроку, без імен учнів та інших особистих даних.',
       'final.title': 'Отримайте Quizpen до початку наступної теми.',
       'footer.privacy': 'Вашу пошту використовуємо лише для листа про доступ.'
     }
@@ -613,11 +613,20 @@
   function renderChips() {
     var focused = document.activeElement && document.activeElement.closest ? document.activeElement.closest('.chip') : null;
     var focusId = focused ? focused.getAttribute('data-sample') : null;
+    // A table-of-contents row: "Biology" in small caps, then the topic; the label is split at its first ": ".
+    var split = function (str) { var i = str.indexOf(': '); return i < 0 ? ['', str] : [str.slice(0, i), str.slice(i + 2)]; };
+    var upper = function (str) { return str.charAt(0).toUpperCase() + str.slice(1); };
     chipsEl.innerHTML = sampleOrder.map(function (id) {
       var s = samples[id], label = s.label || {};
+      var cur = split(label[lang] || label.en || id), en = split(label.en || id), uk = split(label.uk || label.en || id);
       var tag = s.lang ? '<span class="chip-tag" aria-hidden="true">' + esc(s.lang.toUpperCase()) + '</span>' : '';
       return '<button type="button" class="chip" data-sample="' + esc(id) + '" aria-pressed="' + (id === activeSample) + '">' +
-        '<span data-rsv="' + esc((label.en || id) + '\n' + (label.uk || label.en || id)) + '">' + esc(label[lang] || label.en || id) + '</span>' + tag + '</button>';
+        '<span class="chip-subj" data-rsv="' + esc(en[0] + '\n' + uk[0]) + '">' + esc(cur[0]) + '</span>' +
+        (cur[0] ? '<span class="sr-only">: </span>' : '') +
+        // The topic box holds both languages' ghosts (data-rsv-en/uk), so a topic that wraps in one language
+        // keeps the same height in the other and the sections below do not move on a language switch.
+        '<span class="chip-topic' + (tag ? ' has-tag' : '') + '" data-rsv-en="' + esc(upper(en[1])) + '" data-rsv-uk="' + esc(upper(uk[1])) + '">' +
+        '<span class="chip-topic-text">' + esc(upper(cur[1])) + tag + '</span></span></button>';
     }).join('');
     if (focusId) { var c = chipsEl.querySelector('.chip[data-sample="' + focusId + '"]'); if (c) c.focus({ preventScroll: true }); }
   }
@@ -829,13 +838,13 @@
   function renderEarly(v) {
     var prev = document.getElementById('ea-email'), typed = prev ? prev.value : '';
     var inner;
-    if (v.done) inner = '<p class="ea-done" tabindex="-1">' + icon('i-check') + '<span>' + esc(t('ea.done')) + '</span></p>';
-    else if (joined) inner = '<p class="ea-done">' + icon('i-check') + '<span>' + esc(t('ea.already')) + '</span></p>';
+    if (v.done) inner = '<p class="ea-done" tabindex="-1">' + penTick('ea-tick') + '<span>' + esc(t('ea.done')) + '</span></p>';
+    else if (joined) inner = '<p class="ea-done">' + penTick('ea-tick') + '<span>' + esc(t('ea.already')) + '</span></p>';
     else {
       inner = '<p class="ea-text">' + esc(t('ea.text')) + '</p><form class="ea-form" id="ea-form" novalidate>' +
         '<label for="ea-email" class="sr-only">' + esc(t('form.label')) + '</label><div class="join-row">' +
         '<input id="ea-email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="' + esc(t('form.placeholder')) + '" aria-describedby="ea-msg">' +
-        '<button type="submit" class="btn btn-accent btn-lg join-btn" id="ea-btn">' + labelSpan(['cta', 'form.sending'], 'btn-label') + '<span class="spinner" aria-hidden="true"></span></button></div>' +
+        '<button type="submit" class="btn btn-ink btn-lg join-btn" id="ea-btn">' + labelSpan(['cta', 'form.sending'], 'btn-label') + '<span class="spinner" aria-hidden="true"></span></button></div>' +
         '<p id="ea-msg" class="field-msg" aria-live="polite"></p></form>';
     }
     bodyEl.innerHTML = '<div class="ea"><p class="ea-title">' + esc(t('ea.title')) + '</p>' + inner +
@@ -865,7 +874,7 @@
     if (mode === 'own') renderView();
   }
   function renderBusy() {
-    bodyEl.innerHTML = '<div class="quiz-error demo-busy">' + icon('i-info') + '<p>' + esc(t('demo.busy')) + '</p>' +
+    bodyEl.innerHTML = '<div class="quiz-error demo-busy"><p>' + esc(t('demo.busy')) + '</p>' +
       '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-retry>' + icon('i-refresh') + labelSpan(['demo.retry'], 'btn-text') + '</button>' +
       '<button type="button" class="btn btn-ghost" data-open-samples>' + labelSpan(['demo.tabSamples'], 'btn-text') + '</button></div></div>';
   }
@@ -899,6 +908,15 @@
 
   var KEYS = ['A', 'B', 'C', 'D'];
   function icon(id, cls) { return '<svg class="icon ' + (cls || '') + '" aria-hidden="true"><use href="#' + id + '"/></svg>'; }
+  // Red pen marks drawn by hand (the hero's loop and tick paths); pathLength 1 lets CSS draw them in.
+  function penSvg(cls, box, width, inner) {
+    return '<svg class="' + cls + '" viewBox="' + box + '" fill="none" stroke="currentColor" stroke-width="' + width +
+      '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + inner + '</svg>';
+  }
+  function penTick(cls) { return penSvg(cls, '0 0 34 28', 3, '<path pathLength="1" d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/>'); }
+  var PEN_LOOP = penSvg('opt-loop', '0 0 46 40', 2.2, '<path pathLength="1" d="M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11"/>');
+  var SCORE_LOOP = penSvg('score-loop', '0 0 168 108', 2.5, '<path pathLength="1" d="M99 12 C51 5 13 24 16 54 C20 84 69 101 113 92 C150 84 162 57 146 34 C133 16 102 8 69 15 C55 18 44 23 38 30"/>');
+  var SCISSORS = penSvg('quiz-key-cut', '0 0 30 18', 1.5, '<circle cx="5.5" cy="4.5" r="3.5"/><circle cx="5.5" cy="13.5" r="3.5"/><path d="M8.5 6.5 L27 14"/><path d="M8.5 11.5 L27 4"/>');
 
   // The note sits under the quiz: where this quiz came from, said plainly.
   function noteHtml(s) {
@@ -908,38 +926,44 @@
       var parts = t('quiz.noteSample').split('{link}');
       body = esc(parts[0]) + '<button type="button" class="link-btn" data-open-own>' + esc(t('quiz.ownLink')) + '</button>' + esc(parts[1] || '');
     }
-    return '<p class="quiz-note">' + icon('i-info') + '<span>' + body + '</span></p>';
+    return '<p class="quiz-note">' + body + '</p>';
+  }
+
+  // The answer key: a tear-off strip that fills in as the visitor answers; it is also the progress
+  // (the checks count `.quiz-bars i` to know the number of questions).
+  function keyHtml(s) {
+    return '<div class="quiz-key quiz-bars" aria-hidden="true">' + SCISSORS + '<span class="quiz-key-label">' + esc(t('quiz.keyTitle')) + '</span>' +
+      s.quiz.questions.map(function (q, k) {
+        var p = s.picks[k], cls = p === undefined ? (k === s.i ? 'now' : '') : (p === q.answer ? 'right' : 'wrong');
+        return '<i' + (cls ? ' class="' + cls + '"' : '') + '>' + (k + 1) + '&nbsp;' + (p === undefined ? '<span class="key-blank"></span>' : KEYS[q.answer]) + '</i>';
+      }).join('') + '</div>';
   }
 
   function renderQuiz(focusSel) {
     var s = quizState, qs = s.quiz.questions, n = qs.length;
     var note = noteHtml(s);
-    var bars = qs.map(function (q, k) {
-      var p = s.picks[k];
-      return '<i class="' + (p === undefined ? (k === s.i ? 'now' : '') : (p === q.answer ? 'right' : 'wrong')) + '"></i>';
-    }).join('');
-    var head = '<div class="quiz-top"><p class="quiz-title">' + esc(s.quiz.title || '') + '</p>' +
-      (s.i < n ? '<p class="quiz-progress">' + esc(t('quiz.progress', { i: s.i + 1, n: n })) + '</p>' : '') + '</div><div class="quiz-bars" aria-hidden="true">' + bars + '</div>';
+    var head = '<p class="quiz-sheet" aria-hidden="true"><span>' + esc(t('sheet.name')) + '</span><i></i></p>' +
+      '<div class="quiz-top"><p class="quiz-title">' + esc(s.quiz.title || '') + '</p>' +
+      (s.i < n ? '<p class="quiz-progress">' + esc(t('quiz.progress', { i: s.i + 1, n: n })) + '</p>' : '') + '</div>';
 
-    if (s.i >= n) { bodyEl.innerHTML = head + renderScore() + note; bindScore(); ratchet(); focusIn(focusSel || '.score-num'); return; }
+    if (s.i >= n) { bodyEl.innerHTML = head + renderScore() + keyHtml(s) + note; bindScore(); ratchet(); focusIn(focusSel || '.score-num'); return; }
 
     var q = qs[s.i], pick = s.picks[s.i], answered = pick !== undefined;
+    // After the answer the right letter is circled and ticked in red pen, a wrong pick is struck out.
     var opts = q.options.map(function (o, k) {
-      var cls = 'opt', mark = '';
-      if (answered) {
-        if (k === q.answer) { cls += ' is-right'; mark = icon('i-check', 'opt-mark'); }
-        else if (k === pick) { cls += ' is-wrong'; mark = icon('i-x', 'opt-mark'); }
-        else cls += ' is-dim';
-      }
-      return '<li><button type="button" class="' + cls + '" data-k="' + k + '"' + (answered ? ' disabled' : '') + '><span class="opt-key">' + KEYS[k] + '</span><span>' + esc(o) + '</span>' + mark + '</button></li>';
+      var cls = 'opt', right = answered && k === q.answer;
+      if (answered) cls += right ? ' is-right' : (k === pick ? ' is-wrong' : ' is-dim');
+      return '<li><button type="button" class="' + cls + '" data-k="' + k + '"' + (answered ? ' disabled' : '') + '><span class="opt-key">' + KEYS[k] + (right ? PEN_LOOP : '') + '</span>' +
+        '<span class="opt-text">' + esc(o) + '</span>' + (right ? penTick('opt-tick') : '') + '</button></li>';
     }).join('');
-    var fb = '';
+    var fb = '', actions = '';
     if (answered) {
       var ok = pick === q.answer;
-      fb = '<div class="feedback ' + (ok ? 'is-right' : 'is-wrong') + '" role="status"><strong>' + esc(ok ? t('quiz.right') : t('quiz.wrong', { a: KEYS[q.answer] })) + '</strong>' + esc(q.explain || '') + '</div>' +
-        '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-next>' + esc(s.i === n - 1 ? t('quiz.finish') : t('quiz.next')) + icon('i-arrow') + '</button></div>';
+      fb = '<div class="feedback ' + (ok ? 'is-right' : 'is-wrong') + '" role="status"><strong>' + esc(ok ? t('quiz.right') : t('quiz.wrong', { a: KEYS[q.answer] })) + '</strong> ' + esc(q.explain || '') + '</div>';
+      actions = '<div class="quiz-actions"><button type="button" class="btn btn-ink" data-next>' + esc(s.i === n - 1 ? t('quiz.finish') : t('quiz.next')) + icon('i-arrow') + '</button></div>';
     }
-    bodyEl.innerHTML = head + '<p class="quiz-q" tabindex="-1">' + esc(q.q) + '</p><ul class="opts">' + opts + '</ul>' + fb + note;
+    bodyEl.innerHTML = head + '<div class="quiz-item"><p class="quiz-q" tabindex="-1"><span class="quiz-num" aria-hidden="true">' + (s.i + 1) + '.</span>' + esc(q.q) + '</p>' +
+      '<ul class="opts">' + opts + '</ul>' + fb + '</div>' + actions + keyHtml(s) + note;
 
     bodyEl.querySelectorAll('.opt').forEach(function (b) {
       b.addEventListener('click', function (ev) {
@@ -961,10 +985,10 @@
     var s = quizState, qs = s.quiz.questions, n = qs.length;
     var right = qs.reduce(function (a, q, k) { return a + (s.picks[k] === q.answer ? 1 : 0); }, 0);
     var verdict = right === n ? t('quiz.perfect') : (right >= Math.ceil(n * 0.6) ? t('quiz.good') : t('quiz.low'));
-    var dots = qs.map(function (q, k) { return '<i class="' + (s.picks[k] === q.answer ? 'right' : '') + '"></i>'; }).join('');
-    return '<div class="score"><p class="score-num" tabindex="-1">' + right + '/' + n + '</p><p class="score-label">' + esc(verdict + ' ' + t('quiz.score', { s: right, n: n })) + '</p>' +
-      '<div class="score-dots" aria-hidden="true">' + dots + '</div>' +
-      '<div class="quiz-actions"><button type="button" class="btn btn-accent btn-lg" data-join>' + esc(t('quiz.cta')) + '</button>' +
+    // The mark circled in red pen, like a teacher's mark on the sheet.
+    return '<div class="score"><div class="score-mark">' + SCORE_LOOP + '<p class="score-num" tabindex="-1">' + right + '/' + n + '</p></div>' +
+      '<p class="score-label">' + esc(verdict + ' ' + t('quiz.score', { s: right, n: n })) + '</p>' +
+      '<div class="quiz-actions"><button type="button" class="btn btn-ink btn-lg" data-join>' + esc(t('quiz.cta')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-copy-quiz>' + icon('i-copy') + esc(t('quiz.copy')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-again>' + icon('i-refresh') + esc(t('quiz.again')) + '</button></div></div>';
   }
@@ -1004,7 +1028,7 @@
     var r = originEl ? originEl.getBoundingClientRect() : { left: W / 2, top: H / 2, width: 0, height: 0 };
     var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
     var colors = (getComputedStyle(document.documentElement).getPropertyValue('--confetti') || '').split(',').map(function (c) { return c.trim(); }).filter(Boolean);
-    if (!colors.length) colors = ['#F2E14A', '#161B2E', '#156B42', '#E8836B', '#7A9CF0'];
+    if (!colors.length) colors = ['#C8312B', '#1F2A44', '#1D6B3A', '#7A9CF0', '#E58A8A'];
     var parts = [];
     for (var i = 0; i < 110; i++) {
       var a = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.1, sp = 5 + Math.random() * 7;

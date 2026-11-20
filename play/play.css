@@ -1,49 +1,48 @@
-/* Quizpen student player. Mobile-first, system fonts only (no font requests), landing palette. */
+/* Quizpen student player: the landing's printed worksheet (web/styles.css) for students. Phones first.
+   The player's CSP allows styles from this site only, so there are no web fonts: local serif faces for the
+   headings and questions, the system sans for the UI. */
 
 :root {
-  --paper: #F6F6F2;
-  --surface: #FDFDFB;
-  --ink: #161B2E;
-  --ink-2: #474D64;
-  --ink-3: #5C627A;
-  --line: #DFE0D9;
-  --line-strong: #C7C9C0;
-  --accent: #F2E14A;
-  --accent-hover: #E6D332;
-  --accent-soft: #FBF5C4;
-  --right: #156B42;
-  --right-bg: #E1F1E7;
-  --wrong: #A8372B;
-  --wrong-bg: #FAE8E5;
+  --paper: #FBF8F0;
+  --surface: #FFFDF8;
+  --ink: #1F2A44;
+  --ink-2: #3B4256;
+  --ink-3: #5E6470;
+  --ink-hover: #2A3150;
+  --line: #E4DDCC;
+  --line-strong: #CCC3AE;
+  --tint-2: #EEE8DA;
+  /* Worksheet: red pen, blue ruling, red margin line */
+  --pen: #C8312B;
+  --rule: #C9D9EC;
+  --margin: #E58A8A;
+  --right: #1D6B3A;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --tint-2: #EEEEE8;
-  --on-accent: #161B2E;
-  --on-status: #FFFFFF;
-  --right-ink: #0F4D30;
-  --wrong-ink: #7C2219;
+  --serif: Georgia, Charter, "Bitstream Charter", Cambria, "Times New Roman", serif;
+  /* Sheet geometry: x of the red margin line and the gap from it to the text (the landing's phone values). */
+  --sheet-line: 28px;
+  --sheet-gap: 16px;
+  --pad-l: calc(var(--sheet-line) + var(--sheet-gap) + env(safe-area-inset-left, 0px));
+  --pad-r: max(18px, env(safe-area-inset-right, 0px));
   color-scheme: light;
 }
-/* Dark palette shared with the landing (web/styles.css); set by theme.js before first paint. */
+/* Dark sheet, the landing's dark palette; set by theme.js before first paint. */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #0E1220;
-  --surface: #1A2034;
-  --ink: #ECEDE6;
-  --ink-2: #B7BBCB;
-  --ink-3: #9197AD;
-  --line: #262C42;
-  --line-strong: #3A4160;
-  --accent-hover: #FFEE6B;
-  --accent-soft: #2E2B18;
-  --right: #5FCB8F;
-  --right-bg: #13301F;
-  --wrong: #F28C7C;
-  --wrong-bg: #3A1B18;
-  --tint-2: #2A3149;
-  --on-status: #0E1220;
-  --right-ink: #B4EBCB;
-  --wrong-ink: #FFC9C0;
+  --paper: #22252B;
+  --surface: #2A2D34;
+  --ink: #ECE6D8;
+  --ink-2: #CFC9BB;
+  --ink-3: #A9A79F;
+  --ink-hover: #D4D6CD;
+  --line: #3A3E47;
+  --line-strong: #4A4F5A;
+  --tint-2: #363A42;
+  --pen: #FF7B6E;
+  --rule: #2E3A4D;
+  --margin: #7A3B3B;
+  --right: #6FD39A;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -62,48 +61,55 @@ body {
 h1, p { margin: 0; }
 button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 a { color: inherit; }
-:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 .sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .icon { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+/* Red pen marks (play.js penMark): pathLength 1 lets CSS draw them in. */
+.pen { overflow: visible; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; color: var(--pen); pointer-events: none; }
+.pen path { stroke-dasharray: 1; }
 
-/* One screen = one column; on wide screens it becomes a calm card. */
+/* One screen = one sheet: plain paper with the red margin line on the left; on wide screens a flat card. */
 .app { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
 .screen {
+  position: relative;
   flex: 1;
   display: flex; flex-direction: column;
   width: 100%; max-width: 640px; margin: 0 auto;
-  padding: max(20px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  padding: max(20px, env(safe-area-inset-top)) var(--pad-r) max(20px, env(safe-area-inset-bottom)) var(--pad-l);
+}
+.screen::before {
+  content: ""; position: absolute; z-index: 3; top: 0; bottom: 0; left: calc(var(--sheet-line) + env(safe-area-inset-left, 0px));
+  border-left: 1.5px solid var(--margin); pointer-events: none;
 }
 .screen-center { justify-content: center; text-align: center; }
 .screen :focus { outline: none; }
 .screen :focus-visible { outline: 3px solid var(--ink); }
 @media (min-width: 720px) {
+  :root { --sheet-line: 48px; --sheet-gap: 32px; --pad-r: 40px; }
   .app { justify-content: center; padding: 40px 24px; }
   .screen {
     flex: none;
     min-height: min(760px, calc(100vh - 80px));
-    padding: 36px 40px;
+    padding-top: 36px; padding-bottom: 36px;
     background: var(--surface);
     border: 1.5px solid var(--line);
-    border-radius: 20px;
-    box-shadow: 0 1px 2px rgba(22, 27, 46, 0.05), 0 12px 32px rgba(22, 27, 46, 0.07);
   }
 }
 .boot { color: var(--ink-3); }
 
-/* Buttons: every tap target is at least 56px tall. */
+/* Buttons: square ink, every tap target at least 56px tall. */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 56px; padding: 12px 24px;
-  border: 0; border-radius: 14px;
-  font-size: 1.06rem; font-weight: 650; line-height: 1.2; text-align: center; text-decoration: none;
+  border: 0; border-radius: 0;
+  font-size: 1.06rem; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none;
   transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out), transform 120ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
-.btn-primary { background: var(--accent); color: var(--on-accent); }
-.btn-primary:hover { background: var(--accent-hover); }
-.btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
-.btn-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--ink-hover); }
+.btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn-ghost:hover { background: var(--tint-2); }
 .actions { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
 .actions .btn { width: 100%; }
 @media (min-width: 720px) { .actions { flex-direction: row; justify-content: center; } .actions .btn { width: auto; min-width: 200px; } }
@@ -111,126 +117,134 @@ a { color: inherit; }
 .privacy { margin-top: auto; padding-top: 28px; font-size: 0.86rem; line-height: 1.45; color: var(--ink-3); text-align: center; }
 .brand { display: block; margin-top: 10px; font-size: 0.86rem; color: var(--ink-3); text-align: center; text-underline-offset: 3px; }
 
-/* Start */
+/* Start: the logo (circled Q), the quiz title in the serif, a short note in a ruled box. */
 .screen-start { justify-content: center; }
-.eyebrow { font-size: 0.86rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
-.start-title { margin-top: 10px; font-size: clamp(1.9rem, 1.4rem + 2.4vw, 2.6rem); line-height: 1.12; letter-spacing: -0.025em; font-weight: 800; text-wrap: balance; }
-.start-meta { margin-top: 14px; font-weight: 600; color: var(--ink-2); }
-.start-hint { margin-top: 18px; padding: 14px 16px; border-radius: 14px; background: var(--accent-soft); color: var(--ink); }
+.eyebrow { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+.eyebrow::before {
+  content: "Q"; content: "Q" / "";
+  display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px;
+  border: 1.5px solid var(--ink); border-radius: 50%;
+  font-size: 0.95rem; line-height: 1;
+}
+.start-title { margin-top: 20px; font-family: var(--serif); font-size: clamp(1.9rem, 1.45rem + 2.2vw, 2.5rem); line-height: 1.15; font-weight: 700; text-wrap: balance; }
+.start-meta { margin-top: 12px; padding-bottom: 12px; border-bottom: 1.5px solid var(--ink); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.start-hint { margin-top: 18px; font-family: var(--serif); font-style: italic; font-size: 1.06rem; color: var(--ink-2); }
 
-/* Question */
+/* Question: progress boxes, the count and the streak on top; the question in the serif; four full-width
+   answer lines on the ruling with circled letters A-D. */
 .bar { display: flex; align-items: center; gap: 12px; }
 .dots { display: flex; flex: 1; gap: 6px; min-width: 0; }
-.dots i { flex: 1; max-width: 44px; height: 10px; border-radius: 5px; background: var(--line); transition: background-color 220ms var(--ease-out), transform 220ms var(--ease-out); }
+.dots i { flex: 1; max-width: 44px; height: 6px; background: var(--line); transition: background-color 220ms var(--ease-out); }
 .dots i.is-now { background: var(--ink); }
 .dots i.is-right { background: var(--right); }
-.dots i.is-wrong { background: var(--wrong); }
+.dots i.is-wrong { background: var(--pen); }
 .count { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-2); }
 .streak {
   display: inline-flex; align-items: center; gap: 4px;
-  min-height: 36px; padding: 0 12px 0 9px; border-radius: 999px;
-  background: var(--tint-2); color: var(--ink-2); font-weight: 750; font-variant-numeric: tabular-nums;
-  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
+  min-height: 36px; padding: 0 10px 0 7px;
+  box-shadow: inset 0 0 0 1.5px var(--line-strong); color: var(--ink-2); font-weight: 700; font-variant-numeric: tabular-nums;
+  transition: color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
 }
 .streak .icon { width: 18px; height: 18px; }
-.streak.is-hot { background: var(--accent); color: var(--on-accent); }
-.streak.is-hot .icon { fill: var(--on-accent); }
+.streak.is-hot { color: var(--pen); box-shadow: inset 0 0 0 1.5px var(--pen); }
+.streak.is-hot .icon { fill: currentColor; }
 
-.q { margin-top: 26px; font-size: clamp(1.4rem, 1.15rem + 1.2vw, 1.75rem); line-height: 1.28; letter-spacing: -0.015em; font-weight: 760; text-wrap: pretty; }
-.opts { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 12px; }
+.q { margin-top: 26px; font-family: var(--serif); font-size: clamp(1.4rem, 1.2rem + 1vw, 1.7rem); line-height: 1.3; font-weight: 700; text-wrap: pretty; }
+.opts { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1.5px solid var(--rule); }
 .opt {
-  display: flex; align-items: center; gap: 14px;
-  width: 100%; min-height: 64px; padding: 12px 16px;
-  border-radius: 16px; border: 2px solid var(--line-strong); background: var(--surface);
-  font-size: 1.08rem; line-height: 1.35; text-align: left;
-  transition: border-color 140ms var(--ease-out), background-color 140ms var(--ease-out), opacity 200ms var(--ease-out), transform 120ms var(--ease-out);
+  display: flex; align-items: center; gap: 16px;
+  width: 100%; min-height: 64px; padding: 10px 4px 10px 2px;
+  border: 0; border-bottom: 1.5px solid var(--rule); border-radius: 0; background: none;
+  font-family: var(--serif); font-size: 1.125rem; line-height: 1.4; text-align: left;
+  transition: color 140ms var(--ease-out);
 }
-.opt:hover:not(:disabled) { border-color: var(--ink); }
-.opt:active:not(:disabled) { transform: scale(0.985); }
 .opt:disabled { cursor: default; color: var(--ink); }
 .opt-key {
-  display: grid; place-items: center; flex: none;
-  width: 36px; height: 36px; border-radius: 10px;
-  background: var(--tint-2); font-weight: 800; font-size: 0.98rem;
-  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+  position: relative; display: grid; place-items: center; flex: none;
+  width: 34px; height: 34px; border: 1.5px solid var(--ink); border-radius: 50%;
+  font-family: var(--font); font-weight: 700; font-size: 0.94rem; line-height: 1;
+  transition: background-color 140ms var(--ease-out), transform 120ms var(--ease-out);
 }
-.opt-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.opt-mark { width: 24px; height: 24px; stroke-width: 2.6; }
-.opt.is-right { background: var(--right-bg); border-color: var(--right); }
-.opt.is-right .opt-key { background: var(--right); color: var(--on-status); }
-.opt.is-right .opt-mark { color: var(--right); }
-.opt.is-wrong { background: var(--wrong-bg); border-color: var(--wrong); }
-.opt.is-wrong .opt-key { background: var(--wrong); color: var(--on-status); }
-.opt.is-wrong .opt-mark { color: var(--wrong); }
-.opt.is-dim { opacity: 0.55; }
+.opt-text { flex: 1; min-width: 0; overflow-wrap: anywhere; text-underline-offset: 4px; }
+.opt:hover:not(:disabled) .opt-key { background: var(--tint-2); }
+.opt:hover:not(:disabled) .opt-text { text-decoration: underline; text-decoration-color: var(--line-strong); }
+.opt:active:not(:disabled) .opt-key { transform: scale(0.92); }
+/* After the answer: the right letter circled and ticked in red pen, a wrong pick struck out, the rest grey. */
+.opt-loop { position: absolute; left: -15px; top: -12px; width: 64px; height: 56px; max-width: none; }
+.opt-tick { flex: none; width: 34px; height: 28px; }
+.opt.is-wrong .opt-text { text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: var(--pen); }
+.opt.is-dim { color: var(--ink-3); }
+.opt.is-dim .opt-key { border-color: var(--ink-3); }
 
+/* The reason: a teacher's note in the serif italic, "Correct." in red pen. */
 .feedback:not(.is-on) { display: none; }
-.feedback { margin-top: 16px; padding: 14px 16px; border-radius: 14px; font-size: 1rem; line-height: 1.5; }
-.feedback strong { display: block; font-size: 1.08rem; margin-bottom: 4px; }
-.feedback.is-right { background: var(--right-bg); color: var(--right-ink); }
-.feedback.is-wrong { background: var(--wrong-bg); color: var(--wrong-ink); }
+.feedback { margin-top: 16px; padding-left: 52px; font-family: var(--serif); font-style: italic; font-size: 1.03rem; line-height: 1.5; color: var(--ink-2); }
+.feedback strong { display: block; margin-bottom: 2px; font-style: normal; font-weight: 700; color: var(--pen); }
 /* The Next button sticks to the bottom edge so it stays under the thumb. */
 .foot:not(.is-on) { display: none; }
 .foot {
   position: sticky; bottom: 0; z-index: 2;
-  margin: auto -18px 0; padding: 12px 18px max(14px, env(safe-area-inset-bottom));
+  margin: auto calc(var(--pad-r) * -1) 0 calc(var(--pad-l) * -1);
+  padding: 12px var(--pad-r) max(14px, env(safe-area-inset-bottom)) var(--pad-l);
   background: var(--paper);
   border-top: 1.5px solid var(--line);
 }
 .foot .btn { width: 100%; }
 @media (min-width: 720px) {
-  .foot { position: static; margin: 22px 0 0; padding: 0; background: none; border: 0; }
+  .foot { position: static; margin: 24px 0 0; padding: 0; background: none; border: 0; }
 }
 
-/* Final */
+/* Final: the mark circled in red pen, a short line under it, small pen stars. */
 .screen-final { text-align: center; justify-content: center; }
-.stars { display: flex; justify-content: center; gap: 10px; }
-.star { width: 56px; height: 56px; stroke-width: 1.6; color: var(--line-strong); }
-.star.is-on { color: #B59F00; fill: var(--accent); }
-.final-msg { margin-top: 18px; font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem); line-height: 1.2; letter-spacing: -0.02em; font-weight: 800; text-wrap: balance; }
-.final-score { margin-top: 14px; font-size: clamp(3.2rem, 2.4rem + 4vw, 4.4rem); font-weight: 850; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
-.final-sub { margin-top: 6px; font-weight: 600; color: var(--ink-2); }
-.final-best { display: inline-flex; align-self: center; align-items: center; gap: 6px; margin-top: 16px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); font-weight: 650; }
-.final-best .icon { width: 18px; height: 18px; fill: var(--ink); }
+.stars { display: flex; justify-content: center; gap: 6px; }
+.star { width: 28px; height: 28px; stroke-width: 1.6; color: var(--line-strong); }
+.star.is-on { color: var(--pen); fill: currentColor; }
+.final-msg { margin-top: 16px; font-family: var(--serif); font-size: clamp(1.5rem, 1.25rem + 1.2vw, 1.9rem); line-height: 1.2; font-weight: 700; text-wrap: balance; }
+.final-score {
+  position: relative; display: grid; place-items: center; align-self: center;
+  width: 176px; height: 112px; margin-top: 18px;
+  font-family: var(--serif); font-size: 3.4rem; font-weight: 700; line-height: 1; color: var(--pen); font-variant-numeric: tabular-nums;
+}
+.final-loop { position: absolute; inset: 0; width: 100%; height: 100%; }
+.final-sub { margin-top: 10px; font-family: var(--serif); font-size: 1.06rem; color: var(--ink-2); }
+.final-best { display: inline-flex; align-self: center; align-items: center; gap: 6px; margin-top: 12px; font-weight: 700; color: var(--ink-2); }
+.final-best .icon { width: 18px; height: 18px; color: var(--pen); fill: currentColor; }
 
-/* Review */
-.review-title { font-size: 1.6rem; letter-spacing: -0.02em; font-weight: 800; }
-.review-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 12px; }
-.review-item { padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface); }
-.review-q { display: flex; gap: 10px; font-weight: 700; line-height: 1.35; }
-.review-mark { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; color: var(--on-status); }
-.review-mark .icon { width: 16px; height: 16px; stroke-width: 3; }
-.review-item.is-right .review-mark { background: var(--right); }
-.review-item.is-wrong .review-mark { background: var(--wrong); }
+/* Review: the sheet marked up, one question per ruled block. */
+.review-title { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; padding-bottom: 10px; border-bottom: 1.5px solid var(--ink); }
+.review-list { list-style: none; margin: 0; padding: 0; }
+.review-item { padding: 14px 0; border-bottom: 1.5px solid var(--rule); }
+.review-q { display: flex; gap: 10px; font-family: var(--serif); font-weight: 700; line-height: 1.35; }
+.review-mark { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid currentColor; }
+.review-mark .icon { width: 15px; height: 15px; stroke-width: 3; }
+.review-item.is-right .review-mark { color: var(--right); }
+.review-item.is-wrong .review-mark { color: var(--pen); }
 .review-line { margin-top: 6px; padding-left: 36px; color: var(--ink-2); }
-.review-item.is-wrong .review-line:not(.is-correct) { color: var(--wrong); }
-.review-line.is-correct { color: var(--right); font-weight: 650; }
-.review-explain { margin-top: 6px; padding-left: 36px; font-size: 0.95rem; color: var(--ink-3); }
+.review-item.is-wrong .review-line:not(.is-correct) { color: var(--pen); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.review-line.is-correct { color: var(--right); font-weight: 700; }
+.review-explain { margin-top: 6px; padding-left: 36px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--ink-3); }
 
 /* Error */
-.error-icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto; border-radius: 50%; background: var(--accent-soft); }
+.error-icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto; border-radius: 50%; border: 1.5px solid var(--ink-3); color: var(--ink-2); }
 .error-icon .icon { width: 30px; height: 30px; }
-.error-title { margin-top: 18px; font-size: 1.6rem; line-height: 1.2; font-weight: 800; text-wrap: balance; }
+.error-title { margin-top: 18px; font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; font-weight: 700; text-wrap: balance; }
 .error-text { margin: 10px auto 0; max-width: 26rem; color: var(--ink-2); }
 
-/* Gentle micro-animations, only when motion is welcome. */
+/* Gentle motion, only when it is welcome: screens rise in, the pen marks are drawn. */
 @media (prefers-reduced-motion: no-preference) {
   .screen > * { animation: rise 320ms var(--ease-out) both; }
   .screen > :nth-child(2) { animation-delay: 30ms; }
   .screen > :nth-child(3) { animation-delay: 60ms; }
   .screen > :nth-child(n+4) { animation-delay: 90ms; }
-  .opt.is-right.is-picked { animation: pop 300ms var(--ease-out); }
-  .opt.is-wrong { animation: nudge 280ms var(--ease-out); }
+  .opt-loop path { animation: pen-draw 460ms var(--ease-out) 60ms both; }
+  .opt-tick path { animation: pen-draw 320ms var(--ease-out) 460ms both; }
+  .opt.is-wrong .opt-text { animation: pen-strike 260ms var(--ease-out) both; }
   .feedback.is-on, .foot.is-on { animation: rise 260ms var(--ease-out) both; }
-  .streak.is-bump { animation: pop 320ms var(--ease-out); }
-  .star.is-on { animation: star-in 420ms var(--ease-out) both; }
-  .star.is-on:nth-child(2) { animation-delay: 140ms; }
-  .star.is-on:nth-child(3) { animation-delay: 280ms; }
+  .final-loop path { animation: pen-draw 600ms var(--ease-out) 240ms both; }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.035); } 100% { transform: scale(1); } }
-@keyframes nudge { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-4px); } 65% { transform: translateX(3px); } }
-@keyframes star-in { from { opacity: 0; transform: scale(0.6) rotate(-12deg); } to { opacity: 1; transform: none; } }
+@keyframes pen-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes pen-strike { from { text-decoration-color: transparent; } to { text-decoration-color: var(--pen); } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }

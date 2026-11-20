@@ -14,11 +14,12 @@
   align-items: center;
   gap: 12px 16px;
   padding: 14px 16px;
-  background: var(--surface, #FDFDFB);
-  color: var(--ink, #161B2E);
-  border: 1px solid var(--line-strong, #C7C9C0);
-  border-radius: var(--r-lg, 16px);
-  box-shadow: var(--shadow-1, 0 1px 2px rgba(22, 27, 46, 0.06), 0 3px 8px rgba(22, 27, 46, 0.06)), 0 12px 32px rgba(22, 27, 46, 0.12);
+  /* A flat square slip on the sheet: ink edge, no radius, no shadow */
+  background: var(--surface, #FFFDF8);
+  color: var(--ink, #1F2A44);
+  border: 1.5px solid var(--ink, #1F2A44);
+  border-radius: 0;
+  box-shadow: none;
   font-family: var(--font, system-ui, sans-serif);
   transition: opacity 0.2s var(--ease-out, ease-out), transform 0.2s var(--ease-out, ease-out);
 }
@@ -30,7 +31,7 @@
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.45;
-  color: var(--ink-2, #474D64);
+  color: var(--ink-2, #3B4256);
 }
 
 .qp-consent-actions { display: flex; gap: 8px; flex: 0 0 auto; }
@@ -43,19 +44,20 @@
   min-height: 40px;
   padding: 0 14px;
   border: 0;
-  border-radius: var(--r-sm, 8px);
+  border-radius: 0;
   background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--line-strong, #C7C9C0);
-  color: var(--ink, #161B2E);
+  box-shadow: inset 0 0 0 1.5px var(--line-strong, #CCC3AE);
+  color: var(--ink, #1F2A44);
   font: 600 0.92rem/1 var(--font, system-ui, sans-serif);
   cursor: pointer;
   white-space: nowrap;
 }
-.qp-consent-btn:hover { box-shadow: inset 0 0 0 1.5px var(--ink, #161B2E); }
-.qp-consent-btn.is-primary { background: var(--ink, #161B2E); color: var(--paper, #F6F6F2); box-shadow: none; }
-.qp-consent-btn.is-primary:hover { background: var(--night-2, #2A3150); }
+.qp-consent-btn:hover { box-shadow: inset 0 0 0 1.5px var(--ink, #1F2A44); }
+.qp-consent-btn.is-primary { background: var(--ink, #1F2A44); color: var(--paper, #FBF8F0); box-shadow: none; }
+/* --ink-hover follows the theme (the primary button is light ink on the dark sheet) */
+.qp-consent-btn.is-primary:hover { background: var(--ink-hover, #2A3150); }
 .qp-consent-btn:focus-visible,
-.qp-consent-link:focus-visible { outline: 3px solid var(--accent, #F2E14A); outline-offset: 2px; }
+.qp-consent-link:focus-visible { outline: 2px solid var(--focus, #1F2A44); outline-offset: 3px; border-radius: 0; }
 
 .qp-consent-link {
   padding: 0;
