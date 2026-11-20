@@ -15,7 +15,18 @@ Brief: tokens, fonts, header/rail/drawer, hero, thanks, footer, consent bar, met
 - Not fixed, for the orchestrator: (a) EN h1 at 1440 breaks "Paste a lesson. Get a / quiz before the bell." (mock: break after "lesson."); a fix needs a <br> or nbsp in hero.title (app.js + index.html) and newline support in the h1 ghosts (ui.js plain() collapses it), so it was left. (b) Reserved heights (UK ghosts) leave blank ruled lines under the EN h1/sub/try-link; by design. (c) Join button stays yellow btn-accent (step 2 decides). (d) Header height kept 64/72px (not the mock's 96). (e) burger background and the right rail dots are nav.css (item "nav.css" below).
 - Last two CSS tweaks (art li font 1rem <640 with tick padding only on B; no extra top margin on the art below 1100) were shot but those pictures were not reviewed (context cap): first look of the next agent = hero art at 375.
 
-## Left (in this order)
+## Step 1 closed (items 3-5 + main-chat fixes a-c): DONE, final commit "Worksheet design, step 1: nav, consent, ink buttons, headline breaks, checks"
+- (a) hero.title EN/UK = two `.h1-line` block spans (app.js + index.html default); h1 ghosts keep the break: ui.js plainLines() joins .h1-line texts with \n, ghosts are white-space: pre-line.
+- (b) >=1100: .hero-copy is display: contents; kicker + h1 span both columns (the EN/UK second sentence does not fit the 584px left column at 52-58px), sub/join/counter/try in column 1, .hero-art in column 2 rows 4-7; row-gap 0, kicker margin-top 64.
+- (c) #join-btn is btn-ink (header-cta, copy-btn already ink; dark inverts via tokens); try-link underline --pen; global focus ring 2px solid --focus (ink), offset 3, square.
+- nav.css: rail = opaque paper strip, 1px line-strong edge, no blur/shadow, ink ring dots (current filled), square label with 1px ink border; drawer flat, --rule borders, current link label underlined; burger/close transparent and square.
+- consent.css: square, flat, 1.5px ink edge, ink focus outline, primary hover uses --ink-hover (was --night-2, unreadable in dark).
+- CLS fixes: Literata 400 fallback 108.2% (sweep over sub widths; 107.4% gained a line at 375 on the swap); Cyrillic-only PT Sans fallbacks (400 93%, 700 86.9%); fixed em widths for the sheet labels.
+- ui-check: BG = worksheet paper; PLAYER_BG keeps the old player colours (web/play not restyled).
+- Checks: firstpaint 17/17, ui 30/32 (2 sub-pixel "Join boxes identical" 0.11-0.14px, were 3 before), check 69/69, nav 43/43, analytics 31/31, demo 30/30, play 208/208, slow 25/25.
+- Left for step 2: demo band and lower sections still use --accent yellow (gen/show buttons, ea-btn in app.js, chips, demo focus rings, .final band, toast icon, feature icons); player (web/play) old palette; blank ruled lines from reserved UK heights (by design).
+
+## Left (in this order, historical)
 1. DONE (see above). index.html body:
    - h1 span: drop `<mark class="hl">quiz</mark>` (plain text, same as dictionary).
    - brand (header + footer): replace svg.brand-mark with `<span class="brand-mark" aria-hidden="true">Q</span>` (circled Q, 30px, 1.5px ink ring, PT Sans 700 14px; name in Literata 600 ~23px).
