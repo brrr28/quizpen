@@ -847,3 +847,21 @@ html.theme-fade .tt * { transition: transform 280ms var(--ease-out), opacity 200
 .sl-v { grid-area: 1 / 1; transition: opacity 180ms var(--ease-out), visibility 0s; }
 .sl-v.sl-off { opacity: 0; visibility: hidden; transition: opacity 180ms var(--ease-out), visibility 0s linear 180ms; }
 .sl-mid > .sl-v { justify-self: center; text-align: center; }
+
+/* ===== Reserved space from the first paint, before app.js/ui.js arrive (slow network) ===== */
+/* Labels: a hidden zero-height ghost holds every variant (data-rsv, one per line), so the label already has the
+   width of the longest one, the same width the ui.js stack gets later. */
+[data-rsv] { display: inline-flex; flex-direction: column; align-items: center; }
+[data-rsv]::after { content: attr(data-rsv); white-space: pre; height: 0; overflow: hidden; visibility: hidden; }
+/* Blocks: both language texts as hidden flex items with a zero outer width (they push no text), so the box has
+   the height of the taller language at any width. */
+[data-rsv-en] { display: flex; }
+[data-rsv-en]::before, [data-rsv-en]::after { order: -1; flex: none; width: 100%; margin-right: -100%; visibility: hidden; }
+[data-rsv-en]::before { content: attr(data-rsv-en); }
+[data-rsv-en]::after { content: attr(data-rsv-uk); }
+/* The counter may take two lines: keep the icon on the first one. */
+.counter { align-items: flex-start; }
+.counter .icon { margin-top: 2px; margin-top: calc((1lh - 20px) / 2); }
+/* The Ukrainian "try" link wraps to two lines when the hero column is narrower than about 452px. */
+.hero-copy { container-type: inline-size; }
+@container (max-width: 470px) { .try-link > [data-i18n] { min-height: 2lh; } }

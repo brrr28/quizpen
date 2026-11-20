@@ -135,7 +135,7 @@
         <button type="button" data-lang="uk" aria-pressed="false" aria-label="Українська">УКР</button>
       </div>
       <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Dark theme"></button>
-      <button type="button" class="btn btn-ink btn-sm header-cta" data-scroll-join><span data-i18n="cta">Join Waitlist</span></button>
+      <button type="button" class="btn btn-ink btn-sm header-cta" data-scroll-join><span data-i18n="cta" data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span></button>
     </div>
   </header>
 
@@ -145,7 +145,7 @@
         <div class="hero-copy">
           <p class="kicker" data-i18n="hero.kicker">An AI assistant for teachers</p>
           <h1 id="hero-title" data-i18n-html="hero.title">Paste a lesson. Get a <mark class="hl">quiz</mark> before the bell.</h1>
-          <p class="hero-sub" data-i18n="hero.sub">Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.</p>
+          <p class="hero-sub" data-i18n="hero.sub" data-rsv-en="Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question." data-rsv-uk="Вставте будь-який текст, за яким ведете урок: параграф підручника, свій конспект чи статтю. Quizpen складе з нього тест із ключем відповідей і коротким поясненням до кожного питання.">Paste any text you teach from: a textbook page, your notes or an article. Quizpen writes a multiple-choice quiz from it, with an answer key and a short explanation for every question.</p>
 
           <div class="join-slot" id="join-slot">
             <form id="join-form" class="join" novalidate>
@@ -153,7 +153,7 @@
               <div class="join-row">
                 <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="name@school.org" aria-describedby="join-msg join-note" data-i18n-attr="placeholder:form.placeholder">
                 <button type="submit" class="btn btn-accent btn-lg join-btn" id="join-btn">
-                  <span class="btn-label" data-i18n="cta">Join Waitlist</span>
+                  <span class="btn-label" data-i18n="cta" data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span>
                   <span class="spinner" aria-hidden="true"></span>
                 </button>
               </div>
@@ -190,7 +190,7 @@
             </div>
           </div>
 
-          <p class="counter" data-counter aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text"></span></p>
+          <p class="counter" data-counter aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
           <a class="try-link" href="#demo"><span data-i18n="hero.try">Try it on your own text, no signup</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
 
@@ -304,7 +304,7 @@
           <li class="fact"><p><span data-i18n-html="proof.3"><strong>Quizzing beats re-reading.</strong> A week after studying a text, students who practiced recalling it remembered more than students who read it again.</span><sup><a href="#src-3" aria-label="Source 3">3</a></sup></p></li>
         </ol>
         <div class="proof-foot">
-          <p class="counter counter-lg" data-counter><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text"></span></p>
+          <p class="counter counter-lg" data-counter><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span class="counter-text" data-rsv-key="counter.first" data-rsv-en="Be one of the first teachers to try it" data-rsv-uk="Станьте одним із перших учителів, які спробують Quizpen"></span></p>
           <ol class="sources">
             <li id="src-1" data-i18n-html="src.1"><a href="https://www.oecd.org/en/publications/talis-2018-results-volume-i_1d0bc92a-en.html" target="_blank" rel="noopener noreferrer">OECD, TALIS 2018 Results</a>, OECD average for lower secondary teachers, as summarised by <a href="https://rd.acer.org/article/snapshot-of-australian-teachers-and-principals" target="_blank" rel="noopener noreferrer">ACER</a>.</li>
             <li id="src-2" data-i18n-html="src.2"><a href="https://news.gallup.com/poll/691967/three-teachers-weekly-saving-six-weeks-year.aspx" target="_blank" rel="noopener noreferrer">Gallup and Walton Family Foundation, 2025</a>. Survey of 2,232 US public school teachers; time saved is self-reported.</li>
@@ -341,7 +341,7 @@
     <section class="final" aria-labelledby="final-title">
       <div class="wrap final-inner">
         <h2 id="final-title" data-i18n="final.title">Get Quizpen before your next unit starts.</h2>
-        <button type="button" class="btn btn-ink btn-lg" data-scroll-join><span data-i18n="cta" data-cta-final>Join Waitlist</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <button type="button" class="btn btn-ink btn-lg" data-scroll-join><span data-i18n="cta" data-cta-final data-rsv="Join Waitlist&#10;Приєднатися до списку&#10;You're on the list&#10;Ви вже в списку&#10;Joining&#10;Додаємо">Join Waitlist</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       </div>
     </section>
   </main>
