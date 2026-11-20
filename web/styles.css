@@ -603,6 +603,18 @@ a:hover { text-decoration-thickness: 2px; }
 .score .btn { white-space: normal; text-align: center; }
 .quiz-error { display: grid; place-content: center; text-align: center; min-height: 370px; gap: 8px; color: var(--ink-2); }
 
+/* Toast (Copy quiz) */
+.toast {
+  position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); z-index: var(--z-toast);
+  display: flex; align-items: center; gap: 10px; max-width: min(30rem, calc(100vw - 32px));
+  padding: 12px 18px; border-radius: var(--r); background: var(--ink); color: var(--paper);
+  font-size: 0.95rem; font-weight: 500; line-height: 1.35; box-shadow: 0 8px 28px rgba(22, 27, 46, 0.28);
+  opacity: 0; transform: translate(-50%, 12px); pointer-events: none;
+  transition: opacity 180ms var(--ease-out), transform 240ms var(--ease-out);
+}
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.toast .icon { color: var(--accent); width: 18px; height: 18px; }
+
 /* Features */
 .features { padding: 72px 0; }
 @media (min-width: 980px) { .features { padding: 112px 0; } }

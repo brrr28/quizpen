@@ -106,6 +106,13 @@ Errors:
 Model: `claude-haiku-5-5` via the Anthropic Messages API (`anthropic-version: 2026-10-21`), `max_tokens` 3000 (thinking counts toward it, and Ukrainian needs more tokens), structured JSON output. One retry on 429 or 5xx, only if the first attempt was fast.
 Text length checks run before the key check, and the limits are counted only when the request is accepted.
 
+## Optional fields (sent by the page for the experiment funnel)
+
+| Where | Field | Rules |
+| --- | --- | --- |
+| action `visit` (new) | whole body | `{ "action": "visit", "cid": "...", "lang": "uk", "utm": { "source": "", "medium": "", "campaign": "" }, "ref": "K7XQ2MA" }`. Sent once per browser session on page load, fire-and-forget: the page ignores the answer and any error (a backend without this action answering `bad_request` is fine). `ref` may be `null`. |
+| action `quiz` | `sample` | `"photosynthesis"`, `"printing"`, `"magi"` (the sample chip whose text was sent unchanged) or `"custom"` (the visitor's own or edited text). For analytics only; it does not change the answer. |
+
 ## CORS
 
 Send POST as `text/plain;charset=utf-8` with no custom headers: this is a simple request, so the browser sends no preflight (Apps Script cannot answer `OPTIONS`).
