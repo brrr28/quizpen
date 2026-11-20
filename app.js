@@ -72,6 +72,8 @@
       'quiz.noteLive': 'Every question, option and explanation was written from the text you gave it.',
       'quiz.noteSample': 'This sample quiz was written in advance from the sample text.',
       'quiz.again': 'Try another text', 'quiz.cta': 'Want this for your class? Join the waitlist',
+      'quiz.copy': 'Copy quiz', 'quiz.copied': 'Quiz copied as plain text: questions, options and answer key',
+      'quiz.copyTitle': 'Quiz', 'quiz.keyTitle': 'Answer key',
       'quiz.ready': 'Quiz ready: {n} questions.',
       'features.title': 'What Quizpen does for you',
       'features.sub': 'Built around the way teachers already plan: start from the material, end with something students can answer.',
@@ -158,6 +160,8 @@
       'quiz.noteLive': 'Кожне питання, варіант і пояснення створено з тексту, який ви дали.',
       'quiz.noteSample': 'Цей приклад тесту підготовлено заздалегідь із тексту прикладу.',
       'quiz.again': 'Спробувати інший текст', 'quiz.cta': 'Хочете такий тест для свого класу? Приєднуйтеся до списку',
+      'quiz.copy': 'Копіювати тест', 'quiz.copied': 'Тест скопійовано як текст: питання, варіанти й відповіді',
+      'quiz.copyTitle': 'Тест', 'quiz.keyTitle': 'Відповіді',
       'quiz.ready': 'Тест готовий: питань {n}.',
       'features.title': 'Що Quizpen робить за вас',
       'features.sub': 'Усе побудовано так, як учителі вже готуються до уроків: від матеріалу до питань, на які учні можуть відповісти.',
@@ -398,16 +402,43 @@
     if (el) el.textContent = joined ? t('cta.joined') : t('cta');
   }
 
+  // Clipboard with a fallback for old browsers and non-secure origins.
+  function copyText(text) {
+    var legacy = function () {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { /* ignore */ }
+      ta.remove();
+      return ok ? Promise.resolve() : Promise.reject(new Error('copy'));
+    };
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).catch(legacy);
+    return legacy();
+  }
+
+  var toastEl = null, toastTimer = null;
+  function toast(msg) {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      toastEl.setAttribute('role', 'status');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.innerHTML = icon('i-check') + '<span>' + esc(msg) + '</span>';
+    toastEl.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2600);
+  }
+
   document.getElementById('copy-btn').addEventListener('click', function () {
-    var btn = this, input = document.getElementById('ref-link');
-    var done = function () {
+    var btn = this;
+    copyText(document.getElementById('ref-link').value).then(function () {
       btn.classList.add('is-done');
       btn.querySelector('span').textContent = t('thanks.copied');
       document.getElementById('copy-status').textContent = t('thanks.copiedSr');
       setTimeout(function () { btn.classList.remove('is-done'); btn.querySelector('span').textContent = t('thanks.copy'); }, 1800);
-    };
-    var legacy = function () { input.select(); try { document.execCommand('copy'); done(); } catch (e) { /* ignore */ } };
-    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(input.value).then(done, legacy); else legacy();
+    }, function () { /* the field stays selectable for manual copy */ });
   });
   document.getElementById('ref-link').addEventListener('focus', function () { this.select(); });
 
@@ -537,7 +568,7 @@
     var started = Date.now(), usedSample = activeSample, quizLang = lang;
     var minWait = function (v) { var left = 900 - (Date.now() - started); return left > 0 ? new Promise(function (r) { setTimeout(function () { r(v); }, left); }) : v; };
 
-    apiPost({ action: 'quiz', text: text, lang: quizLang, count: 5, cid: getCid() }, 30000)
+    apiPost({ action: 'quiz', text: text, lang: quizLang, count: 5, cid: getCid(), sample: usedSample || 'custom' }, 30000)
       .then(function (r) { return r; }, function (err) { return { ok: false, error: err.code }; })
       .then(minWait)
       .then(function (r) {
@@ -625,10 +656,23 @@
     return '<div class="score"><p class="score-num" tabindex="-1">' + right + '/' + n + '</p><p class="score-label">' + esc(verdict + ' ' + t('quiz.score', { s: right, n: n })) + '</p>' +
       '<div class="score-dots" aria-hidden="true">' + dots + '</div><p class="score-note">' + esc(t(s.live ? 'quiz.noteLive' : 'quiz.noteSample')) + '</p>' +
       '<div class="quiz-actions"><button type="button" class="btn btn-accent btn-lg" data-join>' + esc(t('quiz.cta')) + '</button>' +
+      '<button type="button" class="btn btn-ghost btn-lg" data-copy-quiz>' + icon('i-copy') + esc(t('quiz.copy')) + '</button>' +
       '<button type="button" class="btn btn-ghost btn-lg" data-again>' + icon('i-refresh') + esc(t('quiz.again')) + '</button></div></div>';
+  }
+  // Plain text for Google Forms, Kahoot or a printed worksheet: questions, options, answer key.
+  function quizAsText(quiz) {
+    var NL = "\n", qs = quiz.questions;
+    var body = qs.map(function (q, k) {
+      return (k + 1) + '. ' + q.q + NL + q.options.map(function (o, j) { return KEYS[j] + ') ' + o; }).join(NL);
+    }).join(NL + NL);
+    var key = qs.map(function (q, k) { return (k + 1) + '. ' + KEYS[q.answer] + (q.explain ? ' (' + q.explain + ')' : ''); }).join(NL);
+    return (quiz.title || t('quiz.copyTitle')) + NL + NL + body + NL + NL + t('quiz.keyTitle') + NL + key + NL;
   }
   function bindScore() {
     bodyEl.querySelector('[data-join]').addEventListener('click', scrollToJoin);
+    bodyEl.querySelector('[data-copy-quiz]').addEventListener('click', function () {
+      copyText(quizAsText(quizState.quiz)).then(function () { toast(t('quiz.copied')); }, function () { /* ignore */ });
+    });
     bodyEl.querySelector('[data-again]').addEventListener('click', function () {
       resetPanel();
       document.getElementById('demo').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
@@ -668,10 +712,18 @@
     })(start);
   }
 
+  // One anonymous visit ping per browser session for the experiment funnel (fire-and-forget).
+  function sendVisit() {
+    try { if (sessionStorage.getItem('qp_visit')) return; sessionStorage.setItem('qp_visit', '1'); } catch (e) { return; }
+    if (!API) return;
+    apiPost({ action: 'visit', cid: getCid(), lang: lang, utm: attribution.utm, ref: attribution.ref }, 8000).catch(function () { /* ignore */ });
+  }
+
   /* ---------- Init ---------- */
   document.querySelectorAll('.lang [data-lang]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
   applyI18n();
   updateLessonMeta();
   restoreJoined();
   loadStats();
+  sendVisit();
 })();
