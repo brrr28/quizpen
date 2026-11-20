@@ -26,9 +26,6 @@
   --ink-3: #5E6470;
   --line: #E4DDCC;
   --line-strong: #CCC3AE;
-  --accent: #F2E14A;
-  --accent-hover: #E6D332;
-  --accent-soft: #FBF5C4;
   --right: #1D6B3A;
   /* Worksheet: red pen, blue ruling, red margin line, punch holes */
   --pen: #C8312B;
@@ -149,29 +146,6 @@ a:hover { text-decoration-thickness: 2px; }
   padding-right: max(var(--gutter), env(safe-area-inset-right));
 }
 
-/* Highlighter mark: solid color painted as a background so it can sweep in */
-.hl {
-  color: var(--on-accent);
-  background-color: transparent;
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat;
-  background-position: 0 88%;
-  background-size: 100% 78%;
-  padding: 0 0.08em;
-  margin: 0 -0.04em;
-  border-radius: 0.12em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .hl { animation: hl-sweep 700ms var(--ease-out) 350ms both; }
-  .hl-art { animation-delay: 900ms; }
-}
-@keyframes hl-sweep {
-  from { background-size: 0% 78%; }
-  to { background-size: 100% 78%; }
-}
-
 /* Buttons */
 .btn {
   --btn-h: 44px;
@@ -196,8 +170,6 @@ a:hover { text-decoration-thickness: 2px; }
 .btn:disabled { cursor: not-allowed; }
 .btn-lg { --btn-h: 52px; padding: 0 22px; font-size: 1.05rem; }
 .btn-sm { --btn-h: 38px; padding: 0 14px; font-size: 0.94rem; }
-.btn-accent { background: var(--accent); color: var(--on-accent); }
-.btn-accent:hover:not(:disabled) { background: var(--accent-hover); }
 .btn-ink { background: var(--ink); color: var(--paper); }
 .btn-ink:hover:not(:disabled) { background: var(--ink-hover); }
 .btn-ghost {
@@ -272,13 +244,15 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .lang button[aria-pressed="true"] { color: var(--ink); box-shadow: inset 0 0 0 1.25px var(--ink); }
 
-/* Sheet geometry: the header and the hero are one worksheet. The red margin line runs down both at
+/* Sheet geometry: the header, the hero and every section under them are one worksheet. The red margin line runs down both at
    --sheet-line; their content starts --sheet-gap after it (minus the offset of the centred .wrap). */
-.site-header > .wrap, .hero > .wrap, .demo > .wrap {
+.site-header > .wrap, .hero > .wrap, .demo > .wrap,
+.features > .wrap, .proof > .wrap, .faq > .wrap, .final > .wrap {
   padding-left: max(calc(var(--sheet-line) + var(--sheet-gap) - max(0px, (100% - 1200px) / 2)), env(safe-area-inset-left));
 }
-.hero { position: relative; }
-.site-header::before, .hero::before, .demo::before {
+.hero, .features, .proof, .faq, .final { position: relative; }
+.site-header::before, .hero::before, .demo::before,
+.features::before, .proof::before, .faq::before, .final::before {
   content: ""; position: absolute; z-index: 1; top: 0; bottom: 0; left: var(--sheet-line);
   border-left: 1.5px solid var(--margin); pointer-events: none;
 }
@@ -554,11 +528,10 @@ a:hover { text-decoration-thickness: 2px; }
 .demo-head { max-width: 40rem; }
 .demo h2, .features h2, .proof h2, .faq h2, .final h2 {
   font-size: clamp(1.9rem, 1.3rem + 2.1vw, 2.85rem);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  font-weight: 780;
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  font-weight: 600;
 }
-.demo h2 { font-weight: 600; letter-spacing: -0.018em; line-height: 1.15; }
 .demo-head p { margin-top: 12px; font-family: var(--serif); font-size: 1.125rem; line-height: 30px; color: var(--ink); }
 @media (min-width: 640px) { .demo-head p { font-size: 1.1875rem; line-height: var(--lh); } }
 @media (min-width: 1100px) {
@@ -770,7 +743,7 @@ a:hover { text-decoration-thickness: 2px; }
   transition: opacity 180ms var(--ease-out), transform 240ms var(--ease-out);
 }
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
-.toast .icon { color: var(--accent); width: 18px; height: 18px; }
+.toast .icon { color: currentColor; width: 18px; height: 18px; }
 
 /* Offline banner (app.js): fixed under the sticky header, so nothing moves when it shows. It stays in
    the accessibility tree (opacity only) so the polite live region announces the text it receives. */
@@ -785,91 +758,108 @@ a:hover { text-decoration-thickness: 2px; }
 .offline-bar:empty { padding: 0; box-shadow: none; }
 .offline-bar.is-on { opacity: 1; transform: translate(-50%, 0); }
 
-/* Features */
+/* The lower sections are the next pages of the same worksheet on plain paper: the red margin line runs on (sheet
+   geometry above), the heading sits beside the content from 980px, and each section only pads its bottom. */
+
+/* Features: a numbered exercise list. A circled number, a Literata title, a short text, a thin rule between items. */
 .features { padding: 72px 0; }
 @media (min-width: 980px) { .features { padding: 112px 0; } }
-.features-grid { display: grid; gap: 36px; }
+.features-grid { display: grid; gap: 32px; }
 @media (min-width: 980px) {
   .features-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; align-items: start; }
   .features-head { position: sticky; top: calc(var(--header-h) + 24px); }
 }
-.features-head p { margin-top: 14px; color: var(--ink-2); font-size: 1.08rem; max-width: 26rem; }
+.features-head p { margin-top: 14px; max-width: 26rem; font-family: var(--serif); font-size: 1.0625rem; line-height: 1.65; color: var(--ink-2); }
+@media (min-width: 640px) { .features-head p { font-size: 1.125rem; } }
 .feature-list { list-style: none; margin: 0; padding: 0; }
-.feature {
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
-  gap: 18px;
-  padding: 26px 0;
-  border-top: 1.5px solid var(--line);
+.feature { display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 16px; padding: 24px 0; }
+.feature:first-child { padding-top: 0; }
+.feature:last-child { padding-bottom: 0; }
+.feature + .feature { border-top: 1px solid var(--rule); }
+@media (min-width: 640px) { .feature { column-gap: 20px; padding: 28px 0; } }
+.feature-num {
+  display: inline-grid; place-items: center; width: 32px; height: 32px; margin-top: -2px;
+  border: 1.25px solid var(--ink); border-radius: 50%;
+  font: 600 1rem/1 var(--serif); color: var(--ink);
 }
-.feature:last-child { border-bottom: 1.5px solid var(--line); }
-.feature-icon {
-  display: grid; place-items: center;
-  width: 52px; height: 52px;
-  border-radius: 14px;
-  background: var(--accent);
-  color: var(--on-accent);
-}
-.feature-icon .icon { width: 26px; height: 26px; }
-.feature h3 { font-size: 1.28rem; line-height: 1.25; letter-spacing: -0.015em; font-weight: 720; }
-.feature p { margin-top: 6px; color: var(--ink-2); max-width: 34rem; }
+.feature h3 { font-size: 1.25rem; line-height: 1.4; font-weight: 600; letter-spacing: -0.01em; }
+@media (min-width: 640px) { .feature h3 { font-size: 1.375rem; } }
+.feature p { margin-top: 8px; max-width: 34rem; line-height: 1.6; color: var(--ink-2); }
 
-/* Proof */
+/* Why: three statements set like a page of notes. The figure leads each note in Literata over a red-pen underline;
+   the sources are numbered footnotes in small type under a short rule, and each superscript links to its footnote. */
 .proof { padding: 0 0 72px; }
 @media (min-width: 980px) { .proof { padding: 0 0 112px; } }
-.facts { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 28px; }
-@media (min-width: 900px) { .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-top: 44px; } }
-.fact p { font-size: 1.05rem; color: var(--ink-2); line-height: 1.5; }
+.proof-grid { display: grid; gap: 32px; }
+@media (min-width: 980px) {
+  .proof-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 64px; row-gap: 48px; align-items: start; }
+  .proof-grid > h2 { grid-row: 1 / span 2; }
+  .facts, .proof-foot { grid-column: 2; }
+}
+.facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 32px; max-width: 38rem; }
+.fact p { font-family: var(--serif); font-size: 1.0625rem; line-height: 1.65; color: var(--ink-2); }
+@media (min-width: 640px) { .fact p { font-size: 1.125rem; } }
 .fact strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--ink);
-  font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.02em; font-weight: 750;
+  display: block; width: fit-content; margin-bottom: 8px;
+  font-size: 1.5rem; line-height: 1.35; font-weight: 600; letter-spacing: -0.015em; color: var(--ink);
+  text-decoration: underline 2px var(--pen); text-underline-offset: 0.22em; text-decoration-skip-ink: none;
 }
-.fact sup { font-family: var(--mono); font-size: 0.72rem; margin-left: 3px; }
-.fact sup a { text-decoration: none; padding: 2px 4px; border-radius: 4px; background: var(--tint); color: var(--ink); }
-.proof-foot {
-  display: grid; gap: 22px;
-  margin-top: 40px; padding-top: 24px;
-  border-top: 1.5px solid var(--line);
-}
-@media (min-width: 900px) { .proof-foot { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: start; } }
+@media (min-width: 640px) { .fact strong { font-size: 1.625rem; } }
+.fact sup { margin-left: 2px; font-family: var(--font); font-size: 0.75rem; font-weight: 700; line-height: 0; }
+.fact sup a { padding: 2px 3px; color: var(--ink); text-decoration: none; }
+.fact sup a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.proof-foot { display: grid; gap: 28px; max-width: 38rem; }
 .counter-lg { margin-top: 0; font-size: 1.1rem; }
-.sources { margin: 0; padding-left: 18px; font-size: 0.82rem; line-height: 1.5; color: var(--ink-3); display: grid; gap: 4px; }
+.sources {
+  position: relative; display: grid; gap: 4px; margin: 0; padding: 16px 0 0 18px;
+  font-size: 0.8125rem; line-height: 1.5; color: var(--ink-3);
+}
+.sources::before { content: ""; position: absolute; left: 0; top: 0; width: 96px; border-top: 1px solid var(--ink-3); }
+.sources li::marker { font-weight: 700; font-variant-numeric: tabular-nums; }
 .sources a { color: var(--ink-2); }
-.sources li:target { background: var(--accent-soft); border-radius: 4px; }
+.sources li:target { background: var(--tint); }
 
-/* FAQ */
-.faq { padding: 72px 0; border-top: 1.5px solid var(--line); }
-@media (min-width: 980px) { .faq { padding: 104px 0; } }
+/* FAQ: exam questions. "Q1." in small caps, the question and the answer in Literata, a plus in ink that folds into
+   a minus while the answer is open. The details/summary accordion itself is unchanged. */
+.faq { padding: 0 0 72px; }
+@media (min-width: 980px) { .faq { padding: 0 0 112px; } }
 .faq-grid { display: grid; gap: 28px; }
-@media (min-width: 980px) { .faq-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; } }
-.faq-list { display: grid; }
-.faq details { border-bottom: 1.5px solid var(--line); }
-.faq details:first-child { border-top: 1.5px solid var(--line); }
+@media (min-width: 980px) { .faq-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; align-items: start; } }
+.faq-list { display: grid; counter-reset: faq; }
+.faq details { counter-increment: faq; border-bottom: 1px solid var(--rule); }
+.faq details:first-child { border-top: 1px solid var(--rule); }
 .faq summary {
-  list-style: none;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 20px 0;
-  font-weight: 650; font-size: 1.1rem; line-height: 1.35;
-  cursor: pointer;
+  list-style: none; display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 20px; column-gap: 10px; align-items: baseline;
+  padding: 18px 0; cursor: pointer;
+  font-family: var(--serif); font-size: 1.125rem; line-height: 1.45; font-weight: 600; color: var(--ink);
 }
+@media (min-width: 640px) { .faq summary { font-size: 1.1875rem; padding: 20px 0; } }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary .icon { transition: transform 200ms var(--ease-out); color: var(--ink-2); }
-.faq details[open] summary .icon { transform: rotate(45deg); }
-.faq details p { padding: 0 40px 22px 0; color: var(--ink-2); max-width: 40rem; }
-
-/* Final CTA */
-/* The yellow band keeps its light-theme ink in both themes */
-.final {
-  --ink: #161B2E; --ink-2: #474D64; --paper: #F6F6F2; --ink-hover: #2A3150; --focus: #161B2E;
-  background: var(--accent); color: var(--on-accent); padding: 56px 0;
+/* The number is decoration (empty alternative text): the list order already says which question it is */
+.faq summary::before {
+  content: "Q" counter(faq) ".";
+  content: "Q" counter(faq) "." / "";
+  font-family: var(--font); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  font-variant-numeric: tabular-nums; color: var(--ink-3);
 }
-@media (min-width: 980px) { .final { padding: 80px 0; } }
-.final-inner { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.faq summary:hover > span { text-decoration: underline 1px var(--line-strong); text-underline-offset: 0.2em; }
+.faq-pm { align-self: start; width: 20px; height: 20px; margin-top: calc((1.45em - 20px) / 2); color: var(--ink); }
+.faq-pm-v { transform-box: view-box; transform-origin: 12px 12px; transition: transform 200ms var(--ease-out); }
+.faq details[open] .faq-pm-v { transform: scaleY(0); }
+.faq details p {
+  max-width: 44rem; padding: 0 30px 22px calc(2.25rem + 10px);
+  font-family: var(--serif); font-size: 1.0625rem; line-height: 1.65; color: var(--ink-2);
+}
+
+/* Final CTA: a tear-off slip at the foot of the sheet. A dashed cut line runs across the page with scissors on it at
+   the start of the text; under it the headline and the ink button (it scrolls to the form, app.js). */
+.final { border-top: 1.5px dashed var(--ink-3); }
+.final-inner { position: relative; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; padding-top: 48px; padding-bottom: 64px; }
 @media (min-width: 820px) { .final-inner { flex-direction: row; align-items: center; justify-content: space-between; } }
-.final h2 { max-width: 18ch; }
-.final .btn-ink:hover:not(:disabled) { background: var(--ink-hover); }
+@media (min-width: 980px) { .final-inner { padding-top: 64px; padding-bottom: 88px; } }
+/* Absolutely positioned without a left offset, so it keeps its static x: the start of the text column */
+.final-cut { position: absolute; top: -10px; width: 30px; height: 18px; margin-left: -6px; padding: 0 6px; box-sizing: content-box; background: var(--paper); color: var(--ink-3); }
+.final h2 { max-width: 20ch; }
 
 /* Footer */
 /* The bottom of the sheet: one rule across, then the small print */
@@ -894,7 +884,6 @@ a:hover { text-decoration-thickness: 2px; }
   --line-hover: #A0978A;
   --tint: #F2EDE0;
   --tint-2: #EEE8DA;
-  --on-accent: #161B2E;
   --on-status: #FFFFFF;
   --right-ink: #0F4D30;
   --wrong-ink: #7C2219;
@@ -906,12 +895,12 @@ a:hover { text-decoration-thickness: 2px; }
   --mark-fg: #F6F6F2;
   --backdrop: rgba(22, 27, 46, 0.62);
   --focus: var(--ink);
-  --confetti: #F2E14A, #161B2E, #156B42, #E8836B, #7A9CF0;
+  --confetti: #C8312B, #1F2A44, #1D6B3A, #7A9CF0, #E58A8A;
 }
 @media (min-width: 820px) { :root { --header-h: 72px; } }
 
 /* Designed for dark, not inverted: a slate sheet under a desk lamp, warm chalk ink, a dimmed margin line;
-   raised surfaces get lighter, yellow keeps dark text. Flat: no shadows in either theme. */
+   raised surfaces get lighter. Flat: no shadows in either theme. */
 :root[data-theme="dark"] {
   color-scheme: dark;
   --paper: #22252B;
@@ -929,9 +918,6 @@ a:hover { text-decoration-thickness: 2px; }
   --rule: #2E3A4D;
   --margin: #7A3B3B;
   --hole: #1A1C21;
-  --accent: #F2E14A;
-  --accent-hover: #FFEE6B;
-  --accent-soft: #2E2B18;
   --right: #6FD39A;
   --right-bg: #13301F;
   --right-line: #2F6B49;
@@ -952,7 +938,7 @@ a:hover { text-decoration-thickness: 2px; }
   --mark-bg: #2A3252;
   --mark-fg: #ECEDE6;
   --backdrop: rgba(4, 6, 12, 0.72);
-  --confetti: #F2E14A, #ECEDE6, #5FCB8F, #F28C7C, #8FB0FF;
+  --confetti: #FF7B6E, #ECE6D8, #6FD39A, #8FB0FF, #F28C7C;
 }
 :root[data-theme="dark"] .toast { box-shadow: inset 0 0 0 1px var(--line-strong), 0 8px 28px rgba(0, 0, 0, 0.45); }
 :root[data-theme="dark"] .offline-bar:not(:empty) { box-shadow: inset 0 0 0 1px var(--line-strong), 0 6px 20px rgba(0, 0, 0, 0.45); }
