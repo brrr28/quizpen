@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <!-- The player talks to no server: scripts and styles from this site only, no fetch/XHR at all.
-       Student analytics (ANALYTICS_STUDENT in ../config.js) would also need connect-src for the PostHog host here, see ANALYTICS-SEO.md. -->
+  <!-- The player talks to no server: scripts and styles from this site only, no fetch/XHR at all. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex,follow">
@@ -12,10 +11,6 @@
   <title>Quizpen quiz</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="play.css">
-  <!-- Analytics: off by default on the student page, never with identifiers (see ANALYTICS-SEO.md) -->
-  <script src="../config.js"></script>
-  <script src="../analytics.js" data-surface="play" defer></script>
-  <!-- end of analytics -->
   <script src="codec.js" defer></script>
   <script src="play.js" defer></script>
 </head>

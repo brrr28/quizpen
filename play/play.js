@@ -45,9 +45,6 @@
 
   var lang = langFromUrl() || langFromStore();
   var state = null;
-  /* ---------- Analytics hook (../analytics.js): off unless ANALYTICS_STUDENT is true; no identifiers ---------- */
-  function track(name, props) { if (window.qpAnalytics) window.qpAnalytics.track(name, props); }
-  /* ---------- end of analytics hook ---------- */
 
   function langFromUrl() {
     var q = new URLSearchParams(location.search).get('lang');
@@ -138,7 +135,6 @@
 
   function begin() {
     state.i = 0; state.picks = []; state.streak = 0; state.best = 0;
-    track('student_quiz_started', { questions: state.quiz.questions.length }); // analytics
     renderQuestion();
   }
 
@@ -185,7 +181,6 @@
     if (state.picks[state.i] !== undefined) return;
     var qs = state.quiz.questions, q = qs[state.i], ok = k === q.answer, keys = t('keys');
     state.picks[state.i] = k;
-    track('student_quiz_answered', { index: state.i, correct: ok }); // analytics
     state.streak = ok ? state.streak + 1 : 0;
     state.best = Math.max(state.best, state.streak);
 
@@ -208,7 +203,6 @@
 
     var last = state.i === qs.length - 1;
     var next = button('btn-primary', last ? t('finish') : t('next'), function () {
-      if (last) track('student_quiz_completed', { score: state.picks.filter(function (p, j) { return p === qs[j].answer; }).length, questions: qs.length }); // analytics
       state.i++;
       if (last) renderFinal(); else renderQuestion();
     }, 'arrow');
@@ -308,7 +302,6 @@
       if (!r.ok) { renderError(r.error); return; }
       if (!langFromUrl() && !langFromStore() && r.lang) setLang(r.lang);
       state = { quiz: r.quiz, i: 0, picks: [], streak: 0, best: 0 };
-      track('student_quiz_opened', { lang: lang, questions: r.quiz.questions.length }); // analytics
       document.title = (r.quiz.title ? r.quiz.title + ' · ' : '') + 'Quizpen';
       renderStart();
     }, function () { renderError('broken'); });
