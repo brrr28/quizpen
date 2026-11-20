@@ -35,6 +35,9 @@
       'err.rate_limited': 'Too many tries from this device. Wait a minute, then try again.',
       'err.server': 'We couldn\'t save your email just now. Please try again in a minute.',
       'err.offline': 'No connection. Check your internet and try again.',
+      'join.pending': 'No connection. We\'ll send your email as soon as you\'re back online.',
+      'net.offline': 'You\'re offline. Ready examples still work.',
+      'demo.slow': 'Slow connection. Still working on it.',
       'counter': { one: '{n} teacher already joined', other: '{n} teachers already joined' },
       'counter.first': 'Be one of the first teachers to try it',
       'hero.try': 'Try a ready example, no signup',
@@ -135,6 +138,9 @@
       'err.rate_limited': 'Забагато спроб із цього пристрою. Зачекайте хвилину й спробуйте ще раз.',
       'err.server': 'Не вдалося зберегти пошту. Спробуйте ще раз за хвилину.',
       'err.offline': 'Немає з\'єднання. Перевірте інтернет і спробуйте ще раз.',
+      'join.pending': 'Немає з\'єднання. Надішлемо ваш email, щойно з\'явиться інтернет.',
+      'net.offline': 'Ви офлайн. Готові приклади працюють і без інтернету.',
+      'demo.slow': 'Повільне з\'єднання. Ще працюємо.',
       'counter': { one: '{n} вчитель уже приєднався', few: '{n} вчителі вже приєдналися', many: '{n} вчителів уже приєдналися', other: '{n} вчителя вже приєдналися' },
       'counter.first': 'Станьте одним із перших учителів, які спробують Quizpen',
       'hero.try': 'Спробуйте готовий приклад, без реєстрації',
@@ -266,6 +272,7 @@
     lang = next;
     store.set('qp_lang', lang);
     applyI18n();
+    if (offlineEl && offlineEl.textContent) renderOffline();
     renderCounters();
     if (joined) renderThanks(joined, false);
     updateFinalCta();
@@ -971,6 +978,22 @@
     apiPost({ action: 'visit', cid: getCid(), lang: lang, utm: attribution.utm, ref: attribution.ref }, 8000).catch(function () { /* ignore */ });
   }
 
+  /* ---------- Offline banner ---------- */
+  // A fixed polite live region: present from the start, text only while the browser is offline.
+  var offlineEl = document.createElement('div');
+  offlineEl.className = 'offline-bar';
+  offlineEl.id = 'offline-bar';
+  offlineEl.setAttribute('role', 'status');
+  offlineEl.setAttribute('aria-live', 'polite');
+  document.body.appendChild(offlineEl);
+  function renderOffline() {
+    var off = navigator.onLine === false;
+    offlineEl.classList.toggle('is-on', off);
+    offlineEl.textContent = off ? t('net.offline') : '';
+  }
+  window.addEventListener('offline', renderOffline);
+  window.addEventListener('online', renderOffline);
+
   // Service worker (web/sw.js): offline shell and ready examples after the first visit.
   // Only on https or the 127.0.0.1 dev stand; ?nosw=1 skips it and removes an installed one.
   function registerSw() {
@@ -993,5 +1016,6 @@
   loadStats();
   track('landing_viewed', { lang: lang, has_ref: !!attribution.ref }); // analytics
   sendVisit();
+  renderOffline();
   registerSw();
 })();
