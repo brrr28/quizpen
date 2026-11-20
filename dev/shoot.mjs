@@ -43,13 +43,17 @@ async function interceptQuiz(delayMs = 1600) {
   });
 }
 
-// theme: 'dark' is saved as the visitor's choice (qp_theme) before the page loads.
-async function fresh(lang, w, h, mobile, theme) {
+// theme: the system colour scheme the page sees on a first visit (no saved choice). Headless Chrome
+// otherwise follows the OS setting, so pictures meant to be light could come out dark.
+async function fresh(lang, w, h, mobile, theme = 'light') {
   await page.viewport(w, h, mobile, mobile ? 2 : 1);
+  await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: theme }] });
   await page.goto(BASE + '?lang=' + lang);
-  await page.eval(`localStorage.clear(); sessionStorage.clear(); ${theme ? `localStorage.setItem('qp_theme', '${theme}');` : ''} true`);
+  await page.eval(`localStorage.clear(); sessionStorage.clear(); true`);
   await page.goto(BASE + '?lang=' + lang);
   await page.waitFor(`document.querySelector('[data-counter].is-ready') && document.querySelector('#sample-chips .chip')`);
+  const got = await page.eval(`document.documentElement.getAttribute('data-theme')`);
+  if (got !== theme) throw new Error(`page theme is ${got}, expected ${theme}`);
   await s.wait(300);
 }
 const scrollTo = (expr) => page.eval(`(() => { ${expr}; return true; })()`).then(() => s.wait(500));
