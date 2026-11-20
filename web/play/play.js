@@ -309,4 +309,17 @@
   // A new link pasted into the same tab only changes the fragment: start over with it.
   window.addEventListener('hashchange', function () { state = null; boot(); });
   boot();
+
+  // The site service worker (../sw.js, scope = the site root) also when a shared quiz link is the first visit.
+  // Same guard as app.js: only on https or the 127.0.0.1 dev stand; ?nosw=1 skips it and removes an installed one.
+  (function registerSw() {
+    if (!('serviceWorker' in navigator)) return;
+    if (location.protocol !== 'https:' && location.hostname !== '127.0.0.1') return;
+    if (/[?&]nosw=1(?:&|$)/.test(location.search)) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); }).catch(function () { /* ignore */ });
+      return;
+    }
+    var go = function () { navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function () { /* unsupported or blocked */ }); };
+    if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  })();
 })();
