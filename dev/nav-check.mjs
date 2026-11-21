@@ -72,7 +72,7 @@ try {
   s.errors.length = 0;
   await load(1440, 900, false);
   const ids = await page.eval(`[...document.querySelectorAll('.nav-rail [data-nav-target]')].map((a) => a.getAttribute('data-nav-target'))`);
-  ok('desktop: rail lists every section', J(ids) === J(['top', 'demo', 'features', 'why', 'faq', 'final']), J(ids));
+  ok('desktop: rail lists every section', J(ids) === J(['top', 'how', 'vs', 'students', 'demo', 'features', 'why', 'faq', 'final']), J(ids));
   const railBox = await page.eval(`(() => { const r = document.querySelector('.nav-rail').getBoundingClientRect(); return { w: r.width, right: innerWidth - r.right, burger: getComputedStyle(document.querySelector('.nav-burger')).display, drawer: getComputedStyle(document.querySelector('.nav-drawer')).display }; })()`);
   ok('desktop: rail shown, burger and drawer hidden', railBox.w > 0 && railBox.right >= 0 && railBox.burger === 'none' && railBox.drawer === 'none', J(railBox));
 
@@ -88,7 +88,7 @@ try {
     const want = sp.clamped ? 'final' : sp.id;
     spyOut.push(sp.id + '@' + sp.y + '=' + act + (act === want ? '' : '(want ' + want + ')'));
   }
-  ok('desktop: scrollspy marks the section under the header at 6 positions', spyOut.every((x) => !x.includes('want')), spyOut.join(' '));
+  ok(`desktop: scrollspy marks the section under the header at ${spots.length} positions`, spyOut.every((x) => !x.includes('want')), spyOut.join(' '));
   for (const [y, want] of [[0, 'top'], ['max', 'final']]) {
     await page.eval(`window.scrollTo({ top: ${y === 'max' ? 'document.documentElement.scrollHeight' : y}, behavior: 'instant' }); true`);
     await frames(4);
@@ -276,7 +276,7 @@ try {
   await clickEl('.nav-drawer .lang [data-lang="uk"]');
   await frames(3);
   const lu = await page.eval(`({ lang: document.documentElement.lang, faq: document.querySelector('.nav-drawer [data-nav-target="faq"]').textContent, rail: document.querySelector('.nav-rail [data-nav-target="why"]').textContent, h1: document.getElementById('hero-title').textContent.slice(0, 20), pressed: document.querySelector('.nav-drawer .lang [data-lang="uk"]').getAttribute('aria-pressed') })`);
-  ok('375: drawer language switch works and relabels nav', lu.lang === 'uk' && lu.faq.includes('Питання') && lu.rail.includes('Чому') && lu.pressed === 'true', J(lu));
+  ok('375: drawer language switch works and relabels nav', lu.lang === 'uk' && lu.faq.includes('Питання') && lu.rail.includes('Дослідження') && lu.pressed === 'true', J(lu));
   await clickEl('.nav-drawer .lang [data-lang="en"]');
   await frames(3);
   await clickEl('.nav-drawer [data-theme-toggle]');
