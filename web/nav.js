@@ -17,11 +17,11 @@
   var T = {
     en: {
       menu: 'Open menu', close: 'Close menu', title: 'Menu', sections: 'Sections', lang: 'Language', theme: 'Dark theme',
-      top: 'Start', demo: 'Demo', features: 'Features', why: 'Why Quizpen', faq: 'Questions', final: 'Join'
+      top: 'Start', how: 'How it works', vs: 'Comparison', students: 'Students', demo: 'Demo', features: 'Features', why: 'Research', faq: 'Questions', final: 'Join'
     },
     uk: {
       menu: 'Відкрити меню', close: 'Закрити меню', title: 'Меню', sections: 'Розділи', lang: 'Мова', theme: 'Темна тема',
-      top: 'Початок', demo: 'Демо', features: 'Можливості', why: 'Чому Quizpen', faq: 'Питання', final: 'Приєднатися'
+      top: 'Початок', how: 'Як це працює', vs: 'Порівняння', students: 'Учні', demo: 'Демо', features: 'Можливості', why: 'Дослідження', faq: 'Питання', final: 'Приєднатися'
     }
   };
   function lang() { return html.lang === 'uk' ? 'uk' : 'en'; }

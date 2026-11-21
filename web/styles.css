@@ -246,12 +246,12 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Sheet geometry: the header, the hero and every section under them are one worksheet. The red margin line runs down both at
    --sheet-line; their content starts --sheet-gap after it (minus the offset of the centred .wrap). */
-.site-header > .wrap, .hero > .wrap, .demo > .wrap,
+.site-header > .wrap, .hero > .wrap, .how > .wrap, .vs > .wrap, .students > .wrap, .demo > .wrap,
 .features > .wrap, .proof > .wrap, .faq > .wrap, .final > .wrap {
   padding-left: max(calc(var(--sheet-line) + var(--sheet-gap) - max(0px, (100% - 1200px) / 2)), env(safe-area-inset-left));
 }
-.hero, .features, .proof, .faq, .final { position: relative; }
-.site-header::before, .hero::before, .demo::before,
+.hero, .how, .vs, .students, .features, .proof, .faq, .final { position: relative; }
+.site-header::before, .hero::before, .how::before, .vs::before, .students::before, .demo::before,
 .features::before, .proof::before, .faq::before, .final::before {
   content: ""; position: absolute; z-index: 1; top: 0; bottom: 0; left: var(--sheet-line);
   border-left: 1.5px solid var(--margin); pointer-events: none;
@@ -267,7 +267,7 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 /* Hero. From 1100px the whole hero is ruled (--ruling) and every line box and margin in it is a multiple of
-   32px, so text sits on the rules; below that only the graded question (.hero-art) is ruled. */
+   32px, so text sits on the rules. The labelled example (.hero-art) is a ruled card of its own at every width. */
 .hero { padding: 16px 0 64px; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; }
 .hero-grid > * { min-width: 0; }
@@ -276,7 +276,7 @@ a:hover { text-decoration-thickness: 2px; }
   /* The copy column dissolves into the grid: the kicker and the headline run across both columns (two lines,
      as on the sheet), the rest of the copy flows down the left column and the graded question sits beside it,
      spanning those rows. No row gap: every block keeps its own 32px-rhythm margin. */
-  .hero-grid { grid-template-columns: minmax(0, 1fr) 440px; column-gap: 64px; row-gap: 0; align-items: start; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr) 480px; column-gap: 48px; row-gap: 0; align-items: start; }
   .hero-copy { display: contents; }
   .sheet-fields, .hero-copy > .kicker, .hero h1 { grid-column: 1 / -1; }
   .hero-copy > .kicker { margin-top: 64px; }
@@ -479,8 +479,44 @@ a:hover { text-decoration-thickness: 2px; }
 .thanks .link-btn { margin-top: 10px; }
 
 /* Hero illustration: one graded question on the sheet. B is circled and ticked in red pen, the reason is
-   written under it in pencil, and a red note points up to the reason. Every line box is one 32px rule. */
-.hero-art { position: relative; font-family: var(--serif); color: var(--ink); }
+   written under it in pencil, and a red note points up to the reason. Every line box is one 32px rule.
+   The question is a printed card lying on the sheet: its own ruling, a small-caps label on the first band
+   ("Sample output"), and from 640px a red margin line of its own. */
+.hero-art {
+  position: relative; max-width: 36rem;
+  padding: 0 24px var(--lh) 44px;
+  border: 1px solid var(--line-strong);
+  background-color: var(--surface);
+  background-image: var(--ruling);
+  font-family: var(--serif); color: var(--ink);
+}
+@media (min-width: 640px) {
+  .hero-art {
+    padding-left: 68px;
+    background-image: linear-gradient(to right, transparent 39px, var(--margin) 39px 40.5px, transparent 40.5px), var(--ruling);
+  }
+}
+/* The label covers the first band edge to edge and keeps it 32px tall; it may wrap in Ukrainian on phones,
+   data-rsv-en/uk reserve the taller of the two. */
+.art-label {
+  margin: 0 -24px 0 -44px; padding: 0 16px;
+  font: 700 0.75rem/var(--lh) var(--font); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3); background: var(--surface);
+  box-shadow: inset 0 -1.5px 0 var(--ink);
+}
+@media (min-width: 640px) { .art-label { margin-left: -68px; } }
+/* Phones: slimmer sides, so more of each option fits on its line */
+@media (max-width: 639px) {
+  .hero-art { padding: 0 14px var(--lh) 36px; }
+  .art-label { margin: 0 -14px 0 -36px; padding: 0 12px; }
+}
+/* Beside the copy (from 1100px) the card drops its own margin line and the question steps down to 18px, so the
+   longest variant (Ukrainian) of every line still fits one rule and English shows no reserved blank lines. */
+@media (min-width: 1100px) {
+  .hero-art { padding: 0 20px var(--lh) 44px; background-image: var(--ruling); }
+  .art-label { margin: 0 -20px 0 -44px; }
+  .hero-art .art-q { font-size: 1.125rem; }
+}
 .art-q { position: relative; font-size: 1.1875rem; line-height: var(--lh); }
 .art-num { position: absolute; right: 100%; margin-right: 10px; font-weight: 600; }
 .art-opts { list-style: none; margin: 0; padding: 0; }
@@ -510,14 +546,10 @@ a:hover { text-decoration-thickness: 2px; }
   .art-why, .art-note { animation: fade-up 400ms var(--ease-out) 1600ms both; }
 }
 @media (min-width: 1100px) { .hero-art { margin-top: var(--lh); } }
-/* Below 1100px the hero is one column and only the graded question is ruled, edge to edge */
-@media (max-width: 1099px) {
-  .hero-art {
-    margin: 0 calc(-1 * max(var(--gutter), env(safe-area-inset-right))) 0 calc(-1 * (var(--sheet-line) + var(--sheet-gap)));
-    padding: var(--lh) max(var(--gutter), env(safe-area-inset-right)) var(--lh) calc(var(--sheet-line) + var(--sheet-gap));
-    background-image: var(--ruling);
-  }
-  .hero-art > * { max-width: 34rem; }
+/* Phones: the note and its arrow move in so the hand-written line fits the narrower card */
+@media (max-width: 639px) {
+  .art-note { padding-left: 40px; font-size: 1.625rem; }
+  .art-arrow { left: 6px; }
 }
 
 /* Demo: the same worksheet goes on. The red margin line continues (see the sheet geometry above); from 1100px the
@@ -526,7 +558,7 @@ a:hover { text-decoration-thickness: 2px; }
 .demo { position: relative; padding: 40px 0 72px; color: var(--ink); }
 @media (min-width: 1100px) { .demo { padding: 32px 0 96px; background-image: var(--ruling); } }
 .demo-head { max-width: 40rem; }
-.demo h2, .features h2, .proof h2, .faq h2, .final h2 {
+.how h2, .vs h2, .students h2, .demo h2, .features h2, .proof h2, .faq h2, .final h2 {
   font-size: clamp(1.9rem, 1.3rem + 2.1vw, 2.85rem);
   line-height: 1.15;
   letter-spacing: -0.018em;
@@ -862,6 +894,111 @@ a:hover { text-decoration-thickness: 2px; }
 /* Absolutely positioned without a left offset, so it keeps its static x: the start of the text column */
 .final-cut { position: absolute; top: -10px; width: 30px; height: 18px; margin-left: -6px; padding: 0 6px; box-sizing: content-box; background: var(--paper); color: var(--ink-3); }
 .final h2 { max-width: 20ch; }
+.final-copy { display: grid; gap: 12px; max-width: 36rem; }
+.final-sub { font-family: var(--serif); font-size: 1.0625rem; line-height: 1.6; color: var(--ink-2); }
+@media (min-width: 640px) { .final-sub { font-size: 1.125rem; } }
+
+/* How it works, Comparison and Students: more pages of the same sheet on plain paper, padded at the bottom only. */
+.how, .vs, .students { padding: 0 0 72px; }
+@media (min-width: 980px) { .how, .vs, .students { padding: 0 0 112px; } }
+
+/* How it works: three numbered steps under an ink rule; stacked with thin rules between them on phones,
+   side by side from 820px. */
+.how-steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; border-top: 1.5px solid var(--ink); }
+.how-step { display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 16px; align-content: start; padding: 20px 0; }
+.how-step + .how-step { border-top: 1px solid var(--rule); }
+.how-step .feature-num { grid-row: 1 / span 2; margin-top: -2px; }
+.how-step h3 { font-size: 1.25rem; line-height: 1.4; font-weight: 600; letter-spacing: -0.01em; }
+.how-step p { grid-column: 2; margin-top: 6px; line-height: 1.6; color: var(--ink-2); }
+@media (min-width: 820px) {
+  .how-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+  .how-step { padding: 24px 0 0; }
+  .how-step + .how-step { border-top: 0; }
+}
+@media (min-width: 640px) { .how-step h3 { font-size: 1.375rem; } }
+.how-note { margin-top: 28px; max-width: 40rem; font-family: var(--serif); font-style: italic; font-size: 1.0625rem; line-height: 1.6; color: var(--ink-3); }
+
+/* Comparison: a printed table on the sheet. On narrow screens it scrolls sideways inside its own box (never the
+   page) and the row labels stay pinned at the left edge; the Quizpen column is boxed in ink. */
+.vs-head { max-width: 40rem; }
+.vs-head p, .students-sub { margin-top: 14px; font-family: var(--serif); font-size: 1.0625rem; line-height: 1.65; color: var(--ink-2); }
+@media (min-width: 640px) { .vs-head p, .students-sub { font-size: 1.125rem; } }
+.vs-scroll {
+  margin-top: 32px; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+  border: 1px solid var(--line-strong); background: var(--surface);
+}
+/* Fixed layout: the row labels take their set width and the three tools share the rest equally */
+.vs-table { width: 100%; min-width: 720px; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-size: 0.9375rem; line-height: 1.45; }
+.vs-table th, .vs-table td { padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+.vs-table tbody tr:last-child > * { border-bottom: 0; }
+.vs-table thead > tr > * {
+  vertical-align: bottom; border-bottom: 1.5px solid var(--ink);
+  font-size: 0.75rem; font-weight: 700; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+}
+.vs-table thead .vs-us { color: var(--ink); }
+/* The row labels (and the empty corner) stay put while the marks scroll under them */
+.vs-table tbody th, .vs-table thead td {
+  position: sticky; left: 0; z-index: 1; width: 32%;
+  background: var(--surface); box-shadow: inset -1px 0 0 var(--line-strong);
+}
+.vs-table tbody th { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink); }
+.vs-table .vs-us { border-left: 1.5px solid var(--ink); border-right: 1.5px solid var(--ink); }
+@media (max-width: 639px) {
+  .vs-table { min-width: 600px; }
+  .vs-table tbody th, .vs-table thead td { width: 132px; }
+  .vs-table th, .vs-table td { padding: 12px 12px; }
+}
+.vs-yes { display: inline-flex; }
+.vs-tick { width: 26px; height: 22px; overflow: visible; color: var(--right); }
+.vs-part {
+  display: inline-block; padding: 0 8px; border: 1.25px solid var(--ink-3); border-radius: 999px;
+  font-size: 0.75rem; font-weight: 700; line-height: 20px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2);
+}
+.vs-no { display: inline-block; font-size: 1.25rem; line-height: 22px; color: var(--ink-3); }
+.vs-note { display: block; margin-top: 6px; font-size: 0.875rem; line-height: 1.45; color: var(--ink-2); }
+.vs-foot { margin-top: 14px; font-size: 0.875rem; color: var(--ink-3); }
+
+/* Students: what the player looks like. A ticked list beside a flat line drawing of a phone showing question 1
+   answered right, with its reason under the options. */
+.students-grid { display: grid; gap: 40px; }
+@media (min-width: 820px) { .students-grid { grid-template-columns: minmax(0, 1fr) 280px; column-gap: 64px; align-items: center; } }
+.students-list { list-style: none; margin: 24px 0 0; padding: 0; max-width: 34rem; }
+.students-list li { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid var(--rule); line-height: 1.5; }
+.students-list li:last-child { border-bottom: 1px solid var(--rule); }
+.students-tick { flex: none; width: 24px; height: 20px; overflow: visible; color: var(--pen); }
+/* ui.js reserves the taller language's height on each text; centre the text in that box, so a one-line item
+   does not hang above a blank line */
+.students-list li > [data-i18n], .phone-opts li > [data-i18n] { display: flex; align-items: center; align-self: stretch; }
+.phone {
+  justify-self: start; width: 260px; max-width: 100%; padding: 10px;
+  border: 2px solid var(--ink); border-radius: 36px; background: var(--paper);
+}
+@media (min-width: 820px) { .phone { justify-self: end; } }
+.phone-screen {
+  position: relative; padding: 36px 14px 20px;
+  border: 1px solid var(--line-strong); border-radius: 26px; background: var(--surface);
+  font-size: 0.875rem; line-height: 1.35;
+}
+.phone-screen::before { content: ""; position: absolute; top: 10px; left: 50%; width: 64px; height: 12px; margin-left: -32px; border-radius: 999px; background: var(--ink); }
+.phone-bar { display: flex; align-items: center; gap: 10px; }
+.phone-prog { display: flex; flex: 1; gap: 4px; }
+.phone-prog i { flex: 1; height: 5px; border-radius: 999px; background: var(--line); }
+.phone-prog i.is-on { background: var(--right); }
+.phone-count { font-size: 0.75rem; font-weight: 700; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.phone-q { margin-top: 16px; font-family: var(--serif); font-size: 1.0625rem; font-weight: 600; line-height: 1.35; }
+.phone-opts { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+.phone-opts li {
+  display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 8px 10px;
+  border: 1.25px solid var(--line-strong); border-radius: 10px;
+}
+.phone-opts li.is-right { background: var(--right-bg); border-color: var(--right-line); }
+.phone-letter {
+  flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px;
+  border: 1.25px solid var(--ink-3); border-radius: 50%; font-size: 11px; font-weight: 700;
+}
+.phone-opts li.is-right .phone-letter { border-color: var(--right); color: var(--right-ink); }
+.phone-tick { flex: none; width: 20px; height: 17px; margin-left: auto; overflow: visible; color: var(--right); }
+.phone-why { margin-top: 12px; padding: 2px 0 2px 10px; border-left: 3px solid var(--right); font-size: 0.8125rem; line-height: 1.45; color: var(--ink-2); }
 
 /* Footer */
 /* The bottom of the sheet: one rule across, then the small print */
