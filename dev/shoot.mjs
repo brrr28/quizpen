@@ -132,16 +132,24 @@ async function shots() {
   await demoTop(true);
   await page.shot(resolve(SHOTS, 'demo-samples-375-dark.png'));
 
-  // The strict version (web/spec): the page at 1440 and 375, then the thank-you at 375.
-  for (const [w, h, mobile] of [[1440, 900, false], [375, 812, true]]) {
+  // The strict version (web/spec): the whole page at 1440 and 375 (light) and at 375 (dark), then the thank-you
+  // at 375. Whole page: the viewport is stretched to the document height, then set back.
+  for (const [w, h, mobile, theme, name] of [[1440, 900, false, 'light', 'spec-1440'], [375, 812, true, 'dark', 'spec-375-dark'], [375, 812, true, 'light', 'spec-375']]) {
     await page.viewport(w, h, mobile, mobile ? 2 : 1);
-    await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
+    await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: theme }] });
+    await page.goto(BASE + 'spec/');
+    await page.eval(`localStorage.clear(); true`);
     await page.goto(BASE + 'spec/');
     await page.waitFor(`document.getElementById('counter').textContent.length > 0`, 8000).catch(() => {});
     await page.waitFor(`document.fonts.ready.then(() => true)`, 8000).catch(() => {});
     await s.wait(400);
-    await page.shot(resolve(SHOTS, `spec-${w}.png`));
+    const full = await page.eval(`Math.ceil(document.documentElement.scrollHeight)`);
+    await page.viewport(w, full, mobile, mobile ? 2 : 1);
+    await s.wait(300);
+    await page.shot(resolve(SHOTS, `${name}.png`));
+    await page.viewport(w, h, mobile, mobile ? 2 : 1);
   }
+  await s.wait(200);
   await page.type('#email', 'maria.spec@school.org');
   await page.click('#btn');
   await page.waitFor(`!document.getElementById('thanks').hidden`, 8000);
