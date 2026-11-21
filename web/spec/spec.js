@@ -6,7 +6,6 @@
   var btn = document.getElementById('btn');
   var errorEl = document.getElementById('error');
   var thanks = document.getElementById('thanks');
-  var counter = document.getElementById('counter');
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   function track(name, props) { if (window.qpAnalytics) window.qpAnalytics.track(name, props); } // analytics hook (../analytics.js)
   var MESSAGES = {
@@ -30,9 +29,30 @@
     email.setAttribute('aria-invalid', msg ? 'true' : 'false');
   }
 
+  // Every counter on the page (the hero line and the proof band) shows the same wording.
   function showCounter(total) {
-    counter.textContent = total >= 10 ? total + ' teachers already joined' : 'Be one of the first teachers to try it';
+    var text = total >= 10 ? total + ' teachers already joined' : 'Be one of the first teachers to try it';
+    var els = document.querySelectorAll('[data-counter]');
+    for (var i = 0; i < els.length; i++) els[i].textContent = text;
   }
+
+  // The thank-you text goes to the hero note and to the final block; html.is-joined swaps the final CTA for it.
+  function showThanks(text) {
+    var els = document.querySelectorAll('[data-thanks-text]');
+    for (var i = 0; i < els.length; i++) els[i].textContent = text;
+    document.documentElement.classList.add('is-joined');
+  }
+
+  // The final "Join Waitlist" button scrolls back to the form and puts the cursor in the email field
+  // (after signup, to the thank-you note). Without JS the link still jumps to #join.
+  var jump = document.querySelector('[data-scroll-join]');
+  if (jump) jump.addEventListener('click', function (e) {
+    var target = form.hidden ? thanks : email;
+    e.preventDefault();
+    var smooth = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+    try { target.focus({ preventScroll: true }); } catch (err) { target.focus(); }
+  });
 
   function loadStats() {
     if (!API) return;
@@ -63,7 +83,7 @@
           track('signup_succeeded', { already: !!r.already, has_ref: false }); // analytics
           form.hidden = true;
           thanks.hidden = false;
-          thanks.textContent = r.already ? "You're already on the list as #" + r.position + '.' : "You're #" + r.position + ' on the waitlist';
+          showThanks(r.already ? "You're already on the list as #" + r.position + '.' : "You're #" + r.position + ' on the waitlist.');
           thanks.focus();
           if (typeof r.total === 'number') showCounter(r.total);
         } else {

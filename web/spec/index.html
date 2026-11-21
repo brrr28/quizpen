@@ -3,47 +3,133 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Quizpen: turn lesson text into a quiz</title>
-  <meta name="description" content="Paste a paragraph from your lesson and get a multiple-choice quiz with an answer key. Join the Quizpen waitlist.">
+  <title>Quizpen: quizzes from your own lesson, every right answer explained</title>
+  <meta name="description" content="Paste a textbook page, your notes or an article, and Quizpen writes a multiple-choice quiz from that text only. Join the Quizpen waitlist.">
   <!-- SEO: test variant of the landing, kept out of search results -->
   <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://brrr28.github.io/quizpen/spec/">
+  <meta name="theme-color" content="#FBF8F0">
+  <script>
+    /* Theme before first paint: the choice saved on the main page (qp_theme), else the system setting. */
+    (function (d) {
+      var t = null;
+      try { t = localStorage.getItem('qp_theme'); } catch (e) { /* storage blocked */ }
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.setAttribute('data-theme', t);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'dark' ? '#22252B' : '#FBF8F0');
+    })(document.documentElement);
+  </script>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Sans:wght@400;700&display=swap">
-  <link rel="stylesheet" href="spec.css?v=20261121b">
+  <link rel="stylesheet" href="spec.css?v=20261121c">
 </head>
 <body>
-  <main class="wrap">
+  <header class="top page">
     <p class="brand">Quizpen</p>
-    <h1>Paste a lesson.<br> Get a quiz before the bell.</h1>
-    <p class="lede">Quizpen turns any lesson text into a multiple-choice quiz with an answer key.</p>
+  </header>
 
-    <ul class="features">
-      <li>Questions come only from the text you paste.</li>
-      <li>Every correct answer comes with a one-sentence reason.</li>
-      <li>Students play it from a link, or you print it as a worksheet.</li>
-    </ul>
+  <main>
+    <section class="hero page" id="join" aria-labelledby="hero-title">
+      <div class="holes" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p class="kicker">AI quiz maker for teachers</p>
+      <h1 id="hero-title"><span class="h1-line">Quizzes from your own lesson.</span> <span class="h1-line">Every right answer explained.</span></h1>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="lede">Paste a textbook page, your notes or an article, and Quizpen writes a multiple-choice quiz from that text only.</p>
 
-    <form id="form" class="form" novalidate>
-      <label for="email">Your email</label>
-      <div class="row">
-        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="teacher@school.org" required aria-describedby="error">
-        <button id="btn" type="submit">Join Waitlist</button>
+          <form id="form" class="form" novalidate>
+            <label for="email">Email for early access</label>
+            <div class="row">
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@school.org" required aria-describedby="error">
+              <button id="btn" class="btn" type="submit">Join Waitlist</button>
+            </div>
+            <div class="hp" aria-hidden="true"><label>Leave this empty <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+            <p id="error" class="error" role="alert"></p>
+          </form>
+
+          <div id="thanks" class="thanks" role="status" aria-live="polite" tabindex="-1" hidden>
+            <svg class="thanks-tick" viewBox="0 0 34 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg>
+            <p class="thanks-title" data-thanks-text></p>
+            <p class="thanks-sub">We'll email you once, when your access is ready.</p>
+          </div>
+
+          <p class="counter"><svg class="tally" viewBox="0 0 32 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 2v14M10 2v14M16 2v14M22 2v14M1 13 L27 4"/></svg><span id="counter" data-counter aria-live="polite"></span></p>
+          <p class="micro">One email when your access is ready. Unsubscribe in one click.</p>
+        </div>
+
+        <figure class="example" aria-labelledby="example-label">
+          <figcaption id="example-label" class="label">Example: what your class gets</figcaption>
+          <div class="sheet">
+            <div class="sheet-head" aria-hidden="true">
+              <span>Name</span><span class="sheet-blank"></span>
+              <span class="sheet-score">1/1</span>
+            </div>
+            <p class="sheet-title">Photosynthesis: quick check</p>
+            <p class="sheet-q"><span class="sheet-num">1.</span>Why do most leaves look green?</p>
+            <ul class="sheet-opts">
+              <li><span class="letter">A</span>They absorb green light</li>
+              <li class="is-right"><span class="letter">B<svg class="loop" viewBox="0 0 46 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M27 4.5 C14 2 3.5 9 4.5 20 C5.5 31 19 37.5 31 34 C41 31 44.5 21 40 12.5 C36.5 6 28 3 19 5.5 C15 6.6 12 8.5 10.5 11"/></svg></span>Chlorophyll reflects green light<svg class="tick" viewBox="0 0 34 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 15 C6 17 9 20.5 11.5 25 C15.5 16 21.5 8 31 2"/></svg><span class="sr-only"> (right answer)</span></li>
+              <li><span class="letter">C</span>Their cells hold green water</li>
+              <li><span class="letter">D</span>Sunlight is mostly green</li>
+            </ul>
+            <p class="sheet-why"><span class="why-mark">Why:</span> chlorophyll reflects green, so green is what reaches our eyes.</p>
+          </div>
+        </figure>
       </div>
-      <div class="hp" aria-hidden="true"><label>Leave this empty <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
-      <p id="error" class="error" role="alert"></p>
-    </form>
+    </section>
 
-    <p id="thanks" class="thanks" role="status" aria-live="polite" tabindex="-1" hidden></p>
-    <p id="counter" class="counter" aria-live="polite"></p>
+    <section class="features page" aria-labelledby="features-title">
+      <h2 id="features-title">What Quizpen does</h2>
+      <ol class="f-list">
+        <li>
+          <h3>From your own text</h3>
+          <p>Every question comes from the text you paste, in the same language.</p>
+        </li>
+        <li>
+          <h3>A key you can check</h3>
+          <p>Next to each right answer, one sentence shows where it comes from.</p>
+        </li>
+        <li>
+          <h3>Ready for class</h3>
+          <p>Students play from a link or QR code without accounts, or you print it.</p>
+        </li>
+      </ol>
+    </section>
 
-    <p class="proof">Teachers who use AI tools at least once a week say they save <strong>5.9 hours a week</strong>. <a href="https://news.gallup.com/poll/691967/three-teachers-weekly-saving-six-weeks-year.aspx" target="_blank" rel="noopener noreferrer">Gallup and Walton Family Foundation, 2025</a>. Survey of 2,232 US public school teachers. Time saved is self-reported.</p>
+    <section class="proof page" aria-labelledby="proof-title">
+      <h2 id="proof-title">Teachers already use AI. <span class="h2-line">They want answers they can check.</span></h2>
+      <div class="facts">
+        <p class="fact"><span class="fact-big">About 1 in 3</span> teachers in OECD countries use AI in their work.<a class="fn" href="#src-1" aria-label="Source 1">1</a></p>
+        <p class="fact"><span class="fact-big">66%</span> think AI can give wrong recommendations.<a class="fn" href="#src-2" aria-label="Source 2">2</a></p>
+        <p class="fact fact-count"><svg class="tally tally-big" viewBox="0 0 32 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 2v14M10 2v14M16 2v14M22 2v14M1 13 L27 4"/></svg><span class="fact-count-text" data-counter>Be one of the first teachers to try it</span></p>
+      </div>
+      <ol class="sources">
+        <li id="src-1"><a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">OECD, Results from TALIS 2024</a></li>
+        <li id="src-2"><a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International on TALIS 2024</a></li>
+      </ol>
+    </section>
+
+    <section class="final page" aria-labelledby="final-title">
+      <div class="final-in">
+        <svg class="cut" viewBox="0 0 30 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="5.5" cy="4.5" r="3.5"/><circle cx="5.5" cy="13.5" r="3.5"/><path d="M8.5 6.5 L27 14"/><path d="M8.5 11.5 L27 4"/></svg>
+        <h2 id="final-title">Try it on your next lesson.</h2>
+        <p class="final-text final-open">Join the waitlist, and we'll email you when your access is ready.</p>
+        <a class="btn btn-lg final-open" href="#join" data-scroll-join>Join Waitlist</a>
+        <p class="final-text final-done" data-thanks-text></p>
+      </div>
+    </section>
   </main>
-  <footer class="foot"><a href="../">See the full page and try the demo &rarr;</a></footer>
-  <script src="../config.js?v=20261121b"></script>
+
+  <footer class="foot page">
+    <a href="../">See the full product version &rarr;</a>
+    <a href="../case/">How this was built &rarr;</a>
+  </footer>
+  <script src="../config.js?v=20261121c"></script>
   <!-- Analytics: PostHog only on this variant (no Clarity, no consent bar) -->
-  <script src="../analytics.js?v=20261121b" data-surface="spec"></script>
-  <script src="spec.js?v=20261121b"></script>
+  <script src="../analytics.js?v=20261121c" data-surface="spec"></script>
+  <script src="spec.js?v=20261121c"></script>
 </body>
 </html>
