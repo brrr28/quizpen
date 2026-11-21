@@ -9,8 +9,11 @@
 'use strict';
 
 // Bump on every deploy so returning visitors get a fresh, consistent shell.
-var VERSION = '2026-11-21c';
+var VERSION = '2026-11-21d';
 var CACHE = 'qp-shell-' + VERSION;
+// Pages ask for their CSS, JS and data with ?v=<this release>; the precache stores those exact URLs.
+var ASSET_V = VERSION.replace(/-/g, '');
+var VERSIONED_RE = /\.(?:css|js|json)$/i;
 var NAV_TIMEOUT_MS = 3000;
 var SHELL = [
   'index.html', 'styles.css', 'demo-modes.css', 'nav.css', 'consent.css',
@@ -33,7 +36,8 @@ function cacheable(res) { return res && res.ok && res.type === 'basic'; }
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE).then(function (cache) {
     // cache: 'reload' skips the HTTP cache, so the shell is the deployed version.
-    return cache.addAll(SHELL.map(function (p) { return new Request(scopeUrl(p), { cache: 'reload' }); }));
+    var urls = SHELL.map(function (p) { return VERSIONED_RE.test(p) && p !== 'vendor/qrcode.js' ? p + '?v=' + ASSET_V : p; });
+    return cache.addAll(urls.map(function (p) { return new Request(scopeUrl(p), { cache: 'reload' }); }));
   }).then(function () { return self.skipWaiting(); }));
 });
 
@@ -72,14 +76,18 @@ function fromNetworkFirst(event, req) {
 
 function fromCacheThenRevalidate(event, req) {
   return caches.open(CACHE).then(function (cache) {
-    // ignoreSearch: pages ask for versioned URLs (?v=...), the precache holds the plain ones of this same version.
-    return cache.match(req, { ignoreSearch: true }).then(function (hit) {
+    // Exact match first: a new release asks for new ?v= URLs, so it never gets an old file from the cache.
+    return cache.match(req).then(function (hit) {
       var net = fetch(req);
       // The refresh runs in the background; the clone is taken before the page reads the body.
       event.waitUntil(net.then(function (res) {
         if (cacheable(res)) return cache.put(req, res.clone());
       }).catch(function () { /* offline: the cached copy stays */ }));
-      return hit || net;
+      if (hit) return hit;
+      // Offline with no exact copy: fall back to the precached plain file of this same release.
+      return net.catch(function () {
+        return cache.match(req, { ignoreSearch: true }).then(function (any) { return any || Response.error(); });
+      });
     });
   });
 }
