@@ -234,6 +234,45 @@ th.num { text-align: right; }
 
 .case-time { white-space: nowrap; }
 
+/* Two deliveries side by side, like two answer columns; a pencil rule splits them */
+.deliv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.dv { min-width: 0; }
+.dv:first-child { padding-right: 40px; }
+.dv + .dv { padding-left: 40px; border-left: 1.5px solid var(--row); }
+.dv-tag, .inv-h {
+  position: relative;
+  font: 700 12.5px/var(--lh) var(--sans); letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--pencil);
+}
+.dv-tag::after, .inv-h::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 5.5px; height: 1.5px;
+  background: var(--ink);
+}
+.dv-time, .dv-total { position: relative; top: 3px; font: 600 28px/var(--lh) var(--hand); color: var(--red); }
+.dv h3 { margin: 0; }
+
+/* Inventories: counted facts, a number column in ink and a short label */
+.inv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; row-gap: var(--lh); align-items: start; }
+.inv-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+.inv > * { min-width: 0; }
+.inv-h b { color: var(--ink); font-size: 15px; letter-spacing: 0; }
+.inv ul + .inv-h { margin-top: var(--lh); }
+.inv-more { font: 400 15px/var(--lh) var(--sans); color: var(--pencil); }
+.inv .dash li, .nl li { font-size: 16px; }
+.tally li { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); column-gap: 14px; font-size: 16px; }
+.tally b { font-weight: 600; font-size: 18px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.q > .tally { max-width: 72ch; }
+.nl { counter-reset: nl; }
+.nl li { position: relative; padding-left: 30px; counter-increment: nl; }
+.nl li::before {
+  content: counter(nl); position: absolute; left: 0; top: 0; width: 20px; text-align: right;
+  font-family: var(--sans); font-weight: 700; font-size: 12.5px; color: var(--pencil);
+}
+.t-ev col.c1 { width: 42%; }
+.t-ev td:first-child { padding-right: 16px; }
+.t-ev code { font-size: 13.5px; overflow-wrap: anywhere; }
+.t-ev td:last-child { font: 400 14.5px/var(--lh) var(--sans); }
+
 /* Medium widths: one column, pen notes turn into inline callouts */
 @media (max-width: 1179px) {
   :root { --left: 144px; --margin-x: 88px; --right: 40px; }
@@ -242,6 +281,10 @@ th.num { text-align: right; }
   .q > p, .q > h3, .q > ul, .q > ol, .q > .note { max-width: 72ch; }
   .q > .note { grid-column: 1; padding-left: 18px; border-left: 2px solid var(--red); font-size: 27px; }
   .note .arrow { display: none; }
+  .inv-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .inv, .inv-3 { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Phones: margin line and holes stay simple, rules only in the report strip */
@@ -293,6 +336,22 @@ th.num { text-align: right; }
   .q > .note { font-size: 25px; line-height: 28px; padding-left: 14px; }
   .note p { top: 0; }
   .note p + p { margin-top: 8px; }
+  .deliv { grid-template-columns: minmax(0, 1fr); }
+  .dv:first-child { padding-right: 0; }
+  .dv + .dv { padding-left: 0; border-left: 0; margin-top: 18px; }
+  .dv-time, .dv-total { font-size: 26px; line-height: 30px; top: 0; }
+  .inv { row-gap: 18px; }
+  .inv ul + .inv-h { margin-top: 18px; }
+  .tally li { grid-template-columns: 3.2em minmax(0, 1fr); column-gap: 12px; font-size: 15.5px; }
+  .tally b { font-size: 17px; }
+  .inv .dash li, .nl li { font-size: 15.5px; }
+  .tally li + li, .nl li + li { margin-top: 6px; }
+  .t-ev thead { display: none; }
+  .t-ev tr { display: block; position: relative; padding: 8px 0 9px; }
+  .t-ev td { display: block; padding: 0; }
+  .t-ev td::after { display: none; }
+  .t-ev tr::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--row); }
+  .t-ev td:last-child { font-size: 14px; line-height: 21px; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&amp;family=Literata:opsz,wght@7..72,400;7..72,600&amp;family=PT+Sans:wght@400;700&amp;display=swap&amp;subset=latin,cyrillic">
-  <link rel="stylesheet" href="case.css?v=20261121b">
+  <link rel="stylesheet" href="case.css?v=20261121c">
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" focusable="false">
@@ -48,10 +48,42 @@
 
     <section class="q" id="s1" aria-labelledby="s1-h">
       <h2 id="s1-h"><span class="qn">1<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Коротко</span></h2>
-      <p>Quizpen складає тест із тексту, за яким учитель веде урок, і біля кожної правильної відповіді ставить коротке обґрунтування з цього тексту. Сторінка відповідає ТЗ і водночас перевіряє гіпотезу, що вчителі хочуть тест саме з власного тексту. Для цього на ній є демо з перевіркою попиту методом «фейкових дверей» (fake door) і воронка в таблиці. Така перевірка показує функцію, якої ще немає, і рахує, скільки людей хочуть нею скористатися. Кожне продуктове рішення на сторінці спирається на дослідження з 21 джерела. Пороги «працює» і «не працює» я записав ще до першого відвідувача.</p>
+      <div class="deliv wide">
+        <div class="dv">
+          <p class="dv-tag">Поставка 1</p>
+          <p class="dv-time">1,5 години</p>
+          <h3>Строго за ТЗ</h3>
+          <p><a class="url" href="https://brrr28.github.io/quizpen/spec/">brrr28.github.io/quizpen/spec/</a></p>
+          <ul class="dash">
+            <li>Заголовок і одне речення</li>
+            <li>Три функції</li>
+            <li>Форма пошти з кнопкою «Join Waitlist»</li>
+            <li>Записи в Google Sheets</li>
+            <li>Повідомлення подяки</li>
+            <li>Мобільна верстка</li>
+            <li>Лічильник записів</li>
+          </ul>
+        </div>
+        <div class="dv">
+          <p class="dv-tag">Поставка 2</p>
+          <p class="dv-time">ще близько 6 годин</p>
+          <h3>Продукт, який перевіряє гіпотезу</h3>
+          <p><a class="url" href="https://brrr28.github.io/quizpen/">brrr28.github.io/quizpen/</a></p>
+          <ul class="dash">
+            <li>Застосунок перевіряє, чи хочуть учителі тест саме з власного тексту</li>
+            <li>Демо у двох режимах і перевірка попиту на свій текст</li>
+            <li>Режим учня за посиланням або QR-кодом</li>
+            <li>Дослідження ринку в PDF, на ньому стоять рішення сторінки</li>
+            <li>Воронка в таблиці, PostHog і Clarity</li>
+            <li>Офлайн, дві мови, дві теми, швидкий старт на 3G</li>
+          </ul>
+        </div>
+      </div>
+      <p class="dv-total">Разом <span id="case-time" class="case-time">близько 7,5 години</span></p>
+      <p>Quizpen складає тест із тексту, за яким учитель веде урок, і біля кожної правильної відповіді ставить коротке обґрунтування з цього тексту. Сторінка відповідає ТЗ і водночас перевіряє гіпотезу, що вчителі хочуть тест саме з власного тексту. Для цього на ній є демо з перевіркою попиту методом «фейкових дверей» (fake door) і воронка в таблиці. Така перевірка показує функцію, якої ще немає, і рахує, скільки людей хочуть нею скористатися. Кожне продуктове рішення на сторінці спирається на дослідження. Пороги «працює» і «не працює» я записав ще до першого відвідувача.</p>
       <div class="note" aria-hidden="true">
         <svg class="pen arrow"><use href="#pen-arrow"/></svg>
-        <p>21 джерело в дослідженні</p>
+        <p>спершу ТЗ, потім гіпотеза</p>
       </div>
       <ul class="dash">
         <li>Сторінка: <a class="url" href="https://brrr28.github.io/quizpen/">https://brrr28.github.io/quizpen/</a></li>
@@ -63,8 +95,165 @@
     </section>
 
     <section class="q" id="s2" aria-labelledby="s2-h">
-      <h2 id="s2-h"><span class="qn">2<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">ТЗ → що зроблено</span></h2>
-      <div class="tw wide" role="region" aria-labelledby="s2-h" tabindex="0">
+      <h2 id="s2-h"><span class="qn">2<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Що зроблено, у числах</span></h2>
+      <p>Усе пораховано за кодом, даними й PDF у репозиторії, без оцінок на око.</p>
+
+      <h3>Дослідження</h3>
+      <div class="inv wide">
+        <div>
+          <p class="inv-h">Ринок і вчителі</p>
+          <ul class="tally">
+          <li><b>21</b><span>джерело в PDF</span></li>
+          <li><b>19</b><span>продуктів у матриці конкурентів: 15 світових і 4 українські</span></li>
+          <li><b>16</b><span>дослівних цитат учителів, методиста й дослідників із 7 джерел і ще один переказаний випадок</span></li>
+          <li><b>6</b><span>сегментів ICP у робочих нотатках. У PDF лишилися основний і другий профіль та 5 груп, яким не продаємо першими</span></li>
+          <li><b>5</b><span>заперечень із відповідями</span></li>
+          <li><b>5</b><span>питань для перших інтерв'ю</span></li>
+          <li><b>5</b><span>каналів для першого трафіку, кожен зі своєю utm-міткою</span></li>
+          <li><b>13</b><span>висновків, з яких вийшли рішення на сторінці (<a href="#s5">розділ 5</a>)</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="inv-h">Готові приклади в демо</p>
+          <ul class="tally">
+            <li><b>4</b><span>мови: англійська, українська, іспанська, польська</span></li>
+            <li><b>8</b><span>уроків: 6 предметів англійською й українською і ще по одному іспанською та польською</span></li>
+            <li><b>14</b><span>тестів</span></li>
+            <li><b>70</b><span>питань, і біля кожного обґрунтування з тексту</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Функції</h3>
+      <div class="inv inv-3 wide">
+        <div>
+          <p class="inv-h"><b>18</b> для вчителя</p>
+          <ol class="nl">
+            <li>Готові приклади відкриваються одразу, без реєстрації</li>
+            <li>Режим «Ваш текст»: від 200 до 3000 знаків, лічильник і підказка, скільки ще треба</li>
+            <li>Перевірка попиту: поки генерацію вимкнено, сторінка пропонує ранній доступ за пошту</li>
+            <li>Тест виходить мовою вставленого тексту</li>
+            <li>Тест просто на сторінці: правильну літеру обведено, хибну закреслено, поруч обґрунтування</li>
+            <li>Ключ відповідей заповнюється, поки вчитель проходить тест</li>
+            <li>Оцінка наприкінці з коротким висновком</li>
+            <li>Копіювання тесту з ключем для Google Forms, Kahoot чи друку</li>
+            <li>«Переглянути як учень»: справжній екран учня у вікні</li>
+            <li>«Поділитися з класом»: посилання, QR-код і великий QR для проєктора</li>
+            <li>Форма «Join Waitlist» нагорі й унизу, адресу перевіряє ще браузер</li>
+            <li>Подяка з номером у списку й особистим посиланням-запрошенням</li>
+            <li>Запрошення одним дотиком у Telegram, WhatsApp, пошту або в буфер</li>
+            <li>Та сама пошта вдруге не дає дубля, а сторінка пам'ятає, що ви вже записалися</li>
+            <li>Лічильник справжніх записів</li>
+            <li>Робота офлайн і відкладений запис</li>
+            <li>Чесне повідомлення, коли демо повільне або перевантажене</li>
+            <li>Англійська й українська, світла й темна теми, бічна шкала й висувне меню, FAQ із 6 питань</li>
+          </ol>
+        </div>
+        <div>
+          <p class="inv-h"><b>12</b> для учня</p>
+          <ol class="nl">
+            <li>Тест відкривається за посиланням або QR-кодом</li>
+            <li>Без акаунта й реєстрації</li>
+            <li>Стартовий екран: скільки питань і скільки хвилин</li>
+            <li>Крапки прогресу й номер питання</li>
+            <li>Пояснення одразу після кожної відповіді</li>
+            <li>Серія правильних відповідей поспіль</li>
+            <li>Результат: бали, від 1 до 3 зірок і найкраща серія</li>
+            <li>Перегляд відповідей: ваша, правильна й пояснення</li>
+            <li>Кнопка «Пройти ще раз»</li>
+            <li>Нічого не збирає й не надсилає, аналітики на цій сторінці немає</li>
+            <li>Працює офлайн після першого відкриття</li>
+            <li>Зрозумілі екрани, якщо посилання порожнє чи обрізане або браузер застарий</li>
+          </ol>
+        </div>
+        <div>
+          <p class="inv-h"><b>6</b> у плані на тиждень</p>
+          <ol class="nl">
+            <li>Інтерв'ю з учителями зі списку очікування</li>
+            <li>Якість різними мовами, яку оцінює вчитель-носій</li>
+            <li>Порівняння з ChatGPT, Gemini, Brisk і MagicSchool на тих самих текстах</li>
+            <li>Неправильні варіанти на типових помилках учнів і пояснення до кожного</li>
+            <li>Тест ціни без оплати</li>
+            <li>Експорт туди, куди вчителі переносять тест</li>
+          </ol>
+          <p class="inv-more">Докладно в <a href="#s12">розділі 12</a>.</p>
+        </div>
+      </div>
+
+      <h3>Аналітика</h3>
+      <div class="inv wide">
+        <div>
+          <p class="inv-h"><b>18</b> подій PostHog</p>
+          <table class="t-ev">
+            <colgroup><col class="c1"><col class="c2"></colgroup>
+            <thead><tr><th scope="col">Подія</th><th scope="col">Що вимірює</th></tr></thead>
+            <tbody>
+              <tr><td><code>landing_viewed</code></td><td>відкрили сторінку або /spec/: мова, чи є запрошення</td></tr>
+              <tr><td><code>nav_click</code></td><td>перейшли до розділу з меню чи шкали</td></tr>
+              <tr><td><code>lang_switched</code></td><td>змінили мову, з якої на яку</td></tr>
+              <tr><td><code>theme_toggled</code></td><td>змінили тему</td></tr>
+              <tr><td><code>consent_chosen</code></td><td>дозволили чи відхилили записи сесій</td></tr>
+              <tr><td><code>sample_viewed</code></td><td>відкрили готовий приклад, який саме</td></tr>
+              <tr><td><code>demo_started</code></td><td>запустили демо: приклад чи свій текст, мова</td></tr>
+              <tr><td><code>quiz_generated</code></td><td>тест з'явився: успіх, час, приклад чи генерація</td></tr>
+              <tr><td><code>quiz_answered</code></td><td>відповіли на питання, правильно чи ні</td></tr>
+              <tr><td><code>quiz_completed</code></td><td>пройшли тест до кінця, скільки балів</td></tr>
+              <tr><td><code>quiz_copied</code></td><td>скопіювали тест із ключем</td></tr>
+              <tr><td><code>early_access_shown</code></td><td>побачили ранній доступ; довжина тексту діапазоном, без тексту</td></tr>
+              <tr><td><code>student_preview_opened</code></td><td>подивилися тест очима учня</td></tr>
+              <tr><td><code>share_opened</code></td><td>відкрили «Поділитися з класом»</td></tr>
+              <tr><td><code>signup_submitted</code></td><td>надіслали пошту: яка форма, мова, чи є запрошення</td></tr>
+              <tr><td><code>signup_succeeded</code></td><td>запис прийнято: новий чи повторний, чи був у демо</td></tr>
+              <tr><td><code>referral_link_copied</code></td><td>скопіювали посилання-запрошення</td></tr>
+              <tr><td><code>referral_shared</code></td><td>поділилися запрошенням, яким каналом</td></tr>
+            </tbody>
+          </table>
+          <p class="inv-more">Ще PostHog сам рахує перегляди сторінки й виходи з неї.</p>
+        </div>
+        <div>
+          <p class="inv-h"><b>4</b> вкладки Google Sheets</p>
+          <ul class="dash">
+            <li><strong>waitlist:</strong> пошта, мова, utm-мітки, код запрошення й хто запросив</li>
+            <li><strong>visits:</strong> відвідини з мовою й utm-міткою, без пошти</li>
+            <li><strong>demo_runs:</strong> запуски демо: приклад чи свій текст, довжина тексту, успіх, час. Самого тексту немає</li>
+            <li><strong>Insights:</strong> лише формули, оновлюються з кожним рядком</li>
+          </ul>
+          <p class="inv-h"><b>5</b> таблиць і графік в Insights</p>
+          <ul class="dash">
+            <li>Воронка, 8 показників: від унікальних відвідувачів до конверсій «відвідини → запис» і «демо → запис»</li>
+            <li>Приклади проти власного тексту: запуски, успішні, частка успіху</li>
+            <li>Мови: відвідини, запуски демо, записи, частка записів</li>
+            <li>Останні 14 днів по днях: відвідини, запуски, записи, лінійний графік</li>
+            <li>Топ-10 кодів запрошення</li>
+          </ul>
+          <p class="inv-h">Microsoft Clarity</p>
+          <ul class="dash">
+            <li>Теплові карти й записи сесій, лише після згоди. Згода діє рік</li>
+            <li>Поля пошти, текст уроку, тест і запрошення в записах приховано</li>
+          </ul>
+          <p class="inv-h">Приватність</p>
+          <ul class="dash">
+            <li>PostHog без cookie і без профілів: щоразу новий анонімний id</li>
+            <li>Do Not Track, GPC і режим економії даних вимикають усю аналітику</li>
+            <li>Пошта, текст і коди запрошень у події не потрапляють</li>
+            <li>Даних учнів немає: сторінка учня аналітики не завантажує</li>
+            <li>Вставлений текст не зберігається, у таблиці лише його довжина</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Якість</h3>
+      <ul class="tally">
+        <li><b>452</b><span>з 455 автоматичних перевірок у headless-браузері проходять, це 8 наборів (<a href="#s9">розділ 9</a>)</span></li>
+        <li><b>270</b><span>контрактних перевірок бекенду на справжньому коді Apps Script, ще 1 набір</span></li>
+        <li><b>6,8&nbsp;с</b><span>до моменту, коли сторінкою можна користуватися на повільному 3G</span></li>
+        <li><b>≈0</b><span>зсув розмітки: CLS 0,00005</span></li>
+      </ul>
+    </section>
+
+    <section class="q" id="s3" aria-labelledby="s3-h">
+      <h2 id="s3-h"><span class="qn">3<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">ТЗ → що зроблено</span></h2>
+      <div class="tw wide" role="region" aria-labelledby="s3-h" tabindex="0">
         <table class="t-spec">
           <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
           <thead><tr><th scope="col">Вимога</th><th scope="col">Як зроблено</th><th scope="col">Де подивитися</th></tr></thead>
@@ -76,17 +265,17 @@
             <tr><td class="lead">Повідомлення подяки</td><td>«Ви №N у списку очікування», адреса для листа й особисте посилання-запрошення. Якщо ввести ту саму пошту вдруге, дубля не буде, а сторінка повідомить, що місце вже збережено</td><td class="where"><a href="https://github.com/brrr28/quizpen/blob/main/shots/thanks-375.png">shots/thanks-375.png</a></td></tr>
             <tr><td class="lead">Мобільна верстка</td><td>Перевірено на ширині 375 px у світлій і темній темах. На телефоні розділи відкриваються з висувного меню</td><td class="where"><a href="https://github.com/brrr28/quizpen/blob/main/shots/hero-375.png">shots/hero-375.png</a>, <a href="https://github.com/brrr28/quizpen/blob/main/shots/drawer-open-375.png">shots/drawer-open-375.png</a></td></tr>
             <tr><td class="lead">Бонус: лічильник</td><td>Справжня кількість записів із таблиці. Число з'являється, коли записів набирається 10. До того сторінка запрошує стати серед перших: «Станьте одним із перших учителів, які спробують Quizpen»</td><td class="where">біля форми та в блоці «Чому ми це робимо»</td></tr>
-            <tr><td class="lead">Бонус: соціальний доказ</td><td>Цифри TALIS 2024 [1, 2] і висновок Roediger і Karpicke (2006) про те, що тести допомагають запам'ятовувати. Цього дослідження немає серед 21 джерела PDF, але посилання на нього є на самій сторінці. Вигаданих відгуків і логотипів немає</td><td class="where">блок «Чому ми це робимо»</td></tr>
+            <tr><td class="lead">Бонус: соціальний доказ</td><td>Цифри TALIS 2024 [1, 2] і висновок Roediger і Karpicke (2006) про те, що тести допомагають запам'ятовувати. Цього дослідження немає серед джерел PDF, але посилання на нього є на самій сторінці. Вигаданих відгуків і логотипів немає</td><td class="where">блок «Чому ми це робимо»</td></tr>
             <tr><td class="lead">Живе посилання</td><td>Основна сторінка й окрема версія строго за ТЗ</td><td class="where"><a href="../">/quizpen/</a> і <a href="../spec/">/quizpen/spec/</a></td></tr>
             <tr><td class="lead">Скріншот таблиці</td><td>Вкладки waitlist і Insights</td><td class="where"><a href="https://github.com/brrr28/quizpen/blob/main/shots/sheet-waitlist.png">shots/sheet-waitlist.png</a>, <a href="https://github.com/brrr28/quizpen/blob/main/shots/sheet-insights.png">shots/sheet-insights.png</a></td></tr>
-            <tr><td class="lead">3-5 речень про інструменти, час і тиждень</td><td>Докладно нижче</td><td class="where">розділи <a href="#s9">9</a> і <a href="#s11">11</a></td></tr>
+            <tr><td class="lead">3-5 речень про інструменти, час і тиждень</td><td>Докладно нижче</td><td class="where">розділи <a href="#s10">10</a> і <a href="#s12">12</a></td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section class="q" id="s3" aria-labelledby="s3-h">
-      <h2 id="s3-h"><span class="qn">3<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Дослідження</span></h2>
+    <section class="q" id="s4" aria-labelledby="s4-h">
+      <h2 id="s4-h"><span class="qn">4<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Дослідження</span></h2>
       <h3>П'ять головних висновків.</h3>
       <ol class="findings">
         <li><span class="n" aria-hidden="true">1</span><svg class="pen tick" aria-hidden="true"><use href="#pen-tick"/></svg><strong>Учителі вже користуються ШІ, але дуже нерівномірно.</strong> У країнах ОЕСР це близько 1 з 3 учителів, у Сингапурі й ОАЕ до 75%, у Франції та Японії менше 20% [1]. Тому профіль клієнта я не прив'язую до країни.</li>
@@ -97,19 +286,15 @@
       </ol>
       <h3>Що я вивчив.</h3>
       <ul class="dash">
-        <li><strong>21 джерело в PDF.</strong> TALIS 2024 від ОЕСР, опитування в Англії від DfE (міністерства освіти) і Teacher Tapp, Gallup у США, RAND, UNESCO, дослідження Oak National Academy, сторінки й ціни конкурентів, відгуки вчителів у Chrome Web Store. Усі джерела переглянуто 20.11.2026.</li>
-        <li><strong>19 продуктів у матриці конкурентів.</strong> 15 світових: Wayground (колишній Quizizz), Kahoot, Quizlet, Conker, QuestionWell, MagicSchool, Brisk, Eduaide, Diffit, Twee, Curipod, Formative, Google Forms з Gemini, Microsoft Forms з Copilot, ChatGPT. 4 українські: «Мрія», «На Урок», «Всеосвіта», «МійКлас». Дев'ять із них потрапили в порівняльну таблицю PDF.</li>
-        <li><strong>6 сегментів у робочих нотатках про профіль клієнта (ICP).</strong> У PDF лишилися основний профіль, другий профіль і 5 груп, яким не продаватимемо в першу чергу.</li>
-        <li><strong>16 коротких дослівних цитат</strong> учителів, методиста й дослідників із 7 джерел і ще один переказаний випадок.</li>
-        <li><strong>5 заперечень</strong> із відповідями і <strong>5 питань</strong> для перших інтерв'ю.</li>
-      </ul>
+        <li><strong>Джерела.</strong> TALIS 2024 від ОЕСР, опитування в Англії від DfE (міністерства освіти) і Teacher Tapp, Gallup у США, RAND, UNESCO, дослідження Oak National Academy, сторінки й ціни конкурентів, відгуки вчителів у Chrome Web Store. Усі джерела переглянуто 20.11.2026.</li>
+        <li><strong>Матриця конкурентів.</strong> Світові: Wayground (колишній Quizizz), Kahoot, Quizlet, Conker, QuestionWell, MagicSchool, Brisk, Eduaide, Diffit, Twee, Curipod, Formative, Google Forms з Gemini, Microsoft Forms з Copilot, ChatGPT. Українські: «Мрія», «На Урок», «Всеосвіта», «МійКлас». Дев'ять із них потрапили в порівняльну таблицю PDF.</li>      </ul>
       <p>Першу версію дослідження я робив для України. ТЗ не обмежує країну, тому я переробив його для глобального ринку. Тепер профіль клієнта визначають роль і поведінка вчителя, а країни стали каналами входу на ринок.</p>
       <p><strong>Обмеження.</strong> Reddit закритий для автоматичного читання, G2 і Capterra відповіли помилкою 403, огляди Common Sense видалено. Тому думки вчителів я брав із галузевих медіа й відгуків у Chrome Web Store. Упевненість у цих даних низька або середня. Усе, що не має джерела, у PDF і на цій сторінці позначено [Г]. Позначка означає гіпотезу, яку ще треба перевірити. PDF пройшов дві незалежні перевірки.</p>
     </section>
 
-    <section class="q" id="s4" aria-labelledby="s4-h">
-      <h2 id="s4-h"><span class="qn">4<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Від висновків до рішень</span></h2>
-      <div class="tw wide" role="region" aria-labelledby="s4-h" tabindex="0">
+    <section class="q" id="s5" aria-labelledby="s5-h">
+      <h2 id="s5-h"><span class="qn">5<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Від висновків до рішень</span></h2>
+      <div class="tw wide" role="region" aria-labelledby="s5-h" tabindex="0">
         <table class="t-dec">
           <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
           <thead><tr><th scope="col">Що з'ясували</th><th scope="col">Що вирішили</th><th scope="col">Де на сторінці</th></tr></thead>
@@ -132,12 +317,12 @@
       </div>
     </section>
 
-    <section class="q" id="s5" aria-labelledby="s5-h">
-      <h2 id="s5-h"><span class="qn">5<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Що понад ТЗ і навіщо</span></h2>
+    <section class="q" id="s6" aria-labelledby="s6-h">
+      <h2 id="s6-h"><span class="qn">6<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Що понад ТЗ і навіщо</span></h2>
       <ul class="dash">
         <li><strong>Демо у двох режимах.</strong> Гіпотезу перевіряє саме демо, бо вчитель має побачити тест, перш ніж лишити пошту.</li>
-        <li><strong>Перевірка попиту в режимі «Ваш текст».</strong> Вона дає показники 3 і 4 з <a href="#s6">розділу 6</a>.</li>
-        <li><strong>Готові приклади: 6 текстів уроків із 6 предметів англійською й українською і ще 2 тексти іспанською та польською.</strong> Обіцянку «мовою вашого тексту» можна перевірити без жодного запиту до моделі.</li>
+        <li><strong>Перевірка попиту в режимі «Ваш текст».</strong> Вона дає показники 3 і 4 з <a href="#s7">розділу 7</a>.</li>
+        <li><strong>Готові приклади англійською, українською, іспанською та польською.</strong> Обіцянку «мовою вашого тексту» можна перевірити без жодного запиту до моделі.</li>
         <li><strong>Чесні підписи.</strong> Сторінка прямо каже, що тести до прикладів заздалегідь написав Claude, і не обіцяє більше, ніж уміє демо.</li>
         <li><strong>Режим учня за посиланням або QR-кодом.</strong> Тест можна одразу дати класу. У Microsoft для цього потрібні Teams і ліцензія Copilot [21].</li>
         <li><strong>Посилання-запрошення на сторінці подяки.</strong> Воно дає показник 5 і показує, чи діляться вчителі сторінкою з колегами.</li>
@@ -154,10 +339,10 @@
       </ul>
     </section>
 
-    <section class="q" id="s6" aria-labelledby="s6-h">
-      <h2 id="s6-h"><span class="qn">6<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Як сторінка перевіряє гіпотезу</span></h2>
+    <section class="q" id="s7" aria-labelledby="s7-h">
+      <h2 id="s7-h"><span class="qn">7<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Як сторінка перевіряє гіпотезу</span></h2>
       <p><strong>Гіпотеза.</strong> Учителі-предметники середньої школи в різних країнах хочуть тест саме з власного тексту. Коли вони бачать, що це можливо, то лишають пошту. Гіпотеза хибна, якщо свій текст вставляють менше ніж 15% користувачів демо або пошту лишають менше ніж 10% із тих, хто вставив.</p>
-      <div class="tw wide" role="region" aria-labelledby="s6-h" tabindex="0">
+      <div class="tw wide" role="region" aria-labelledby="s7-h" tabindex="0">
         <table class="t-metrics">
           <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
           <thead><tr><th scope="col">Показник</th><th scope="col">Працює</th><th scope="col">Не працює</th><th scope="col">Де рахуємо</th></tr></thead>
@@ -171,14 +356,14 @@
         </table>
       </div>
       <p>Пороги я задав сам, бо публічних орієнтирів конверсії для таких сторінок у джерелах немає [Г].</p>
-      <p><strong>Коли вирішуємо.</strong> Після 300 унікальних відвідувачів або через 14 днів, залежно від того, що настане раніше. Рядок 1 оцінюємо від 300 відвідувачів, рядки 2-3 від 30 користувачів демо, рядок 4 від 20 вставлених текстів. Якщо людей замало, подовжуємо тест до 600 відвідувачів або 28 днів. Графік за 14 днів є у вкладці Insights.</p>
+      <p><strong>Коли вирішуємо.</strong> Після 300 унікальних відвідувачів або через 14 днів, залежно від того, що настане раніше. Рядок 1 оцінюємо від 300 відвідувачів, рядки 2-3 від 30 користувачів демо, рядок 4 від 20 вставлених текстів. Якщо людей замало, подовжуємо тест до 600 відвідувачів або 28 днів.</p>
       <p><strong>Що робимо з результатом.</strong> Якщо рядки 1-4 «працюють», проводимо 5 інтерв'ю і тест ціни, а живу генерацію першими отримують ті, хто лишив пошту в режимі «Ваш текст». Рядок 3 «не працює» означає, що гіпотеза про власний текст хибна. Якщо рядок 3 «працює», а рядок 4 ні, вмикаємо живу генерацію з денним лімітом. Якщо не працюють рядки 1 і 2, зупиняємо цю версію. У сірій зоні між порогами подовжуємо тест до 600 відвідувачів і змінюємо одну річ, наприклад заголовок.</p>
       <p>Чи приходять саме вчителі-предметники, перевіряємо за utm-міткою каналу та в інтерв'ю, бо самі метрики не відрізняють їх від інших учителів [Г].</p>
     </section>
 
-    <section class="q" id="s7" aria-labelledby="s7-h">
-      <h2 id="s7-h"><span class="qn">7<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Технічні рішення і чому</span></h2>
-      <div class="tw wide" role="region" aria-labelledby="s7-h" tabindex="0">
+    <section class="q" id="s8" aria-labelledby="s8-h">
+      <h2 id="s8-h"><span class="qn">8<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Технічні рішення і чому</span></h2>
+      <div class="tw wide" role="region" aria-labelledby="s8-h" tabindex="0">
         <table class="t-tech">
           <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
           <thead><tr><th scope="col">Рішення</th><th scope="col">Чому</th><th scope="col">Що натомість не взяли</th></tr></thead>
@@ -194,21 +379,16 @@
             <tr><td class="lead">Генератор QR-кодів у коді сайту</td><td>Посилання на тест не потрапляє до стороннього сервісу</td><td>зовнішній генератор QR-кодів</td></tr>
             <tr><td class="lead">PostHog без cookie, Clarity з маскуванням і лише після згоди, з урахуванням DNT і GPC</td><td>Воронку рахуємо анонімно, без профілів. Записи сесій вмикаються лише з дозволу, а поля пошти й тексту в них приховано</td><td>аналітика з cookie без згоди</td></tr>
             <tr><td class="lead">Service worker і відкладений запис</td><td>Після першого візиту сторінка відкривається без мережі. Адресу, введену без зв'язку, сторінка надсилає один раз, коли зв'язок відновиться</td><td>повідомлення про помилку і втрачений запис</td></tr>
-            <tr><td class="lead">Шрифти після події load, локальні запасні шрифти з тими самими метриками, зарезервоване місце для текстів обох мов</td><td>Перший кадр не чекає на шрифти. Розмітка майже не зсувається ні під час завантаження, ні під час зміни мови. Цифри в <a href="#s8">розділі 8</a></td><td>шрифти, що блокують перший кадр</td></tr>
+            <tr><td class="lead">Шрифти після події load, локальні запасні шрифти з тими самими метриками, зарезервоване місце для текстів обох мов</td><td>Перший кадр не чекає на шрифти. Розмітка майже не зсувається ні під час завантаження, ні під час зміни мови. Цифри в <a href="#s9">розділі 9</a></td><td>шрифти, що блокують перший кадр</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section class="q" id="s8" aria-labelledby="s8-h">
-      <h2 id="s8-h"><span class="qn">8<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Якість</span></h2>
-      <p><strong>455 автоматичних перевірок у headless-браузері.</strong> Їх запускали перед кожним злиттям гілок. Проходять 452. Решта 3 не проходять через субпіксельні відхилення: зсув до 0,13 px і CLS (зсув розмітки) 0,00005.</p>
-      <div class="note" aria-hidden="true">
-        <svg class="pen arrow"><use href="#pen-arrow"/></svg>
-        <p>452 з 455 перевірок проходять</p>
-        <p>CLS 0,00005: розмітка майже не зсувається</p>
-      </div>
-      <div class="tw" role="region" aria-labelledby="s8-h" tabindex="0">
+    <section class="q" id="s9" aria-labelledby="s9-h">
+      <h2 id="s9-h"><span class="qn">9<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Якість</span></h2>
+      <p><strong>Перевірки в headless-браузері</strong> запускали перед кожним злиттям гілок. Три перевірки, які не проходять, ловлять субпіксельні відхилення: зсув до 0,13 px і той самий мізерний CLS (зсув розмітки).</p>
+      <div class="tw" role="region" aria-labelledby="s9-h" tabindex="0">
         <table class="t-checks">
           <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
           <thead><tr><th scope="col">Набір</th><th scope="col">Що перевіряє</th><th scope="col" class="num">Перевірок</th></tr></thead>
@@ -224,19 +404,18 @@
           </tbody>
         </table>
       </div>
-      <p><strong>Бекенд.</strong> 270 контрактних перевірок на справжньому коді Apps Script.</p>
-      <p><strong>Швидкість.</strong> У замірі з повільним 3G, екраном 375 px та уповільненим процесором сторінкою можна користуватися через 6,8 с. До роботи над першим кадром було 11,6 с. Перший вміст з'являється приблизно за 3,4 с.</p>
+      <p><strong>Швидкість.</strong> Заміряно з повільним 3G, екраном 375 px та уповільненим процесором. До роботи над першим кадром сторінкою можна було користуватися лише через 11,6 с. Перший вміст тепер з'являється приблизно за 3,4 с.</p>
       <div class="note" aria-hidden="true">
         <svg class="pen arrow"><use href="#pen-arrow"/></svg>
-        <p>6,8 с на повільному 3G, було 11,6 с</p>
+        <p>перший кадр не чекає на шрифти</p>
       </div>
       <p><strong>Офлайн.</strong> Після першого візиту сторінка працює без мережі завдяки service worker. Запис, зроблений офлайн, надсилається, щойно повертається зв'язок.</p>
       <p><strong>Доступність.</strong> Підписи коректно працюють з екранними зчитувачами. Приховані заготовки тексту, які тримають місце під час завантаження, зчитувач пропускає. На повільному зв'язку смуга завантаження вгорі з'являється лише після короткої затримки.</p>
     </section>
 
-    <section class="q" id="s9" aria-labelledby="s9-h">
-      <h2 id="s9-h"><span class="qn">9<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Як я працював</span></h2>
-      <p>Я працював у Claude Code. Почав 20.11.2026 о 18:42 за київським часом, на все пішло <span id="case-time" class="case-time">близько 7 годин</span>. У репозиторії 69 комітів.</p>
+    <section class="q" id="s10" aria-labelledby="s10-h">
+      <h2 id="s10-h"><span class="qn">10<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Як я працював</span></h2>
+      <p>Я працював у Claude Code. Почав 20.11.2026 о 18:42 за київським часом. Скільки забрала кожна поставка, видно на початку сторінки. У репозиторії понад 100 комітів.</p>
       <p>Одна сесія працювала як оркестратор. Вона розбивала роботу на окремі зміни, для кожної писала коротке завдання з файлами й критеріями готовності, а потім приймала результат. Кожну зміну робив окремий агент у власній гілці та власному git worktree, тож інтерфейс, аналітика, демо й тексти йшли паралельно і не заважали одне одному. Дослідження і код перевіряли агенти, які їх не писали. Що будувати і що показувати вчителю, вирішував я.</p>
       <p class="lead-in">Хронологія за комітами, час київський:</p>
       <ul class="dash">
@@ -244,19 +423,21 @@
         <li><strong>19:48.</strong> Версія строго за ТЗ.</li>
         <li><strong>19:50-19:53.</strong> Перша версія дослідження, PDF і пости для спільнот.</li>
         <li><strong>20:00.</strong> Режим учня: посилання, QR-код, перегляд очима учня.</li>
-        <li><strong>20:12-20:14.</strong> Перша редакція текстів обома мовами, підключення робочого Apps Script.</li>
+        <li><strong>20:12-20:14.</strong> Перша редакція текстів обома мовами, підключення робочого Apps Script. Відтоді версія за ТЗ пише в живу таблицю.</li>
         <li><strong>20:21-20:36.</strong> Аналітика, SEO, sitemap.</li>
         <li><strong>20:39-20:59.</strong> Теми, стабільне перемикання мови, навігація з бічною шкалою і висувним меню.</li>
         <li><strong>20:52-21:17.</strong> Демо у двох режимах, приклади з 6 предметів, іспанська й польська, варіанти приблизно однакової довжини.</li>
         <li><strong>21:15-21:32.</strong> Дослідження для глобального ринку і нові тексти сторінки на його основі.</li>
         <li><strong>21:41-21:55.</strong> Офлайн, відкладений запис, повідомлення про повільне демо.</li>
         <li><strong>22:07-22:50.</strong> Перший кадр на повільному 3G, графік в Insights, доступність.</li>
+        <li><strong>23:14.</strong> README і документація англійською.</li>
+        <li><strong>00:00-01:46.</strong> Дизайн у стилі учнівського аркуша для всіх сторінок, ця сторінка кейсу, вичитка текстів обома мовами.</li>
       </ul>
       <p>Форму, таблицю й подяку я зробив першими, бо їх вимагає ТЗ і вони не залежать від висновків дослідження. Демо, приклади й тексти я потім перебудував за дослідженням.</p>
     </section>
 
-    <section class="q" id="s10" aria-labelledby="s10-h">
-      <h2 id="s10-h"><span class="qn">10<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Чого я свідомо не робив і чому</span></h2>
+    <section class="q" id="s11" aria-labelledby="s11-h">
+      <h2 id="s11-h"><span class="qn">11<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Чого я свідомо не робив і чому</span></h2>
       <ul class="dash">
         <li><strong>Жива генерація вимкнена, доки не додано ключ.</strong> Кожен запит до моделі коштує грошей. Тому спершу режим «Ваш текст» перевіряє, чи потрібен учителям тест із власного тексту.</li>
         <li><strong>Поки немає пояснень до неправильних варіантів.</strong> Спершу вчителі мають оцінити самі варіанти за критеріями Oak [20]. Це в плані на тиждень.</li>
@@ -266,8 +447,8 @@
       <p>Живого трафіку ще не було, але сторінка й аналітика готові до перших двох тижнів.</p>
     </section>
 
-    <section class="q" id="s11" aria-labelledby="s11-h">
-      <h2 id="s11-h"><span class="qn">11<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Що я зробив би за тиждень</span></h2>
+    <section class="q" id="s12" aria-labelledby="s12-h">
+      <h2 id="s12-h"><span class="qn">12<svg class="pen loop" aria-hidden="true"><use href="#pen-loop"/></svg></span><span class="qt">Що я зробив би за тиждень</span></h2>
       <ul class="dash">
         <li><strong>Трафік зі спільнот.</strong> Два тижні публікацій у спільнотах учителів із розділу 6 PDF, кожен канал зі своєю utm-міткою.</li>
         <li><strong>5 інтерв'ю</strong> з учителями зі списку очікування. Говоримо мовою вчителя і лише про те, що він уже робив. Нотатки ведемо тільки за згодою. Перше питання: «З якого матеріалу і за скільки часу ви склали останній тест?»</li>
