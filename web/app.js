@@ -677,7 +677,7 @@
   // What the panel shows in each mode: null (empty) | {kind:'quiz', state} | {kind:'early'} | {kind:'busy'} | {kind:'loading'}.
   var mode = 'samples', views = { samples: null, own: null };
 
-  var samplesReady = fetch('data/samples.json?v=20261121c').then(function (r) { return r.json(); }).then(function (d) {
+  var samplesReady = fetch('data/samples.json?v=20261121d').then(function (r) { return r.json(); }).then(function (d) {
     samples = {};
     (d.samples || []).forEach(function (s) { samples[s.id] = s; sampleOrder.push(s.id); });
     if (!sampleOrder.length) throw new Error('no samples');
@@ -1168,6 +1168,14 @@
       return;
     }
     var go = function () { navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function () { /* unsupported or blocked */ }); };
+    // A page that was already controlled by an older worker reloads once when the new release takes over,
+    // so a returning visitor never stays on a mix of old and new files.
+    var hadController = !!navigator.serviceWorker.controller, loadedAt = Date.now();
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!hadController || Date.now() - loadedAt > 15000) return;
+      try { if (sessionStorage.getItem('qp_sw_reloaded')) return; sessionStorage.setItem('qp_sw_reloaded', '1'); } catch (e) { return; }
+      location.reload();
+    });
     if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
   }
 
