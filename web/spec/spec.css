@@ -34,6 +34,7 @@ body { position: relative; margin: 0; min-width: 320px; color: var(--ink); font:
 body::before { content: ""; position: absolute; top: 0; bottom: 0; left: var(--sheet-line); border-left: 1.5px solid var(--margin); pointer-events: none; }
 .page { padding-left: calc(var(--sheet-line) + var(--sheet-gap)); padding-right: var(--gutter); }
 h1, h2, h3, p, figure, ol, ul { margin: 0; }
+p, h2, h3 { text-wrap: pretty; }
 a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 :focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -97,15 +98,21 @@ form[hidden] { display: none; }
 .counter { display: flex; align-items: center; gap: 10px; min-height: 1.6em; margin-top: 14px; font-size: 0.9375rem; font-variant-numeric: tabular-nums; color: var(--ink-2); }
 .tally { flex: none; width: 28px; height: 16px; color: var(--ink-3); }
 .micro { margin-top: 6px; font-size: 0.8125rem; color: var(--ink-3); }
+.is-joined .micro { display: none; }
 
 /* ---------- The example: a graded worksheet ---------- */
 .example .label { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .example .label::before { content: ""; width: 18px; border-top: 2px solid var(--pen); }
+/* Narrow screens: the sheet runs to the right edge and the teacher's tick sits in its left margin, so the
+   answers stay on one line each; from 520px the tick moves to the end of the answer. */
 .sheet {
   --pad: 16px;
-  padding: var(--pad) 18px var(--pad) 44px; background-color: var(--surface);
-  background-image: var(--ruling); background-position: 0 var(--pad); background-repeat: repeat;
-  border: 1px solid var(--line-strong);
+  margin-right: calc(-1 * var(--gutter));
+  padding: var(--pad) 14px var(--pad) 38px; background-color: var(--surface);
+  /* The ruling covers the content box only, so no rule runs along the top or bottom padding. */
+  background-image: var(--ruling); background-repeat: no-repeat;
+  background-position: 0 var(--pad); background-size: 100% calc(100% - 2 * var(--pad));
+  border: 1px solid var(--line-strong); border-right: 0;
   font-family: var(--serif); line-height: var(--lh);
 }
 .sheet-head { display: flex; align-items: baseline; gap: 10px; font: 400 0.875rem/var(--lh) var(--font); color: var(--ink-2); }
@@ -115,15 +122,14 @@ form[hidden] { display: none; }
 .sheet-q { position: relative; margin-top: var(--lh); font-size: 1.125rem; }
 .sheet-num { position: absolute; right: 100%; margin-right: 8px; font-weight: 600; }
 .sheet-opts { list-style: none; padding: 0; }
-.sheet-opts li { position: relative; display: flex; align-items: flex-start; min-height: var(--lh); font-size: 1rem; }
-.sheet-opts li.is-right { padding-right: 44px; }
+.sheet-opts li { position: relative; display: flex; align-items: flex-start; min-height: var(--lh); font-size: 0.9375rem; }
 .letter {
   position: relative; flex: none; display: inline-grid; place-items: center;
-  width: 24px; height: 24px; margin: 4px 12px 0 2px;
+  width: 24px; height: 24px; margin: 4px 10px 0 2px;
   border: 1.25px solid var(--ink); border-radius: 50%; font: 700 12.5px/1 var(--font);
 }
 .loop { position: absolute; left: -11px; top: -9px; width: 46px; height: 40px; max-width: none; overflow: visible; color: var(--pen); }
-.tick { position: absolute; right: 4px; top: -2px; width: 34px; height: 28px; overflow: visible; color: var(--pen); }
+.tick { position: absolute; left: -36px; top: 2px; width: 26px; height: 22px; overflow: visible; color: var(--pen); }
 .sheet-why { margin-top: var(--lh); font-style: italic; font-size: 0.9375rem; color: var(--ink-2); }
 .why-mark { font: 700 0.75rem/1 var(--font); font-style: normal; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pen); }
 
@@ -175,7 +181,11 @@ h2 { font: 600 clamp(1.75rem, 1.1rem + 2.4vw, 2.625rem)/1.15 var(--serif); lette
 @media (min-width: 520px) {
   .row { flex-direction: row; align-items: flex-end; }
   input[type=email] { flex: 1; }
-  .sheet { padding-left: 52px; padding-right: 28px; }
+  .sheet { margin-right: 0; padding-left: 52px; padding-right: 28px; border-right: 1px solid var(--line-strong); }
+  .sheet-opts li { font-size: 1rem; }
+  .letter { margin-right: 12px; }
+  .sheet-opts li.is-right { padding-right: 44px; }
+  .tick { left: auto; right: 4px; top: -2px; width: 34px; height: 28px; }
 }
 @media (min-width: 640px) {
   .holes { position: absolute; top: 0; bottom: 0; left: calc(var(--sheet-line) / 2 - 12px); display: flex; flex-direction: column; justify-content: space-around; padding: 40px 0; }
