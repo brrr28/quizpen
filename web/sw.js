@@ -9,7 +9,7 @@
 'use strict';
 
 // Bump on every deploy so returning visitors get a fresh, consistent shell.
-var VERSION = '2026-11-21b';
+var VERSION = '2026-11-21c';
 var CACHE = 'qp-shell-' + VERSION;
 var NAV_TIMEOUT_MS = 3000;
 var SHELL = [

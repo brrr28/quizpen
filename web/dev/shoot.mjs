@@ -150,7 +150,8 @@ async function shots() {
   console.log('shots written to', SHOTS);
 }
 
-// The lower sections (features, why, FAQ with the first answer open, the tear-off CTA) at 1440 and 375,
+// The sections under the hero (how it works, the comparison, the students, features, why, FAQ with the first answer
+// open, the tear-off CTA) at 1440 and 375,
 // light and dark: each one whole, from 24px above its top to 24px below its bottom.
 async function sections() {
   const lang = process.env.SHOT_LANG || 'en';
@@ -162,7 +163,7 @@ async function sections() {
       await page.eval(`document.querySelector('#faq details').open = true; document.querySelectorAll('.nav-reveal').forEach((e) => e.classList.add('is-in')); true`);
       await s.wait(900);
       await scrollTo('scrollTo(0, 0)');
-      for (const id of ['features', 'why', 'faq', 'final']) {
+      for (const id of ['how', 'vs', 'students', 'features', 'why', 'faq', 'final']) {
         const r = await page.eval(`(() => { const b = document.getElementById('${id}').getBoundingClientRect(); return { y: b.top + scrollY, h: b.height }; })()`);
         const clip = { x: 0, y: Math.max(0, Math.round(r.y) - 24), width: w, height: Math.ceil(r.h) + 48, scale: 1 };
         const out = await page.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip });
