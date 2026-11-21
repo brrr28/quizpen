@@ -276,7 +276,7 @@ a:hover { text-decoration-thickness: 2px; }
   /* The copy column dissolves into the grid: the kicker and the headline run across both columns (two lines,
      as on the sheet), the rest of the copy flows down the left column and the graded question sits beside it,
      spanning those rows. No row gap: every block keeps its own 32px-rhythm margin. */
-  .hero-grid { grid-template-columns: minmax(0, 1fr) 440px; column-gap: 64px; row-gap: 0; align-items: start; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr) 480px; column-gap: 48px; row-gap: 0; align-items: start; }
   .hero-copy { display: contents; }
   .sheet-fields, .hero-copy > .kicker, .hero h1 { grid-column: 1 / -1; }
   .hero-copy > .kicker { margin-top: 64px; }
@@ -505,6 +505,18 @@ a:hover { text-decoration-thickness: 2px; }
   box-shadow: inset 0 -1.5px 0 var(--ink);
 }
 @media (min-width: 640px) { .art-label { margin-left: -68px; } }
+/* Phones: slimmer sides, so more of each option fits on its line */
+@media (max-width: 639px) {
+  .hero-art { padding: 0 14px var(--lh) 36px; }
+  .art-label { margin: 0 -14px 0 -36px; padding: 0 12px; }
+}
+/* Beside the copy (from 1100px) the card drops its own margin line and the question steps down to 18px, so the
+   longest variant (Ukrainian) of every line still fits one rule and English shows no reserved blank lines. */
+@media (min-width: 1100px) {
+  .hero-art { padding: 0 20px var(--lh) 44px; background-image: var(--ruling); }
+  .art-label { margin: 0 -20px 0 -44px; }
+  .hero-art .art-q { font-size: 1.125rem; }
+}
 .art-q { position: relative; font-size: 1.1875rem; line-height: var(--lh); }
 .art-num { position: absolute; right: 100%; margin-right: 10px; font-weight: 600; }
 .art-opts { list-style: none; margin: 0; padding: 0; }
@@ -536,8 +548,8 @@ a:hover { text-decoration-thickness: 2px; }
 @media (min-width: 1100px) { .hero-art { margin-top: var(--lh); } }
 /* Phones: the note and its arrow move in so the hand-written line fits the narrower card */
 @media (max-width: 639px) {
-  .art-note { padding-left: 44px; font-size: 1.625rem; }
-  .art-arrow { left: 8px; }
+  .art-note { padding-left: 40px; font-size: 1.625rem; }
+  .art-arrow { left: 6px; }
 }
 
 /* Demo: the same worksheet goes on. The red margin line continues (see the sheet geometry above); from 1100px the
@@ -915,7 +927,8 @@ a:hover { text-decoration-thickness: 2px; }
   margin-top: 32px; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
   border: 1px solid var(--line-strong); background: var(--surface);
 }
-.vs-table { width: 100%; min-width: 720px; border-collapse: separate; border-spacing: 0; font-size: 0.9375rem; line-height: 1.45; }
+/* Fixed layout: the row labels take their set width and the three tools share the rest equally */
+.vs-table { width: 100%; min-width: 720px; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-size: 0.9375rem; line-height: 1.45; }
 .vs-table th, .vs-table td { padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
 .vs-table tbody tr:last-child > * { border-bottom: 0; }
 .vs-table thead > tr > * {
@@ -950,9 +963,12 @@ a:hover { text-decoration-thickness: 2px; }
 .students-grid { display: grid; gap: 40px; }
 @media (min-width: 820px) { .students-grid { grid-template-columns: minmax(0, 1fr) 280px; column-gap: 64px; align-items: center; } }
 .students-list { list-style: none; margin: 24px 0 0; padding: 0; max-width: 34rem; }
-.students-list li { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-top: 1px solid var(--rule); line-height: 1.5; }
+.students-list li { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid var(--rule); line-height: 1.5; }
 .students-list li:last-child { border-bottom: 1px solid var(--rule); }
-.students-tick { flex: none; width: 24px; height: 20px; margin-top: 2px; overflow: visible; color: var(--pen); }
+.students-tick { flex: none; width: 24px; height: 20px; overflow: visible; color: var(--pen); }
+/* ui.js reserves the taller language's height on each text; centre the text in that box, so a one-line item
+   does not hang above a blank line */
+.students-list li > [data-i18n], .phone-opts li > [data-i18n] { display: flex; align-items: center; align-self: stretch; }
 .phone {
   justify-self: start; width: 260px; max-width: 100%; padding: 10px;
   border: 2px solid var(--ink); border-radius: 36px; background: var(--paper);
