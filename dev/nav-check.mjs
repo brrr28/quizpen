@@ -276,7 +276,7 @@ try {
   await clickEl('.nav-drawer .lang [data-lang="uk"]');
   await frames(3);
   const lu = await page.eval(`({ lang: document.documentElement.lang, faq: document.querySelector('.nav-drawer [data-nav-target="faq"]').textContent, rail: document.querySelector('.nav-rail [data-nav-target="why"]').textContent, h1: document.getElementById('hero-title').textContent.slice(0, 20), pressed: document.querySelector('.nav-drawer .lang [data-lang="uk"]').getAttribute('aria-pressed') })`);
-  ok('375: drawer language switch works and relabels nav', lu.lang === 'uk' && lu.faq.includes('Питання') && lu.rail.includes('Чому') && lu.pressed === 'true', J(lu));
+  ok('375: drawer language switch works and relabels nav', lu.lang === 'uk' && lu.faq.includes('Питання') && lu.rail.includes('Дослідження') && lu.pressed === 'true', J(lu));
   await clickEl('.nav-drawer .lang [data-lang="en"]');
   await frames(3);
   await clickEl('.nav-drawer [data-theme-toggle]');
