@@ -677,7 +677,7 @@
   // What the panel shows in each mode: null (empty) | {kind:'quiz', state} | {kind:'early'} | {kind:'busy'} | {kind:'loading'}.
   var mode = 'samples', views = { samples: null, own: null };
 
-  var samplesReady = fetch('data/samples.json?v=20261121e').then(function (r) { return r.json(); }).then(function (d) {
+  var samplesReady = fetch('data/samples.json?v=20261123f').then(function (r) { return r.json(); }).then(function (d) {
     samples = {};
     (d.samples || []).forEach(function (s) { samples[s.id] = s; sampleOrder.push(s.id); });
     if (!sampleOrder.length) throw new Error('no samples');
