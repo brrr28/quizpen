@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quizpen: turn your lesson into a class quiz (variant C)</title>
+  <meta name="description" content="Paste the text you taught from, and Quizpen writes five multiple-choice questions your students answer on their phones. Join the Quizpen waitlist.">
+  <!-- SEO: test variant of the landing, kept out of search results -->
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://brrr28.github.io/quizpen/spec/c/">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141419" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Nunito:wght@400;700;800&display=swap">
+  <link rel="stylesheet" href="c.css?v=20261123c">
+</head>
+<body data-variant="c">
+  <header class="top wrap">
+    <p class="brand"><span class="brand-key" aria-hidden="true">Q</span>Quizpen</p>
+    <a class="top-link" href="#join">Join the waitlist</a>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="join" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker">AI quiz maker for teachers</p>
+        <h1 id="hero-title">Turn today's lesson into a quiz your class plays.</h1>
+        <p class="lede">Paste the text you taught from, and Quizpen writes five multiple-choice questions your students answer on their phones.</p>
+
+        <form id="form" class="form" novalidate>
+          <label for="email">Your email for early access</label>
+          <div class="row">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@school.org" required aria-describedby="error">
+            <button id="btn" class="key-btn" type="submit">Join Waitlist</button>
+          </div>
+          <div class="hp" aria-hidden="true"><label>Leave this empty <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+          <p id="error" class="error" role="alert"></p>
+        </form>
+
+        <div id="thanks" class="thanks" role="status" aria-live="polite" tabindex="-1" hidden>
+          <span class="thanks-key" aria-hidden="true"><svg viewBox="0 0 26 26" width="26" height="26" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3.5 14 C6 15.5 8 18 9.5 21.5 C12.5 14 16.5 8.5 22.5 4"/></svg></span>
+          <p class="thanks-title" data-thanks-text></p>
+          <p class="thanks-sub">We'll email you once, when your access is ready.</p>
+        </div>
+
+        <p class="counter"><span id="counter" data-counter aria-live="polite">Be one of the first teachers to try it</span></p>
+        <p class="micro">One email when your access is ready. Unsubscribe in one click.</p>
+      </div>
+
+      <figure class="stage" aria-labelledby="stage-label">
+        <figcaption class="stage-top"><span class="tag" id="stage-label">Example question</span><span class="meta">Biology &middot; 1 of 5</span></figcaption>
+        <p class="q">Why do most leaves look green?</p>
+        <ul class="cards">
+          <li class="card a"><span class="L">A</span><span class="t">They absorb green light</span></li>
+          <li class="card b">
+            <span class="L">B</span><span class="t">Chlorophyll reflects green light<span class="sr-only"> (right answer)</span></span>
+            <span class="badge" aria-hidden="true"><svg viewBox="0 0 26 26" width="26" height="26" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3.5 14 C6 15.5 8 18 9.5 21.5 C12.5 14 16.5 8.5 22.5 4"/></svg></span>
+          </li>
+          <li class="card c"><span class="L">C</span><span class="t">Their cells hold green water</span></li>
+          <li class="card d"><span class="L">D</span><span class="t">Sunlight is mostly green</span></li>
+        </ul>
+        <p class="why"><span class="why-l">Why B</span> The text says chlorophyll reflects green light, so green is the color that reaches our eyes.</p>
+
+        <div class="result">
+          <div class="result-head"><p class="result-title">Example: one student's review</p><p class="result-score">4 of 5 right</p></div>
+          <ol class="strip">
+            <li class="seg b"><span class="n">Q1</span><span class="sl">B</span><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 14 C6 15.5 8 18 9.5 21.5 C12.5 14 16.5 8.5 22.5 4"/></svg><span class="sr-only">right</span></li>
+            <li class="seg d"><span class="n">Q2</span><span class="sl">D</span><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 14 C6 15.5 8 18 9.5 21.5 C12.5 14 16.5 8.5 22.5 4"/></svg><span class="sr-only">right</span></li>
+            <li class="seg no"><span class="n">Q3</span><span class="sl">A</span><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6 L20 20 M20 6 L6 20"/></svg><span class="sr-only">wrong</span></li>
+            <li class="seg c"><span class="n">Q4</span><span class="sl">C</span><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 14 C6 15.5 8 18 9.5 21.5 C12.5 14 16.5 8.5 22.5 4"/></svg><span class="sr-only">right</span></li>
+            <li class="seg b"><span class="n">Q5</span><span class="sl">B</span><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 14 C6 15.5 8 18 9.5 21.5 C12.5 14 16.5 8.5 22.5 4"/></svg><span class="sr-only">right</span></li>
+          </ol>
+        </div>
+      </figure>
+    </section>
+
+    <section class="features wrap" aria-labelledby="features-title">
+      <h2 id="features-title">What Quizpen does</h2>
+      <ul class="f-list">
+        <li class="f a">
+          <span class="f-key" aria-hidden="true">A</span>
+          <h3>From the lesson you taught</h3>
+          <p>Every question comes from the text you paste, whether it's a textbook page or your own notes.</p>
+        </li>
+        <li class="f b">
+          <span class="f-key" aria-hidden="true">B</span>
+          <h3>Every right answer explained</h3>
+          <p>Each right answer has a one-sentence reason that points back to your text. Students see it as soon as they answer.</p>
+        </li>
+        <li class="f c">
+          <span class="f-key" aria-hidden="true">C</span>
+          <h3>Students play on their phones</h3>
+          <p>Share a link or a QR code, and students join without accounts. At the end, each one gets a score and a review of every question.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="proof wrap" aria-labelledby="proof-title">
+      <h2 id="proof-title">What teachers told the TALIS 2024 survey</h2>
+      <ul class="facts">
+        <li class="fact">
+          <p class="fact-big">About <span class="nw">1 in 3</span></p>
+          <p class="fact-text">teachers in OECD countries use AI in their work.</p>
+          <p class="fact-src">Source: <a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">OECD, Results from TALIS 2024</a></p>
+        </li>
+        <li class="fact">
+          <p class="fact-big">66%</p>
+          <p class="fact-text">of teachers think AI can give wrong recommendations.</p>
+          <p class="fact-src">Source: <a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International on TALIS 2024</a></p>
+        </li>
+        <li class="fact fact-count">
+          <p class="fact-label">Quizpen waitlist</p>
+          <p class="fact-count-text" data-counter>Be one of the first teachers to try it</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="final wrap" aria-labelledby="final-title">
+      <div class="final-in">
+        <h2 id="final-title">Try it with your next class.</h2>
+        <p class="final-text final-open">Join the waitlist, and we'll email you when early access opens.</p>
+        <a class="key-btn final-open" href="#join" data-scroll-join>Join Waitlist</a>
+        <p class="final-text final-done" data-thanks-text></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot wrap">
+    <a href="../../">See the full product version &rarr;</a>
+    <a href="../../case/">How this was built &rarr;</a>
+  </footer>
+  <script src="../../config.js?v=20261121d"></script>
+  <!-- Analytics: PostHog only on this variant (no Clarity, no consent bar) -->
+  <script src="../../analytics.js?v=20261121d" data-surface="spec"></script>
+  <script src="../spec.js?v=20261121d"></script>
+</body>
+</html>
