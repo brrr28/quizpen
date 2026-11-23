@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quizpen: quizzes from your own lesson (variant B)</title>
+  <meta name="description" content="Paste a textbook page, your notes or an article, and Quizpen writes a multiple-choice quiz from that text only. Join the Quizpen waitlist.">
+  <!-- SEO: test variant of the landing, kept out of search results -->
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://brrr28.github.io/quizpen/spec/b/">
+  <meta name="theme-color" content="#FFFDF8">
+  <script>
+    /* Theme before first paint: the choice saved on the main page (qp_theme), else the system setting. */
+    (function (d) {
+      var t = null;
+      try { t = localStorage.getItem('qp_theme'); } catch (e) { /* storage blocked */ }
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.setAttribute('data-theme', t);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'dark' ? '#1C1B18' : '#FFFDF8');
+    })(document.documentElement);
+  </script>
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Fira+Sans+Extra+Condensed:wght@500;600&display=swap">
+  <link rel="stylesheet" href="b.css?v=20261123a">
+</head>
+<body data-variant="b">
+  <header class="wrap">
+    <div class="runhead">
+      <p class="brand">Quizpen</p>
+      <nav class="toc caps" aria-label="Contents">
+        <a href="#top"><span>1</span>From lesson to quiz</a>
+        <a href="#exercises"><span>1.2</span>Exercises</a>
+        <a href="#evidence"><span>1.3</span>Evidence</a>
+      </nav>
+      <a class="caps join-link" href="#join">Join the waitlist</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap grid hero" id="top" aria-labelledby="hero-title">
+      <div class="chapter" aria-hidden="true">
+        <p class="caps label">Chapter</p>
+        <p class="num">1</p>
+        <div class="bar"></div>
+        <p class="caps title">From lesson<br>to quiz</p>
+      </div>
+
+      <h1 id="hero-title">Every quiz question comes from your lesson.</h1>
+      <p class="lead">Paste a textbook page, your notes or an article, and Quizpen writes a multiple-choice quiz from that text only.<sup><a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a></sup></p>
+      <aside class="side note" id="n1"><sup>1</sup>Five questions with four options each. Quizpen does not keep the text you paste.</aside>
+
+      <div class="signup" id="join">
+        <form id="form" class="join" novalidate>
+          <label class="caps flabel" for="email">Email for early access</label>
+          <div class="row">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@school.org" required aria-describedby="error">
+            <button id="btn" class="caps btn" type="submit">Join Waitlist</button>
+          </div>
+          <div class="hp" aria-hidden="true"><label>Leave this empty <input id="hp" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+          <p id="error" class="error" role="alert"></p>
+        </form>
+
+        <div id="thanks" class="thanks" role="status" aria-live="polite" tabindex="-1" hidden>
+          <p class="caps thanks-label">Thank you</p>
+          <p class="thanks-title" data-thanks-text></p>
+          <p class="thanks-sub">We'll email you once, when your access is ready.</p>
+        </div>
+
+        <p class="count"><span id="counter" data-counter aria-live="polite">Be one of the first teachers to try it</span></p>
+      </div>
+    </section>
+
+    <section class="wrap grid exercises" id="exercises" aria-labelledby="ex-title">
+      <div class="sec">
+        <p class="para">&sect; 1.2</p>
+        <h2 class="caps name" id="ex-title">Exercises</h2>
+        <div class="bar"></div>
+      </div>
+
+      <ol class="ex-list">
+        <li class="ex">
+          <div class="ex-body">
+            <p class="caps ex-label">Exercise 1.1</p>
+            <h3>From your text only</h3>
+            <p>Each question and its right answer come from the text you paste. The quiz covers what your class read.</p>
+          </div>
+        </li>
+        <li class="ex">
+          <div class="ex-body">
+            <p class="caps ex-label">Exercise 1.2</p>
+            <h3>A reason next to every right answer</h3>
+            <p>Next to each right answer, one sentence points to the part of your text that supports it.<sup><a class="fn" href="#n2" id="r2" aria-label="Note 2, a worked example">2</a></sup></p>
+          </div>
+          <aside class="note worked" id="n2" aria-label="Worked example">
+            <p class="caps fig">Example 1.2</p>
+            <p class="w-src">From a Year 7 science page, &ldquo;How plants make food&rdquo;</p>
+            <p class="w-q">Why do most leaves look green?</p>
+            <ol class="opts">
+              <li><span class="l caps">A</span><span>They absorb green light</span></li>
+              <li class="right"><span class="l caps">B</span><span>Chlorophyll reflects green light<span class="sr-only"> (right answer)</span></span></li>
+              <li><span class="l caps">C</span><span>Their cells hold green water</span></li>
+              <li><span class="l caps">D</span><span>Sunlight is mostly green</span></li>
+            </ol>
+            <p class="w-why"><sup>2</sup>The page says chlorophyll reflects green light, so green is the color that reaches our eyes.</p>
+          </aside>
+        </li>
+        <li class="ex">
+          <div class="ex-body">
+            <p class="caps ex-label">Exercise 1.3</p>
+            <h3>Ready for class by link, QR or print</h3>
+            <p>Students open the quiz on their phones from a link or a QR code. You can also copy it or print it.<sup><a class="fn" href="#n3" id="r3" aria-label="Note 3">3</a></sup></p>
+          </div>
+          <aside class="note" id="n3"><sup>3</sup>Students play without accounts, and Quizpen collects no data about them.</aside>
+        </li>
+      </ol>
+    </section>
+
+    <section class="wrap grid evidence" id="evidence" aria-labelledby="ev-title">
+      <div class="sec">
+        <p class="para">&sect; 1.3</p>
+        <p class="caps name">Evidence</p>
+        <div class="bar"></div>
+      </div>
+
+      <div class="ev-main">
+        <h2 id="ev-title">What teachers report about AI</h2>
+        <p class="caps fig">Table 1.3 &nbsp;Teachers and AI, TALIS 2024</p>
+        <ol class="facts">
+          <li class="fact">
+            <p class="fact-text"><span class="big">About 1 in 3</span> <span class="what">teachers in OECD countries use AI in their work.<sup><a class="fn" href="#n4" id="r4" aria-label="Source 4">4</a></sup></span></p>
+            <aside class="note" id="n4"><sup>4</sup><a href="https://www.oecd.org/en/publications/results-from-talis-2024_90df6235-en.html" target="_blank" rel="noopener noreferrer">OECD, <i>Results from TALIS 2024</i></a>.</aside>
+          </li>
+          <li class="fact">
+            <p class="fact-text"><span class="big">66%</span> <span class="what">think AI can give wrong recommendations.<sup><a class="fn" href="#n5" id="r5" aria-label="Source 5">5</a></sup></span></p>
+            <aside class="note" id="n5"><sup>5</sup><a href="https://www.ei-ie.org/en/item/31815:using-artificial-intelligence-takeaways-from-talis-2024" target="_blank" rel="noopener noreferrer">Education International, <i>Using artificial intelligence: takeaways from TALIS 2024</i></a>.</aside>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="wrap grid final" aria-labelledby="final-title">
+      <p class="caps end">End of chapter 1</p>
+      <div class="final-in">
+        <h2 id="final-title">Make a quiz from your next lesson.</h2>
+        <p class="final-text final-open">Join the waitlist, and we'll email you once, when your access is ready.</p>
+        <a class="caps btn final-open" href="#join" data-scroll-join>Join Waitlist</a>
+        <p class="final-text final-done" data-thanks-text></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <a href="../../">See the full product version &rarr;</a>
+    <a href="../../case/">How this was built &rarr;</a>
+  </footer>
+  <script src="../../config.js?v=20261121d"></script>
+  <!-- Analytics: PostHog only on this variant (no Clarity, no consent bar) -->
+  <script src="../../analytics.js?v=20261121d" data-surface="spec"></script>
+  <script src="../spec.js?v=20261121d"></script>
+</body>
+</html>
