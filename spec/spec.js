@@ -107,14 +107,16 @@
   // A thin strip at the top that switches between the three landing variants, for whoever chooses one.
   (function variantBar() {
     var items = [['a', 'A · Worksheet', ''], ['b', 'B · Textbook', 'b/'], ['c', 'C · Class boards', 'c/']];
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var PAPER = dark ? '#22252b' : '#fffdf8', INK = dark ? '#f3eee4' : '#1f2a44';
     var bar = document.createElement('nav');
     bar.setAttribute('aria-label', 'Landing variants');
-    bar.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center;padding:6px 12px;background:#fffdf8;color:#1f2a44;border-bottom:1px solid #1f2a44;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Arial,sans-serif';
+    bar.style.cssText = 'position:relative;z-index:60;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center;padding:6px 12px;background:' + PAPER + ';color:' + INK + ';border-bottom:1px solid ' + INK + ';font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Arial,sans-serif';
     var label = document.createElement('span'); label.textContent = 'Variant:'; bar.appendChild(label);
     items.forEach(function (it) {
       var a = document.createElement('a');
       a.href = SCRIPT_BASE + it[2]; a.textContent = it[1];
-      a.style.cssText = 'color:inherit;padding:3px 6px;text-decoration:' + (it[0] === VARIANT ? 'none;background:#1f2a44;color:#fffdf8' : 'underline');
+      a.style.cssText = 'color:inherit;padding:3px 6px;text-decoration:' + (it[0] === VARIANT ? 'none;background:' + INK + ';color:' + PAPER : 'underline');
       if (it[0] === VARIANT) a.setAttribute('aria-current', 'page');
       bar.appendChild(a);
     });
