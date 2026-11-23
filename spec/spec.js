@@ -7,6 +7,9 @@
   var errorEl = document.getElementById('error');
   var thanks = document.getElementById('thanks');
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  // Landing variant (A worksheet, B textbook, C class boards): tags signups and events so the variants can be compared.
+  var VARIANT = (document.body.getAttribute('data-variant') || 'a').toLowerCase();
+  var SCRIPT_BASE = (document.currentScript && document.currentScript.src) ? new URL('.', document.currentScript.src).href : './';
   function track(name, props) { if (window.qpAnalytics) window.qpAnalytics.track(name, props); } // analytics hook (../analytics.js)
   var MESSAGES = {
     invalid_email: 'That email doesn\'t look right. Check it for typos.',
@@ -68,11 +71,11 @@
     if (!EMAIL_RE.test(value)) { showError('That email doesn\'t look right. Check it for typos.'); email.focus(); return; }
     showError('');
     btn.disabled = true;
-    track('signup_submitted', { lang: 'en', has_ref: false }); // analytics
+    track('signup_submitted', { variant: VARIANT, lang: 'en', has_ref: false }); // analytics
     btn.textContent = 'Joining…';
     var done = function () { btn.disabled = false; btn.textContent = 'Join Waitlist'; };
     if (!API) { done(); showError('Signup isn\'t open yet. Please try again later.'); return; }
-    var payload = { action: 'join', email: value, lang: 'en', ref: null, utm: {}, hp: document.getElementById('hp').value, cid: cid() };
+    var payload = { action: 'join', email: value, lang: 'en', ref: null, utm: { source: '', medium: '', campaign: 'spec-' + VARIANT }, hp: document.getElementById('hp').value, cid: cid() };
     var ctl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
     fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined })
@@ -80,7 +83,7 @@
       .then(function (r) {
         clearTimeout(timer);
         if (r && r.ok) {
-          track('signup_succeeded', { already: !!r.already, has_ref: false }); // analytics
+          track('signup_succeeded', { variant: VARIANT, already: !!r.already, has_ref: false }); // analytics
           form.hidden = true;
           thanks.hidden = false;
           showThanks(r.already ? "You're already on the list as #" + r.position + '.' : "You're #" + r.position + ' on the waitlist.');
@@ -98,6 +101,25 @@
       });
   });
 
-  track('landing_viewed', { lang: 'en', has_ref: false }); // analytics
+  track('landing_viewed', { variant: VARIANT, lang: 'en', has_ref: false }); // analytics
   loadStats();
+
+  // A thin strip at the top that switches between the three landing variants, for whoever chooses one.
+  (function variantBar() {
+    var items = [['a', 'A · Worksheet', ''], ['b', 'B · Textbook', 'b/'], ['c', 'C · Class boards', 'c/']];
+    var bar = document.createElement('nav');
+    bar.setAttribute('aria-label', 'Landing variants');
+    bar.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center;padding:6px 12px;background:#fffdf8;color:#1f2a44;border-bottom:1px solid #1f2a44;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Arial,sans-serif';
+    var label = document.createElement('span'); label.textContent = 'Variant:'; bar.appendChild(label);
+    items.forEach(function (it) {
+      var a = document.createElement('a');
+      a.href = SCRIPT_BASE + it[2]; a.textContent = it[1];
+      a.style.cssText = 'color:inherit;padding:3px 6px;text-decoration:' + (it[0] === VARIANT ? 'none;background:#1f2a44;color:#fffdf8' : 'underline');
+      if (it[0] === VARIANT) a.setAttribute('aria-current', 'page');
+      bar.appendChild(a);
+    });
+    var full = document.createElement('a'); full.href = SCRIPT_BASE + '../'; full.textContent = 'Full product';
+    full.style.cssText = 'color:inherit;padding:3px 6px;text-decoration:underline'; bar.appendChild(full);
+    document.body.insertBefore(bar, document.body.firstChild);
+  })();
 })();
