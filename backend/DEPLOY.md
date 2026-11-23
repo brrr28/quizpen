@@ -7,7 +7,7 @@ Takes about 10 minutes. The Anthropic API key is entered only by you, in the scr
 3. Delete everything in `Code.gs` and paste in the full contents of `backend/Code.gs`. Click the save icon.
 4. On the left open **Project Settings** (gear icon) and enable **"Show appsscript.json manifest file in editor"**. Go back to the **Editor**, open `appsscript.json`, delete everything and paste the contents of `backend/appsscript.json`. Save. If the editor rejects the time zone `Europe/Kyiv`, replace it with `Europe/Kiev`.
 5. **Project Settings -> Script Properties -> Add script property**. Property: `ANTHROPIC_API_KEY`, value: your Anthropic key. Click **Save script properties**.
-6. In the editor pick the function `checkSetup` in the dropdown at the top and click **Run**. Google asks for access: **Review permissions**, choose your account, **Advanced -> Go to project (unsafe) -> Allow**. The execution log should show: `Insights tab rebuilt`, `Sheet "waitlist" ready` and `ANTHROPIC_API_KEY set: yes`. `checkSetup` also creates the `visits` and `demo_runs` tabs and the `Insights` dashboard (as the first tab) and sets the spreadsheet time zone to Kyiv, so there is no need to run `setupInsights` separately. Optional: run `testQuiz`, which makes one real request (less than a cent).
+6. In the editor pick the function `checkSetup` in the dropdown at the top and click **Run**. Google asks for access: **Review permissions**, choose your account, **Advanced -> Go to project (unsafe) -> Allow**. The execution log should show: `Insights tab rebuilt`, `Sheet "waitlist" ready` and `ANTHROPIC_API_KEY set: yes`. `checkSetup` also creates the `visits` and `demo_runs` tabs and the `Insights` dashboard (as the first tab) and sets the spreadsheet time zone to Kyiv and the locale to `en_US` (see below), so there is no need to run `setupInsights` separately. Optional: run `testQuiz`, which makes one real request (less than a cent).
 7. **Deploy -> New deployment**. Click the gear next to "Select type" and choose **Web app**. Fields: **Execute as: Me**, **Who has access: Anyone**. Click **Deploy**.
 8. Copy the **Web app URL** (it ends in `/exec`) and put it in `web/config.js`. Check: open the URL with `?action=stats` appended; it should return `{"ok":true,"total":0}`.
 
@@ -16,6 +16,10 @@ Takes about 10 minutes. The Anthropic API key is entered only by you, in the scr
 **Deploy -> Manage deployments** -> pencil icon on the deployment -> **Version: New version** -> **Deploy**. The URL stays the same. "New deployment" gives a different URL, so do not use it for updates.
 
 If the backend was deployed before the analytics version: after pasting the new `Code.gs`, run `setupInsights` (or `checkSetup`) once in the editor, then deploy a new version as above. The `visits`, `demo_runs` and `Insights` tabs appear; existing rows in `waitlist` are not touched.
+
+## Spreadsheet locale
+
+`setupInsights` (also called by `checkSetup`) sets the spreadsheet locale to English (United States), `en_US`. The Insights formulas use English syntax with commas; a locale such as Ukrainian expects semicolons and would turn every formula into a parse error. The locale only changes how numbers and dates are shown; the data in the tabs stays the same. If the Insights tab ever shows formula errors, run `setupInsights` again: it sets `en_US` and rebuilds the tab.
 
 ## Reading the Insights tab
 
