@@ -5,7 +5,7 @@ Quizpen turns a pasted lesson text into a short multiple-choice quiz for teacher
 ## Links
 
 - Live site: https://brrr28.github.io/quizpen/
-- Strict-to-spec version: https://brrr28.github.io/quizpen/spec/
+- Strict-to-spec version: https://brrr28.github.io/quizpen/spec/ (variant A), plus two more design and copy variants: https://brrr28.github.io/quizpen/spec/b/ and https://brrr28.github.io/quizpen/spec/c/, all three side by side at https://brrr28.github.io/quizpen/spec/variants/. Signups are tagged spec-a, spec-b or spec-c.
 - Case study (Ukrainian): https://brrr28.github.io/quizpen/case/
 - Market and ICP research (Ukrainian, PDF): [research/](research/)
 
