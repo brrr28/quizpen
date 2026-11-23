@@ -34,17 +34,21 @@ body {
   overflow-wrap: break-word;
 }
 a { color: inherit; }
+p, li, aside { text-wrap: pretty; }
 button, input { font: inherit; color: inherit; }
 ol { list-style: none; }
 .caps { font-family: 'Fira Sans Extra Condensed', 'Arial Narrow', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.wrap { max-width: 1440px; margin: 0 auto; padding: 0 22px; }
+.wrap { max-width: 1440px; margin: 0 auto; padding-left: 22px; padding-right: 22px; }
+/* Section rules span the text block only, not the page padding */
+.exercises::before, .evidence::before, .final::before { content: ""; display: block; grid-column: 1 / -1; border-top: var(--hair); margin-bottom: 22px; }
+.final::before { border-top: var(--thick); margin-bottom: 14px; }
 
 /* Footnote marks and margin notes */
-sup { font-size: 0.6em; line-height: 0; vertical-align: 0.6em; color: var(--accent); font-style: normal; font-weight: 500; margin-left: 1px; }
-.fn { color: var(--accent); text-decoration: none; padding: 0 2px; }
+sup { font-size: 0.6em; line-height: 0; vertical-align: 0.6em; color: var(--accent); font-style: normal; font-weight: 500; }
+.fn { color: var(--accent); text-decoration: none; padding: 0 2px 0 1px; }
 .fn:hover { text-decoration: underline; }
 .note { margin-top: 16px; padding-top: 10px; border-top: var(--hair); font-size: 15.5px; line-height: 1.45; color: var(--muted); }
 .note sup { margin: 0 4px 0 0; }
@@ -97,7 +101,8 @@ form[hidden], .thanks[hidden] { display: none; }
 .count { margin-top: 12px; font-style: italic; font-size: 16px; color: var(--muted); min-height: 1.5em; }
 
 .thanks { padding: 14px 0 16px; border-top: var(--thick); border-bottom: var(--hair); outline: none; }
-.thanks:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+/* The note takes focus only so screen readers announce it; it is not a control, so no focus ring */
+.thanks:focus, .thanks:focus-visible { outline: none; }
 .thanks-label { font-size: 14px; color: var(--accent); }
 .thanks-title { margin-top: 6px; font: 500 30px/1.15 'EB Garamond', serif; }
 .thanks-sub { margin-top: 8px; font-style: italic; font-size: 18px; color: var(--muted); }
@@ -109,7 +114,7 @@ form[hidden], .thanks[hidden] { display: none; }
 .sec .bar { display: none; }
 
 /* Exercises */
-.exercises { margin-top: 64px; border-top: var(--hair); padding-top: 22px; }
+.exercises { margin-top: 64px; }
 .ex { padding: 22px 0 24px; border-bottom: var(--hair); }
 .ex:last-child { border-bottom: 0; }
 .ex-label { font-size: 15px; font-weight: 600; color: var(--accent); letter-spacing: 0.1em; }
@@ -127,15 +132,16 @@ form[hidden], .thanks[hidden] { display: none; }
 .w-why { margin-top: 12px; color: var(--text); }
 
 /* Evidence */
-.evidence { margin-top: 56px; border-top: var(--hair); padding-top: 22px; }
+.evidence { margin-top: 56px; }
 .ev-main h2 { margin-top: 22px; font: 500 32px/1.1 'EB Garamond', serif; text-wrap: balance; }
 .ev-main .fig { margin-top: 14px; padding-bottom: 8px; border-bottom: var(--thick); }
 .fact { padding: 18px 0 20px; border-bottom: var(--hair); }
 .fact-text .big { display: block; font: 400 52px/1 'EB Garamond', serif; color: var(--accent); letter-spacing: -0.01em; }
 .fact-text .what { display: block; margin-top: 8px; font-size: 21px; line-height: 1.35; }
+.fact .note { margin-top: 10px; padding-top: 0; border-top: 0; }
 
 /* Closing */
-.final { margin-top: 64px; padding-top: 14px; border-top: var(--thick); }
+.final { margin-top: 64px; }
 .end { font-size: 14px; color: var(--muted); }
 .final h2 { margin-top: 18px; font: 500 34px/1.1 'EB Garamond', serif; text-wrap: balance; }
 .final-text { margin-top: 12px; font-style: italic; font-size: 20px; }
@@ -153,7 +159,7 @@ form[hidden], .thanks[hidden] { display: none; }
 /* Tablet: the chapter column on the left, notes still inline */
 @media (min-width: 761px) {
   body { font-size: 20px; }
-  .wrap { padding: 0 48px; }
+  .wrap { padding-left: 48px; padding-right: 48px; }
   .grid { display: grid; grid-template-columns: 150px minmax(0, 1fr); column-gap: 40px; }
   .grid > * { grid-column: 2; }
   .runhead { display: grid; grid-template-columns: 150px 1fr auto; column-gap: 40px; height: 84px; }
@@ -179,14 +185,15 @@ form[hidden], .thanks[hidden] { display: none; }
   .sec .para { font-size: 34px; }
   .sec .name { display: block; margin-top: 10px; }
   .sec .bar { display: block; border-top: var(--thick); margin-top: 22px; }
-  .exercises, .evidence { padding-top: 30px; }
+  .exercises::before, .evidence::before { margin-bottom: 30px; }
   .exercises { margin-top: 96px; }
   .ex:first-child { padding-top: 0; }
   .ex h3 { font-size: 32px; }
   .ev-main h2 { margin-top: 0; font-size: 38px; }
   .evidence { margin-top: 80px; }
 
-  .final { margin-top: 96px; padding-top: 22px; }
+  .final { margin-top: 96px; }
+  .final::before { margin-bottom: 22px; }
   .final .end { grid-column: 1; }
   .final h2 { margin-top: 0; font-size: 42px; }
   .final .btn { width: auto; }
@@ -196,7 +203,7 @@ form[hidden], .thanks[hidden] { display: none; }
 /* Desktop: notes move into the margin column on the right */
 @media (min-width: 1101px) {
   body { font-size: 21px; }
-  .wrap { padding: 0 96px; }
+  .wrap { padding-left: 96px; padding-right: 96px; }
   .grid { grid-template-columns: 200px minmax(0, 1fr) 264px; column-gap: 56px; }
   .runhead { grid-template-columns: 200px 1fr auto; column-gap: 56px; }
   .toc { gap: 34px; }
@@ -205,7 +212,7 @@ form[hidden], .thanks[hidden] { display: none; }
   .chapter .title { font-size: 17px; }
   .hero h1 { grid-column: 2 / span 2; grid-row: 1; font-size: 68px; line-height: 1.03; }
   .lead { grid-column: 2; grid-row: 2; font-size: 25px; }
-  .side { grid-column: 3; grid-row: 2; align-self: start; margin-top: 34px; }
+  .hero .side { grid-column: 3; grid-row: 2; align-self: start; margin-top: 36px; }
   .signup { grid-column: 2; grid-row: 3; margin-top: 40px; }
 
   /* Notes sit in the margin: no rule, text color, set beside their line */
