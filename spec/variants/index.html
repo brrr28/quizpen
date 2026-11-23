@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quizpen: three landing variants</title>
+  <meta name="description" content="Three design and copy variants of the Quizpen waitlist landing, each strictly to the brief, with signups tagged by variant.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://brrr28.github.io/quizpen/spec/variants/">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <style>
+    /* Neutral chooser page: it should not compete with the variants it shows. */
+    :root { --paper: #fbf8f0; --card: #fffdf8; --ink: #1f2a44; --ink-2: #4a5163; --line: #d9d1bf; --pen: #c8312b; }
+    @media (prefers-color-scheme: dark) { :root { --paper: #22252b; --card: #2a2d34; --ink: #ece6d8; --ink-2: #b9b4a8; --line: #3a3e47; --pen: #ff7b6e; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 40px 20px 56px; }
+    h1 { font: 700 clamp(28px, 4vw, 40px)/1.15 Georgia, "Times New Roman", serif; margin: 0 0 12px; }
+    .lead { max-width: 64ch; color: var(--ink-2); margin: 0 0 32px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); color: inherit; text-decoration: none; }
+    .card img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
+    .card div { padding: 16px 18px 20px; }
+    .tag { font: 700 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--pen); }
+    .card h2 { font: 700 21px/1.25 Georgia, serif; margin: 8px 0 6px; }
+    .card p { margin: 0 0 6px; color: var(--ink-2); font-size: 15px; }
+    .card:hover h2, .card:focus-visible h2 { text-decoration: underline; }
+    .card:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+    .note { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-2); max-width: 72ch; font-size: 15px; }
+    .note a, .links a { color: inherit; }
+    .links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 18px; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Three landing variants, one brief</h1>
+    <p class="lead">Each page has exactly what the brief asks for: a headline with one sentence, three features, an email form with «Join Waitlist», a thank-you on the same page, a counter and social proof. They differ in design and in the argument they lead with.</p>
+    <div class="grid">
+      <a class="card" href="../">
+        <img src="a.jpg" alt="Variant A, the teacher's worksheet: ruled paper, a graded sample question" width="720" height="450">
+        <div><span class="tag">Variant A</span><h2>Teacher's worksheet</h2><p>Leads with the result: a quiz from your own lesson with every right answer explained, shown as a graded sheet.</p></div>
+      </a>
+      <a class="card" href="../b/">
+        <img src="b.jpg" alt="Variant B, the textbook: a chapter page with exercises and footnotes" width="720" height="450">
+        <div><span class="tag">Variant B</span><h2>Textbook</h2><p>Leads with trust: every question comes from your text, and the evidence sits in footnotes like a textbook chapter.</p></div>
+      </a>
+      <a class="card" href="../c/">
+        <img src="c.jpg" alt="Variant C, class boards: big letter answer cards and a student's review" width="720" height="450">
+        <div><span class="tag">Variant C</span><h2>Class boards</h2><p>Leads with the classroom: today's lesson becomes a quiz students play on their phones, with answer cards.</p></div>
+      </a>
+    </div>
+    <p class="note">How to choose: every signup is tagged with its variant (utm_campaign spec-a, spec-b or spec-c in the Google Sheet), and every analytics event carries the same variant. Send equal traffic to the three pages and keep the one with the best visit-to-signup rate.</p>
+    <p class="links"><a href="../../">Full product version →</a><a href="../../case/">How this was built →</a></p>
+  </main>
+</body>
+</html>

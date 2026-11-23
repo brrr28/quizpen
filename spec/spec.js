@@ -120,6 +120,8 @@
     });
     var full = document.createElement('a'); full.href = SCRIPT_BASE + '../'; full.textContent = 'Full product';
     full.style.cssText = 'color:inherit;padding:3px 6px;text-decoration:underline'; bar.appendChild(full);
+    var all = document.createElement('a'); all.href = SCRIPT_BASE + 'variants/'; all.textContent = 'Compare all three';
+    all.style.cssText = 'color:inherit;padding:3px 6px;text-decoration:underline'; bar.appendChild(all);
     document.body.insertBefore(bar, document.body.firstChild);
   })();
 })();

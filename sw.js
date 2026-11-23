@@ -9,7 +9,7 @@
 'use strict';
 
 // Bump on every deploy so returning visitors get a fresh, consistent shell.
-var VERSION = '2026-11-21d';
+var VERSION = '2026-11-21e';
 var CACHE = 'qp-shell-' + VERSION;
 // Pages ask for their CSS, JS and data with ?v=<this release>; the precache stores those exact URLs.
 var ASSET_V = VERSION.replace(/-/g, '');
